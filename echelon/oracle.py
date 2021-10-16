@@ -1,3 +1,6 @@
+from copy import copy
+import numpy as np
+
 ## Typing
 from typing import Tuple, Any, List
 IndexType = int
@@ -60,12 +63,16 @@ class EchelonOracleBase:
         return self.max_indices(inds)
 
     def pop_extend_family(self, indices, families):
-            _family_i = indices
-            for i, family in enumerate(families):
-                if _lists_intersection(self.nb(indices), family):
-                    _family_i += family
-                    del families[i]
-            return _family_i, families
+        _family_i = copy(indices)
+        _del_families = []
+        for i, family in enumerate(families):
+            if _lists_intersection(self.nb(indices), family):
+                _family_i += family
+                _del_families.append(i)
+        if _del_families:
+            families = np.delete(families, _del_families).tolist()
+        return _family_i, families
+
 
 class NdarrayEchelonOracle(EchelonOracleBase):
     def __init__(self, values: np.ndarray, adjacency: np.ndarray):
