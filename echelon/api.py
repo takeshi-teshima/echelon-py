@@ -29,10 +29,11 @@ class EchelonAnalysis:
     def cluster(self, result: Result_EchelonAnalysis) -> Result_EchelonCluster:
         """
         Examples:
-            >>>h, W = _mock_1dim_data()
-            >>>analyzer = EchelonAnalysis()
-            >>>result = analyzer(h, W)
-            >>>analyzer.cluster(result)
+            >>> from .test import _mock_1dim_data
+            >>> h, W = _mock_1dim_data()
+            >>> analyzer = EchelonAnalysis()
+            >>> result = analyzer(h, W)
+            >>> analyzer.cluster(result).table
               representatives                               indices
             0            [16]  [16, 17, 15, 14, 18, 19, 20, 21, 22]
             1            [13]               [13, 12, 14, 11, 10, 9]
@@ -57,9 +58,13 @@ class EchelonAnalysis:
             adjacency: size-$len(data)$ square array of adjacency.
 
         Examples:
-            >>>h, W = _mock_1dim_data()
-            >>>EchelonAnalysis()(h, W)
-            Result_EchelonAnalysis(peak_echelons=[[16, 17, 15], [13], [6, 5, 7], [3], [23]], foundation_echelons=[[12, 14, 18, 19, 11, 10, 20], [2, 4, 8], [1, 9, 21], [0, 22, 24]])
+            >>> from .test import _mock_1dim_data
+            >>> h, W = _mock_1dim_data()
+            >>> result = EchelonAnalysis()(h, W)
+            >>> result.peak_echelons
+            [[16, 17, 15], [13], [6, 5, 7], [3], [23]]
+            >>> result.foundation_echelons
+            [[12, 14, 18, 19, 11, 10, 20], [2, 4, 8], [1, 9, 21], [0, 22, 24]]
         """
         oracle = NdarrayEchelonOracle(data, adjacency)
         peak_echelons = find_peak_echelons(oracle)
@@ -78,9 +83,13 @@ class OneDimEchelonAnalysis(EchelonAnalysis):
             data: 1-dimensional data of realized values.
 
         Examples:
-            >>>h, _ = _mock_1dim_data()
-            >>>OneDimEchelonAnalysis()(h)
-            Result_EchelonAnalysis(peak_echelons=[[16, 17, 15], [13], [6, 5, 7], [3], [23]], foundation_echelons=[[12, 14, 18, 19, 11, 10, 20], [2, 4, 8], [1, 9, 21], [0, 22, 24]])
+            >>> from .test import _mock_1dim_data
+            >>> h, _ = _mock_1dim_data()
+            >>> result = OneDimEchelonAnalysis()(h)
+            >>> result.peak_echelons
+            [[16, 17, 15], [13], [6, 5, 7], [3], [23]]
+            >>> result.foundation_echelons
+            [[12, 14, 18, 19, 11, 10, 20], [2, 4, 8], [1, 9, 21], [0, 22, 24]]
         """
         W = np.zeros((len(data),)*2, dtype='int8')
         W[np.eye(len(W), k=1, dtype='bool')] = 1

@@ -7,23 +7,17 @@ from typing import Tuple, List, Iterable
 IndexType = int
 
 
-def _mock_1dim_data():
-    h = np.array([1, 2, 3, 4, 3, 4, 5, 4, 3, 2, 3, 4, 5, 6, 5, 6, 7, 6, 5, 4, 3, 2, 1, 2, 1])
-    W = np.zeros((25, 25), dtype='int8')
-    W[np.eye(len(W), k=1, dtype='bool')] = 1
-    W[np.eye(len(W), k=-1, dtype='bool')] = 1
-    return h, W
-
-
 def find_peak_echelons(oracle: EchelonOracleBase) -> List[List[IndexType]]:
     """
     Returns:
         peak_echelons
 
     Examples:
-        >>>h, W = _mock_1dim_data()
-        >>>oracle = NdarrayEchelonOracle(h, W)
-        >>>find_peak_echelons(oracle)
+        >>> from .test import _mock_1dim_data
+        >>> h, W = _mock_1dim_data()
+        >>> from .oracle import NdarrayEchelonOracle
+        >>> oracle = NdarrayEchelonOracle(h, W)
+        >>> find_peak_echelons(oracle)
         [[16, 17, 15], [13], [6, 5, 7], [3], [23]]
 
     Notes:
