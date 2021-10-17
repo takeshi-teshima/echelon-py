@@ -22,6 +22,10 @@ The module contents
    src/echelon.algorithms
    src/echelon.oracle
 
+Supplementary Documents
+-----------------------
+   :doc:`Algorithms Explained<algorithms>`
+
 
 Indices and tables
 ==================
