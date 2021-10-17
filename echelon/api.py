@@ -53,7 +53,7 @@ class EchelonAnalysis:
 
     def __call__(self, data: np.ndarray, adjacency: np.ndarray) -> Result_EchelonAnalysis:
         """
-        Params:
+        Parameters:
             data: 1-dimensional data of realized values.
             adjacency: size-$len(data)$ square array of adjacency.
 
@@ -79,7 +79,7 @@ class EchelonAnalysis:
 class OneDimEchelonAnalysis(EchelonAnalysis):
     def __call__(self, data: np.ndarray) -> Result_EchelonAnalysis:
         """
-        Params:
+        Parameters:
             data: 1-dimensional data of realized values.
 
         Examples:
