@@ -43,7 +43,7 @@ class EchelonOracleBase:
     def find_peaktop(self, indices: List[IndexType]) -> Tuple[IndexType, Any]:
         """
         Examples:
-            >>>NdarrayEchelonOracle(*_mock_pytest_data()).find_peaktop([1, 2, 3])
+            >>> NdarrayEchelonOracle(*_mock_pytest_data()).find_peaktop([1, 2, 3])
             (3, 5)
         """
         _argmax_list, _max = self.max_indices(indices)
@@ -52,7 +52,7 @@ class EchelonOracleBase:
     def max_nb(self, indices: List[IndexType]) -> Tuple[List[IndexType], Any]:
         """
         Examples:
-            >>>NdarrayEchelonOracle(*_mock_pytest_data()).max_nb([1, 2])
+            >>> NdarrayEchelonOracle(*_mock_pytest_data()).max_nb([1, 2])
             ([0, 3], 5)
         """
         nb_indices = self.nb(indices)
@@ -93,7 +93,7 @@ class NdarrayEchelonOracle(EchelonOracleBase):
     def nb(self, indices: List[IndexType]) -> List[IndexType]:
         """
         Examples:
-            >>>NdarrayEchelonOracle(*_mock_pytest_data()).nb([1, 2])
+            >>> NdarrayEchelonOracle(*_mock_pytest_data()).nb([1, 2])
             [0, 3]
         """
         _adj = self.adjacency[indices]
@@ -104,7 +104,7 @@ class NdarrayEchelonOracle(EchelonOracleBase):
     def max_indices(self, indices: List[IndexType]) -> Tuple[List[IndexType], Any]:
         """
         Examples:
-            >>>NdarrayEchelonOracle(*_mock_pytest_data()).max_indices([1, 2])
+            >>> NdarrayEchelonOracle(*_mock_pytest_data()).max_indices([1, 2])
             ([1], 3)
         """
         if not indices:
