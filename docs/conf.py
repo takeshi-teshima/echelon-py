@@ -162,7 +162,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'echelon-py', 'echelon-py Documentation',
-     author, 'echelon-py', 'One line description of project.',
+     author, 'echelon-py', 'Echelon analysis in Python.',
      'Miscellaneous'),
 ]
 
