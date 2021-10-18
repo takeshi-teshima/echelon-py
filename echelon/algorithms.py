@@ -1,6 +1,6 @@
 from copy import copy, deepcopy
 import numpy as np
-from .oracle import EchelonOracleBase
+from echelon.oracle import EchelonOracleBase
 
 ## Type hinting
 from typing import Tuple, List, Iterable
