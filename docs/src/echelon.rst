@@ -1,13 +1,20 @@
 echelon package
 ===============
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   echelon.algorithms
+
 Submodules
 ----------
 
 .. toctree::
    :maxdepth: 4
 
-   echelon.algorithms
    echelon.api
    echelon.oracle
    echelon.test

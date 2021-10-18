@@ -13,9 +13,13 @@ The construction of echelons consist of the following two steps:
 #. Foundation echelon finding
 
 
-1.1. :doc:`Peak Finding Algorithm<src/echelon.algorithms>`
+1.1. :doc:`Peak Finding Algorithm<src/echelon.algorithms.find_peak_echelons>`
 ====================
 
 
-1.2. :doc:`Foundation Finding Algorithm<src/echelon.algorithms>`
+1.2. :doc:`Foundation Finding Algorithm<src/echelon.algorithms.find_foundation_echelons>`
+====================
+
+
+2. :doc:`Cluster Finding Algorithm<src/echelon.algorithms.find_echelon_clusters>`
 ====================
