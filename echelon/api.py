@@ -3,10 +3,10 @@ import pandas as pd
 from dataclasses import dataclass
 
 from echelon.algorithms import find_peak_echelons, find_foundation_echelons, find_echelon_clusters
-from echelon.oracle import EchelonOracleBase, NdarrayEchelonOracle
+from echelon.oracle import EchelonOracleBase, NdarrayEchelonOracle, DataFrameEchelonOracle
 
 ## Type hinting
-from typing import Tuple, List
+from typing import Tuple, List, Union, Any, Dict
 IndexSetType = List[int]
 EchelonType = IndexSetType
 EchelonsType = List[EchelonType]
@@ -51,6 +51,16 @@ class EchelonAnalysis:
             table=echelon_cluster_table
         )
 
+    def _run_analysis(self, oracle: EchelonOracleBase) -> Result_EchelonAnalysis:
+        peak_echelons = find_peak_echelons(oracle)
+        foundation_echelons = find_foundation_echelons(oracle, peak_echelons)
+        return Result_EchelonAnalysis(
+            peak_echelons=peak_echelons,
+            foundation_echelons=foundation_echelons,
+            oracle=oracle
+        )
+
+
     def __call__(self, data: np.ndarray, adjacency: np.ndarray) -> Result_EchelonAnalysis:
         """
         Parameters:
@@ -67,13 +77,7 @@ class EchelonAnalysis:
             [[12, 14, 18, 19, 11, 10, 20], [2, 4, 8], [1, 9, 21], [0, 22, 24]]
         """
         oracle = NdarrayEchelonOracle(data, adjacency)
-        peak_echelons = find_peak_echelons(oracle)
-        foundation_echelons = find_foundation_echelons(oracle, peak_echelons)
-        return Result_EchelonAnalysis(
-            peak_echelons=peak_echelons,
-            foundation_echelons=foundation_echelons,
-            oracle=oracle
-        )
+        return self._run_analysis(oracle)
 
 
 class OneDimEchelonAnalysis(EchelonAnalysis):
@@ -103,7 +107,7 @@ class OneDimEchelonAnalysis(EchelonAnalysis):
 
 class TwoDimEchelonAnalysis(EchelonAnalysis):
     """The standard API for two-dimensional matrix-shaped data.
-    The API constructs the canonical adjacency matrix (i.e., adjacency to above, )
+    The API constructs the canonical adjacency matrix (i.e., the 4- or 8-neighborhood).
     """
     def __init__(self, adjacency_type='4'):
         super().__init__()
@@ -234,3 +238,20 @@ class TwoDimEchelonAnalysis(EchelonAnalysis):
             W = self._canonical_twodim_adjacency_8(*data.shape)
 
         return super().__call__(data.flatten(), W)
+
+
+class DataFrameEchelonAnalysis(EchelonAnalysis):
+    """The standard API for the data (realized values and neighborhood information) stored in a DataFrame."""
+    def __call__(self, df,
+                 value_colname: str,
+                 id_colname: str,
+                 adjacency_colname: str) -> Result_EchelonAnalysis:
+        """
+        Parameters:
+            df (pd.DataFrame):
+            value_colname:
+            id_colname:
+            adjacency_colname:
+        """
+        oracle = DataFrameEchelonOracle(df, value_colname, id_colname, adjacency_colname)
+        return self._run_analysis(oracle)
