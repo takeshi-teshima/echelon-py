@@ -2,7 +2,10 @@ import numpy as np
 import pandas as pd
 from dataclasses import dataclass
 
-from echelon.algorithms import find_peak_echelons, find_foundation_echelons, find_echelon_clusters
+from echelon.algorithms import (find_peak_echelons,
+                                find_foundation_echelons,
+                                find_echelon_clusters,
+                                find_echelon_hierarchy)
 from echelon.oracle import EchelonOracleBase, NdarrayEchelonOracle, DataFrameEchelonOracle
 
 ## Type hinting
@@ -11,6 +14,8 @@ IndexSetType = List[int]
 EchelonType = IndexSetType
 EchelonsType = List[EchelonType]
 NeighborsType = List[IndexSetType]
+from anytree import Node
+Result_EchelonHierarchy = Node
 
 
 @dataclass
@@ -50,6 +55,9 @@ class EchelonAnalysis:
         return Result_EchelonCluster(
             table=echelon_cluster_table
         )
+
+    def hierarchy(self, result: Result_EchelonAnalysis) -> Result_EchelonHierarchy:
+        return find_echelon_hierarchy(result.peak_echelons, result.foundation_echelons, result.oracle)
 
     def _run_analysis(self, oracle: EchelonOracleBase) -> Result_EchelonAnalysis:
         peak_echelons = find_peak_echelons(oracle)

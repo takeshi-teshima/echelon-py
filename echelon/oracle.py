@@ -67,11 +67,14 @@ class EchelonOracleBase:
         inds = _lists_intersection(self.nb(ind1), ind2)
         return self.max_indices(inds)
 
+    def is_neighbor(self, indices1, indices2) -> bool:
+        return bool(_lists_intersection(self.nb(indices1), indices2))
+
     def pop_extend_family(self, indices, families):
         _family_i = copy(indices)
         _del_families = []
         for i, family in enumerate(families):
-            if _lists_intersection(self.nb(indices), family):
+            if self.is_neighbor(indices, family):
                 _family_i += family
                 _del_families.append(i)
         if _del_families:
