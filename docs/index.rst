@@ -45,6 +45,7 @@ How to combine the modules can be found in the API modules.
    src/echelon.algorithms.find_foundation_echelons
    src/echelon.algorithms.find_echelon_clusters
    src/echelon.algorithms.find_echelon_hierarchy
+   src/echelon.algorithms.find_echelon_hotspots
 
 **Oracles**
 

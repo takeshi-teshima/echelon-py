@@ -8,23 +8,20 @@ from echelon.algorithms import (find_peak_echelons,
 from echelon.oracle import EchelonOracleBase
 from echelon.scan_oracle import ScanOracleBase
 ## Type hinting
-from typing import Tuple, List, Union, Any, Dict
+from typing import Tuple, List, Union, Any, Dict, NewType
 from anytree import Node
 from echelon.typing import EchelonsType
 
 
 @dataclass
 class Result_EchelonAnalysis:
-    """Class for keeping the results of echelon analysis.
+    """Dataclass for keeping the results of echelon analysis.
 
     Parameters:
         peak_echelons (:doc:`EchelonsType <echelon.typing>`): list of peak echelons.
         foundation_echelons (:doc:`EchelonsType <echelon.typing>`): list of foundation echelons.
         hierarchy_tree: root node (``anytree.Node``) of the hierarchy tree of the echelons.
         oracle: the oracle that is internally constructed during the instantiation of the analysis. Mainly for debugging purposes.
-
-    Note:
-        Each echelon is a list of indices of the original data.
     """
     peak_echelons: EchelonsType
     foundation_echelons: EchelonsType
@@ -42,7 +39,12 @@ class Result_EchelonAnalysis:
 
 @dataclass
 class Result_EchelonCluster:
-    table: object
+    """Dataclass for storing the result of echelon cluster analysis."""
+    table: pd.DataFrame
+
+
+Result_EchelonHotspot = NewType('Result_EchelonHotspot', pd.DataFrame)
+"""Result of echelon scan for hot-spot detection."""
 
 
 class EchelonAnalysis:
@@ -101,7 +103,7 @@ class EchelonAnalysis:
 
         return RenderTree(root).by_attr(lambda node: echelon_to_label(node.name))
 
-    def echelon_hotspots(self, result: Result_EchelonAnalysis, scan_oracle: ScanOracleBase):
+    def echelon_hotspots(self, result: Result_EchelonAnalysis, scan_oracle: ScanOracleBase) -> Result_EchelonHotspot:
         hotspots = find_echelon_hotspots(scan_oracle,
                                             result.hierarchy_tree,
                                             result.echelons,

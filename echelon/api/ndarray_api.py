@@ -16,7 +16,7 @@ class NdarrayEchelonAnalysis(EchelonAnalysis):
         """
         Parameters:
             data: 1-dimensional data of realized values.
-            adjacency: size-$len(data)$ square array of adjacency.
+            adjacency: ``len(data)``-sized square array of adjacency.
 
         Examples:
             >>> from echelon.test import _mock_1dim_data
