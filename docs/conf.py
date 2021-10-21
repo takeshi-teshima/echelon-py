@@ -178,6 +178,7 @@ autodoc_default_options = {
 }
 # Until Sphinx 1.8
 autoclass_content = 'both'
+autodoc_typehints = "description"
 
 # -- Options for todo extension ----------------------------------------------
 

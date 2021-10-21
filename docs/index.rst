@@ -25,27 +25,28 @@ Welcome to echelon-py's documentation!
 
 The API modules
 --------
-The implemented methods can be accessed via the interface classes:
+All functionalities are accessible from the API classes.
+They are also *examples* of how the algorithms and other codes can be combined to serve the analysis.
 
-.. toctree::
-   :maxdepth: 4
-
-   src/echelon.api
-
-The API classes are also intended to serve as *examples* of how the methods in the following modules can be combined.
+:doc:`src/echelon.api`
 
 The module contents
 --------
 
-Algorithms
+**Algorithms**
+
+Algorithms are implemented in the following modules.
+How to combine the modules can be found in the API modules.
 
 .. toctree::
    :maxdepth: 4
 
-   src/echelon.algorithms.find_foundation_echelons
    src/echelon.algorithms.find_peak_echelons
+   src/echelon.algorithms.find_foundation_echelons
    src/echelon.algorithms.find_echelon_clusters
    src/echelon.algorithms.find_echelon_hierarchy
+
+**Oracles**
 
 Oracles abstract the access to the data.
 For custom input data structures, one can implement a new oracle (inheriting ``EchelonOracleBase``)
@@ -55,6 +56,12 @@ using the implemented classes such as ``DataFrameEchelonOracle`` as examples.
    :maxdepth: 4
 
    src/echelon.oracle
+
+**Typing**
+
+Some types for type hinting are defined in the following module:
+
+   :doc:`src/echelon.typing`
 
 
 Supplementary Documents

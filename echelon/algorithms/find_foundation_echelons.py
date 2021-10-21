@@ -1,16 +1,22 @@
 from copy import copy, deepcopy
 import numpy as np
 from echelon.oracle import EchelonOracleBase
+from echelon.algorithms.util import _flatten_lists, _lists_intersection
 
 ## Type hinting
 from typing import Tuple, List, Iterable
-IndexType = int
-
-from echelon.algorithms.util import _flatten_lists, _lists_intersection
+from echelon.typing import EchelonsType
 
 
-def find_foundation_echelons(oracle: EchelonOracleBase, peak_echelons: List[List[IndexType]]) -> List[List[IndexType]]:
+def find_foundation_echelons(oracle: EchelonOracleBase, peak_echelons: EchelonsType) -> EchelonsType:
     """Construct foundation echelons.
+
+    Parameters:
+        oracle: the oracle to query data.
+        peak_echelons (:doc:`EchelonsType <echelon.typing>`): the peak echelons.
+
+    Returns:
+        :doc:`EchelonsType <echelon.typing>` : foundation_echelons
 
     Examples:
         >>> h = np.array([1, 2, 3, 4, 3, 4, 5, 4, 3, 2, 3, 4, 5, 6, 5, 6, 7, 6, 5, 4, 3, 2, 1, 2, 1])

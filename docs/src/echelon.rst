@@ -8,6 +8,7 @@ Subpackages
    :maxdepth: 4
 
    echelon.algorithms
+   echelon.api
 
 Submodules
 ----------
@@ -15,9 +16,10 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   echelon.api
    echelon.oracle
+   echelon.scan_oracle
    echelon.test
+   echelon.typing
 
 Module contents
 ---------------

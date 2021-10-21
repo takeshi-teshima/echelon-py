@@ -5,11 +5,15 @@ from echelon.algorithms.util import _lists_intersection
 
 ## Type hinting
 from typing import Tuple, List, Iterable
-IndexType = int
+from echelon.typing import EchelonsType
 
 
-def find_echelon_clusters(peak_echelons, foundation_echelons, oracle):
+def find_echelon_clusters(peak_echelons: EchelonsType, foundation_echelons: EchelonsType, oracle):
     """Find the Echelon Clusters.
+
+    Parameters:
+        peak_echelons (:doc:`EchelonsType <echelon.typing>`)
+        foundation_echelons (:doc:`EchelonsType <echelon.typing>`)
 
     Examples:
         >>> h = np.array([1, 2, 3, 4, 3, 4, 5, 4, 3, 2, 3, 4, 5, 6, 5, 6, 7, 6, 5, 4, 3, 2, 1, 2, 1])

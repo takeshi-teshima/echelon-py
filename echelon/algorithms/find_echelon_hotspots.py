@@ -1,4 +1,5 @@
 from anytree import PreOrderIter
+import pandas as pd
 
 # Type hinting
 from typing import List, Tuple, Any
@@ -7,7 +8,7 @@ from echelon.oracle import EchelonOracleBase
 from echelon.scan_oracle import ScanOracleBase, EchelonScanStop
 
 
-def find_echelon_hotspots(scan_oracle: ScanOracleBase, tree_root: Node, echelons, original_oracle: EchelonOracleBase):
+def find_echelon_hotspots(scan_oracle: ScanOracleBase, tree_root: Node, echelons, original_oracle: EchelonOracleBase) -> pd.DataFrame:
     """
 
     Notes:
@@ -44,5 +45,4 @@ def find_echelon_hotspots(scan_oracle: ScanOracleBase, tree_root: Node, echelons
                 'score': score,
                 **record_values
             })
-    import pandas as pd
     return pd.DataFrame(_out).sort_values('score', ascending=False)
