@@ -8,7 +8,6 @@ from typing import Tuple, List, Iterable, Any, Callable
 IndexType = int
 
 
-
 def find_echelon_hierarchy(peak_echelons, foundation_echelons, oracle) -> Node:
     """
 

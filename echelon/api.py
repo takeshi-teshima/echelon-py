@@ -5,8 +5,11 @@ from dataclasses import dataclass
 from echelon.algorithms import (find_peak_echelons,
                                 find_foundation_echelons,
                                 find_echelon_clusters,
-                                find_echelon_hierarchy)
+                                find_echelon_hierarchy,
+                                find_echelon_hotspots
+                                )
 from echelon.oracle import EchelonOracleBase, NdarrayEchelonOracle, DataFrameEchelonOracle
+from echelon.scan_oracle import ScanOracleBase, NdarrayScanOracle, DataFrameScanOracle
 
 ## Type hinting
 from typing import Tuple, List, Union, Any, Dict
@@ -34,6 +37,10 @@ class Result_EchelonAnalysis:
     foundation_echelons: EchelonsType
     hierarchy_tree: Node
     oracle: EchelonOracleBase
+
+    @property
+    def echelons(self) -> EchelonsType:
+        return self.peak_echelons + self.foundation_echelons
 
 
 @dataclass
@@ -74,26 +81,33 @@ class EchelonAnalysis:
         Parameters:
             result : the result object of the echelon construction.
             plot_config_dict : the dictionary to configure the visualization.
-
-        Note:
-            To format the output, the method calls ``self._echelon_to_str()``.
         """
         from anytree import RenderTree
 
         root = result.hierarchy_tree
-        echelons = result.peak_echelons + result.foundation_echelons
+        echelons = result.echelons
 
-        def _echelon_to_str(echelon_id, _echelon, _max_idx, value, plot_config_dict):
+        def _default_echelon_to_str(echelon_id, _echelon, _max_idx, value, plot_config_dict):
             """Default function to convert echelon information to a string."""
-            return f'E{echelon_id+1}({_max_idx[0]}): [' + ', '.join(map(str, reversed(_echelon))) + f']\n (max: {value})' + '\n' * plot_config_dict.get('num_linespace', 0)
+            idx_map = plot_config_dict.get('idx_map', str)
+            representatives = ",".join(map(idx_map, _max_idx))
+            echelon_contents = ', '.join(map(idx_map, reversed(_echelon)))
+            return f'E{echelon_id+1}({representatives}): [{echelon_contents}]\n (max: {value})' + '\n' * plot_config_dict.get('num_linespace', 0)
 
         def echelon_to_label(echelon_id):
             _echelon = echelons[echelon_id]
             _max_idx, value = result.oracle.max_indices(_echelon)
-            _echelon_to_str = plot_config_dict.get('_echelon_to_str', _echelon_to_str)
+            _echelon_to_str = plot_config_dict.get('_echelon_to_str', _default_echelon_to_str)
             return _echelon_to_str(echelon_id, _echelon, _max_idx, value, plot_config_dict)
 
         return RenderTree(root).by_attr(lambda node: echelon_to_label(node.name))
+
+    def echelon_hotspots(self, result: Result_EchelonAnalysis, scan_oracle: ScanOracleBase):
+        hotspots = find_echelon_hotspots(scan_oracle,
+                                            result.hierarchy_tree,
+                                            result.echelons,
+                                            result.oracle)
+        return hotspots
 
     def _run_analysis(self, oracle: EchelonOracleBase) -> Result_EchelonAnalysis:
         peak_echelons = find_peak_echelons(oracle)
@@ -126,7 +140,13 @@ class EchelonAnalysis:
         return self._run_analysis(oracle)
 
 
-class OneDimEchelonAnalysis(EchelonAnalysis):
+class NdarrayEchelonAnalysis(EchelonAnalysis):
+    def echelon_hotspots(self, result: Result_EchelonAnalysis, total_count_data, marked_count_data):
+        scan_oracle = NdarrayScanOracle(total_count_data, marked_count_data)
+        return super().echelon_hotspots(result, scan_oracle)
+
+
+class OneDimEchelonAnalysis(NdarrayEchelonAnalysis):
     def __call__(self, data: np.ndarray) -> Result_EchelonAnalysis:
         """
         Parameters:
@@ -151,7 +171,7 @@ class OneDimEchelonAnalysis(EchelonAnalysis):
         return super().__call__(data, W)
 
 
-class TwoDimEchelonAnalysis(EchelonAnalysis):
+class TwoDimEchelonAnalysis(NdarrayEchelonAnalysis):
     """The standard API for two-dimensional matrix-shaped data.
     The API constructs the canonical adjacency matrix (i.e., the 4- or 8-neighborhood).
     """
@@ -299,5 +319,11 @@ class DataFrameEchelonAnalysis(EchelonAnalysis):
             id_colname: column name of ``df`` corresponding to the index values. The values in this column needs to be unique.
             adjacency_colname: column name of ``df`` corresponding to the adjacency information. The cells must contain lists of indices to which the record is adjacent.
         """
+        self.df = df
+        self.id_colname = id_colname
         oracle = DataFrameEchelonOracle(df, value_colname, id_colname, adjacency_colname)
         return self._run_analysis(oracle)
+
+    def echelon_hotspots(self, result: Result_EchelonAnalysis, total_count_colname, marked_count_colname):
+        scan_oracle = DataFrameScanOracle(self.df, self.id_colname, total_count_colname, marked_count_colname)
+        return super().echelon_hotspots(result, scan_oracle)
