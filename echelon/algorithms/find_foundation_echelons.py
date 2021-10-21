@@ -107,7 +107,7 @@ def find_foundation_echelons(oracle: EchelonOracleBase, peak_echelons: List[List
                 _current_family += _argmax
                 _current_echelon += _lists_intersection(_argmax, unsearched_inds) # Foundation echelon contains only those which do not consist the peak echelons.
             # If none of the neighboring candidates is a local minimum, accept the candidates.
-            elif (_max > oracle.max_nb(_current_family + _argmax)[1]):
+            elif (_max >= oracle.max_nb(_current_family + _argmax)[1]):
                 _current_family += _argmax
                 _current_echelon += _lists_intersection(_argmax, unsearched_inds) # Foundation echelon contains only those which do not consist the peak echelons.
             else:
