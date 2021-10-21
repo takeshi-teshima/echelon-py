@@ -2,8 +2,8 @@ from copy import copy
 import numpy as np
 
 ## Typing
-from typing import Tuple, Any, List
-IndexType = int
+from typing import Tuple, Any, List, Union
+IndexType = Union[int, str]
 import numpy as np
 
 
@@ -67,11 +67,14 @@ class EchelonOracleBase:
         inds = _lists_intersection(self.nb(ind1), ind2)
         return self.max_indices(inds)
 
+    def is_neighbor(self, indices1, indices2) -> bool:
+        return bool(_lists_intersection(self.nb(indices1), indices2))
+
     def pop_extend_family(self, indices, families):
         _family_i = copy(indices)
         _del_families = []
         for i, family in enumerate(families):
-            if _lists_intersection(self.nb(indices), family):
+            if self.is_neighbor(indices, family):
                 _family_i += family
                 _del_families.append(i)
         if _del_families:
@@ -117,4 +120,36 @@ class NdarrayEchelonOracle(EchelonOracleBase):
         vals = self.values[indices]
         _max = np.max(vals)
         _argmax_list = [indices[i] for i in np.flatnonzero(vals == _max)]
+        return _argmax_list, _max
+
+
+class DataFrameEchelonOracle(EchelonOracleBase):
+    def __init__(self, df, val_colname: str, id_colname: str, adjacency_colname: str):
+        super().__init__()
+        assert val_colname in df
+        assert id_colname in df
+        assert adjacency_colname in df
+        assert not df.duplicated(subset=[id_colname]).any()
+
+        self.df = df
+        self.val_colname = val_colname
+        self.id_colname = id_colname
+        self.adjacency_colname = adjacency_colname
+
+    def copy_indices(self) -> List[IndexType]:
+        return self.df[self.id_colname].to_list()
+
+    def nb(self, indices: List[IndexType]) -> List[IndexType]:
+        _items = self.df[self.df[self.id_colname].isin(indices)]
+        _adj = _items[self.adjacency_colname]
+        return list(set(_adj.sum()) - set(indices))
+
+    def max_indices(self, indices: List[IndexType]) -> Tuple[List[IndexType], Any]:
+        if not indices:
+            return [], self.max_of_empty
+
+        _items = self.df[self.df[self.id_colname].isin(indices)]
+        vals = _items[self.val_colname]
+        _max = vals.max()
+        _argmax_list = _items[vals == _max][self.id_colname].tolist()
         return _argmax_list, _max

@@ -44,3 +44,27 @@ def _visualize_echelons(shape, peak_echelons, foundation_echelons):
         for e in echelon:
             W[np.unravel_index(e, shape=W.shape)] = len(peak_echelons) + i + 1
     return W
+
+
+class AdjacencyOracleMockup:
+    def __init__(self, names: list):
+        self.names = names
+
+    def is_neighbor(self, names1, names2) -> bool:
+        for name in names1:
+            i = self.names.index(name)
+            if (i-1 >= 0) and (self.names[i-1] in names2):
+                return True
+            if (i+1 < len(self.names)) and (self.names[i+1] in names2):
+                return True
+        return False
+
+
+from anytree import Node, RenderTree
+def _visualize_echelon_hierarchy(root: Node):
+    """
+    Parameters:
+        root : root node of the hierarchy.
+    """
+    for pre, fill, node in RenderTree(root):
+        print("%s%s" % (pre, node.name+1))
