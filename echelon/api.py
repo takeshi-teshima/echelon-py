@@ -10,20 +10,31 @@ from echelon.oracle import EchelonOracleBase, NdarrayEchelonOracle, DataFrameEch
 
 ## Type hinting
 from typing import Tuple, List, Union, Any, Dict
+from anytree import Node
 IndexSetType = List[int]
 EchelonType = IndexSetType
 EchelonsType = List[EchelonType]
 NeighborsType = List[IndexSetType]
-from anytree import Node
-Result_EchelonHierarchy = Node
 
 
 @dataclass
 class Result_EchelonAnalysis:
-    """Class for keeping the results of echelon analysis."""
+    """Class for keeping the results of echelon analysis.
+
+    Parameters:
+        peak_echelons: list of peak echelons.
+        foundation_echelons: list of foundation echelons.
+        hierarchy_tree: root node (``anytree.Node``) of the hierarchy tree of the echelons.
+        oracle: the oracle that is internally constructed during the instantiation of the analysis. Mainly for debugging purposes.
+
+    Note:
+        Each echelon is a list of indices of the original data.
+    """
     peak_echelons: EchelonsType
     foundation_echelons: EchelonsType
+    hierarchy_tree: Node
     oracle: EchelonOracleBase
+
 
 @dataclass
 class Result_EchelonCluster:
@@ -56,15 +67,42 @@ class EchelonAnalysis:
             table=echelon_cluster_table
         )
 
-    def hierarchy(self, result: Result_EchelonAnalysis) -> Result_EchelonHierarchy:
-        return find_echelon_hierarchy(result.peak_echelons, result.foundation_echelons, result.oracle)
+    def dendrogram(self, result: Result_EchelonAnalysis,
+                   plot_config_dict: dict=dict(num_linespace = 1)) -> str:
+        """Draw a simple dendrogram-like figure of the echelon hierarchy.
+
+        Parameters:
+            result : the result object of the echelon construction.
+            plot_config_dict : the dictionary to configure the visualization.
+
+        Note:
+            To format the output, the method calls ``self._echelon_to_str()``.
+        """
+        from anytree import RenderTree
+
+        root = result.hierarchy_tree
+        echelons = result.peak_echelons + result.foundation_echelons
+
+        def _echelon_to_str(echelon_id, _echelon, _max_idx, value, plot_config_dict):
+            """Default function to convert echelon information to a string."""
+            return f'E{echelon_id+1}({_max_idx[0]}): [' + ', '.join(map(str, reversed(_echelon))) + f']\n (max: {value})' + '\n' * plot_config_dict.get('num_linespace', 0)
+
+        def echelon_to_label(echelon_id):
+            _echelon = echelons[echelon_id]
+            _max_idx, value = result.oracle.max_indices(_echelon)
+            _echelon_to_str = plot_config_dict.get('_echelon_to_str', _echelon_to_str)
+            return _echelon_to_str(echelon_id, _echelon, _max_idx, value, plot_config_dict)
+
+        return RenderTree(root).by_attr(lambda node: echelon_to_label(node.name))
 
     def _run_analysis(self, oracle: EchelonOracleBase) -> Result_EchelonAnalysis:
         peak_echelons = find_peak_echelons(oracle)
         foundation_echelons = find_foundation_echelons(oracle, peak_echelons)
+        hierarchy = find_echelon_hierarchy(peak_echelons, foundation_echelons, oracle)
         return Result_EchelonAnalysis(
             peak_echelons=peak_echelons,
             foundation_echelons=foundation_echelons,
+            hierarchy_tree = hierarchy,
             oracle=oracle
         )
 
@@ -256,10 +294,10 @@ class DataFrameEchelonAnalysis(EchelonAnalysis):
                  adjacency_colname: str) -> Result_EchelonAnalysis:
         """
         Parameters:
-            df (pd.DataFrame):
-            value_colname:
-            id_colname:
-            adjacency_colname:
+            df (pd.DataFrame): the dataframe containing the indices, observed values, and adjacency information.
+            value_colname: column name of ``df`` corresponding to the observed values.
+            id_colname: column name of ``df`` corresponding to the index values. The values in this column needs to be unique.
+            adjacency_colname: column name of ``df`` corresponding to the adjacency information. The cells must contain lists of indices to which the record is adjacent.
         """
         oracle = DataFrameEchelonOracle(df, value_colname, id_colname, adjacency_colname)
         return self._run_analysis(oracle)
