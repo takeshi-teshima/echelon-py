@@ -2,6 +2,7 @@
 
 ## Functionalities
 - Echelon analysis
+- Echelon dendrogram plot
 - Echelon scan (detection of spatial clusters)
 
 ## Quick Start
@@ -13,6 +14,9 @@ model.fit()
 model.plot()
 pred = model.predict()
 ```
+## Optional Dependencies
+- ``scipy`` to enable dendrogram.
+- ``anytree`` to store and visualize the echelon hierarchical structure.
 
 ## Development
 - ``$ pip install -r requirements-dev.txt``

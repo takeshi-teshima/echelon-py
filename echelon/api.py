@@ -2,11 +2,15 @@ import numpy as np
 import pandas as pd
 from dataclasses import dataclass
 
-from echelon.algorithms import find_peak_echelons, find_foundation_echelons, find_echelon_clusters
-from echelon.oracle import EchelonOracleBase, NdarrayEchelonOracle
+from echelon.algorithms import (find_peak_echelons,
+                                find_foundation_echelons,
+                                find_echelon_clusters,
+                                find_echelon_hierarchy)
+from echelon.oracle import EchelonOracleBase, NdarrayEchelonOracle, DataFrameEchelonOracle
 
 ## Type hinting
-from typing import Tuple, List
+from typing import Tuple, List, Union, Any, Dict
+from anytree import Node
 IndexSetType = List[int]
 EchelonType = IndexSetType
 EchelonsType = List[EchelonType]
@@ -15,10 +19,22 @@ NeighborsType = List[IndexSetType]
 
 @dataclass
 class Result_EchelonAnalysis:
-    """Class for keeping the results of echelon analysis."""
+    """Class for keeping the results of echelon analysis.
+
+    Parameters:
+        peak_echelons: list of peak echelons.
+        foundation_echelons: list of foundation echelons.
+        hierarchy_tree: root node (``anytree.Node``) of the hierarchy tree of the echelons.
+        oracle: the oracle that is internally constructed during the instantiation of the analysis. Mainly for debugging purposes.
+
+    Note:
+        Each echelon is a list of indices of the original data.
+    """
     peak_echelons: EchelonsType
     foundation_echelons: EchelonsType
+    hierarchy_tree: Node
     oracle: EchelonOracleBase
+
 
 @dataclass
 class Result_EchelonCluster:
@@ -51,6 +67,46 @@ class EchelonAnalysis:
             table=echelon_cluster_table
         )
 
+    def dendrogram(self, result: Result_EchelonAnalysis,
+                   plot_config_dict: dict=dict(num_linespace = 1)) -> str:
+        """Draw a simple dendrogram-like figure of the echelon hierarchy.
+
+        Parameters:
+            result : the result object of the echelon construction.
+            plot_config_dict : the dictionary to configure the visualization.
+
+        Note:
+            To format the output, the method calls ``self._echelon_to_str()``.
+        """
+        from anytree import RenderTree
+
+        root = result.hierarchy_tree
+        echelons = result.peak_echelons + result.foundation_echelons
+
+        def _echelon_to_str(echelon_id, _echelon, _max_idx, value, plot_config_dict):
+            """Default function to convert echelon information to a string."""
+            return f'E{echelon_id+1}({_max_idx[0]}): [' + ', '.join(map(str, reversed(_echelon))) + f']\n (max: {value})' + '\n' * plot_config_dict.get('num_linespace', 0)
+
+        def echelon_to_label(echelon_id):
+            _echelon = echelons[echelon_id]
+            _max_idx, value = result.oracle.max_indices(_echelon)
+            _echelon_to_str = plot_config_dict.get('_echelon_to_str', _echelon_to_str)
+            return _echelon_to_str(echelon_id, _echelon, _max_idx, value, plot_config_dict)
+
+        return RenderTree(root).by_attr(lambda node: echelon_to_label(node.name))
+
+    def _run_analysis(self, oracle: EchelonOracleBase) -> Result_EchelonAnalysis:
+        peak_echelons = find_peak_echelons(oracle)
+        foundation_echelons = find_foundation_echelons(oracle, peak_echelons)
+        hierarchy = find_echelon_hierarchy(peak_echelons, foundation_echelons, oracle)
+        return Result_EchelonAnalysis(
+            peak_echelons=peak_echelons,
+            foundation_echelons=foundation_echelons,
+            hierarchy_tree = hierarchy,
+            oracle=oracle
+        )
+
+
     def __call__(self, data: np.ndarray, adjacency: np.ndarray) -> Result_EchelonAnalysis:
         """
         Parameters:
@@ -67,13 +123,7 @@ class EchelonAnalysis:
             [[12, 14, 18, 19, 11, 10, 20], [2, 4, 8], [1, 9, 21], [0, 22, 24]]
         """
         oracle = NdarrayEchelonOracle(data, adjacency)
-        peak_echelons = find_peak_echelons(oracle)
-        foundation_echelons = find_foundation_echelons(oracle, peak_echelons)
-        return Result_EchelonAnalysis(
-            peak_echelons=peak_echelons,
-            foundation_echelons=foundation_echelons,
-            oracle=oracle
-        )
+        return self._run_analysis(oracle)
 
 
 class OneDimEchelonAnalysis(EchelonAnalysis):
@@ -103,7 +153,7 @@ class OneDimEchelonAnalysis(EchelonAnalysis):
 
 class TwoDimEchelonAnalysis(EchelonAnalysis):
     """The standard API for two-dimensional matrix-shaped data.
-    The API constructs the canonical adjacency matrix (i.e., adjacency to above, )
+    The API constructs the canonical adjacency matrix (i.e., the 4- or 8-neighborhood).
     """
     def __init__(self, adjacency_type='4'):
         super().__init__()
@@ -234,3 +284,20 @@ class TwoDimEchelonAnalysis(EchelonAnalysis):
             W = self._canonical_twodim_adjacency_8(*data.shape)
 
         return super().__call__(data.flatten(), W)
+
+
+class DataFrameEchelonAnalysis(EchelonAnalysis):
+    """The standard API for the data (realized values and neighborhood information) stored in a DataFrame."""
+    def __call__(self, df,
+                 value_colname: str,
+                 id_colname: str,
+                 adjacency_colname: str) -> Result_EchelonAnalysis:
+        """
+        Parameters:
+            df (pd.DataFrame): the dataframe containing the indices, observed values, and adjacency information.
+            value_colname: column name of ``df`` corresponding to the observed values.
+            id_colname: column name of ``df`` corresponding to the index values. The values in this column needs to be unique.
+            adjacency_colname: column name of ``df`` corresponding to the adjacency information. The cells must contain lists of indices to which the record is adjacent.
+        """
+        oracle = DataFrameEchelonOracle(df, value_colname, id_colname, adjacency_colname)
+        return self._run_analysis(oracle)
