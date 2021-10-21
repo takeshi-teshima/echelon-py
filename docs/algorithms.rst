@@ -20,13 +20,6 @@ The construction of echelons consist of the following two steps:
 1.2. :doc:`Foundation Finding Algorithm<src/echelon.algorithms.find_foundation_echelons>`
 ====================
 
-********************
-2. Derived objects
-********************
 
-2.1. :doc:`Hierarchy Finding Algorithm<src/echelon.algorithms.find_echelon_hierarchy>`
+2. :doc:`Cluster Finding Algorithm<src/echelon.algorithms.find_echelon_clusters>`
 ====================
-
-..
-   2.2. :doc:`Cluster Finding Algorithm<src/echelon.algorithms.find_echelon_clusters>`
-   ====================
