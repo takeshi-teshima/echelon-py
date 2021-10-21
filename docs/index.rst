@@ -42,9 +42,10 @@ Algorithms
 .. toctree::
    :maxdepth: 4
 
-   src/echelon.algorithms.find_echelon_clusters
    src/echelon.algorithms.find_foundation_echelons
    src/echelon.algorithms.find_peak_echelons
+   src/echelon.algorithms.find_echelon_clusters
+   src/echelon.algorithms.find_echelon_hierarchy
 
 Oracles abstract the access to the data.
 For custom input data structures, one can implement a new oracle (inheriting ``EchelonOracleBase``)
@@ -63,8 +64,11 @@ Supplementary Documents
 
 Links
 -----------------------
-If you enjoy anytree:
-`https://cdn.buymeacoffee.com/buttons/default-orange.png<https://www.buymeacoffee.com/diadochos>`_
+If you enjoy anytree: |buymeacoffee|
+
+.. |buymeacoffee| image:: https://cdn.buymeacoffee.com/buttons/default-orange.png
+    :height: 2em
+    :target: https://www.buymeacoffee.com/diadochos
 
 
 Indices and tables
