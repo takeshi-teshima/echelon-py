@@ -71,6 +71,16 @@ If you enjoy anytree: |buymeacoffee|
     :target: https://www.buymeacoffee.com/diadochos
 
 
+Call for Contributions
+-----------------------
+The algorithms have not been optimized for efficiency (sorry),
+and there are probably obvious ways to improve the performance.
+
+* If you encounter a performance issue, please file it on GitHub.
+* If you notice an edge case, please file a ``test case`` issue on GitHub.
+* If you are kind enough to refactor the algorithms for efficiency, please feel free to open an issue and submit a pull request on GitHub.
+
+
 Indices and tables
 ==================
 
