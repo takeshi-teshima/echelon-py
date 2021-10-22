@@ -1,3 +1,6 @@
+"""This module contains the oracles used to run the echelon scan for hot-spot detection.
+The oracles provide the scores for the hot-spot detection.
+"""
 import numpy as np
 
 # Type hinting
@@ -46,17 +49,9 @@ class ApproxBinomialScanOracleBase(ScanOracleBase):
         self._all_total_count = all_total_count
         self._all_marked_count = all_marked_count
 
-    @property
-    def all_total_count(self):
-        return self._all_total_count
-
-    @property
-    def all_marked_count(self):
-        return self._all_marked_count
-
     def score(self, Z):
-        nG = self.all_total_count
-        cG = self.all_marked_count
+        nG = self._all_total_count
+        cG = self._all_marked_count
         nZ = self.total_count(Z)
         cZ = self.marked_count(Z)
         ## Stopping criterion
@@ -80,7 +75,53 @@ class ApproxBinomialScanOracleBase(ScanOracleBase):
         pass
 
 
-class NdarrayScanOracle(ApproxBinomialScanOracleBase):
+class PoissonScanOracleBase(ScanOracleBase):
+    """
+    Notes:
+        Consider :math:`K` regions and let us denote :math:`[K] := \{1, 2, \ldots, K\}`.
+        For each region :math:`k \in [K]`, assume :math:`c_k \sim \mathrm{Po}(\lambda_k)` and that :math:`\{c_k\}_{k \in [K]}` are independent.
+
+        First, note that :math:`\mathrm{Po}(c; \lambda) := \frac{\lambda^c e^{-\lambda}}{c!}` is maximized by :math:`\lambda = c`.
+        Thus, the maximum likelihood given :math:`c` is :math:`\frac{c^c e^{-c}}{c!}`.
+
+        Consider a region :math:`Z \subset [K]`. We assign a score :math:`s` that indicates how "hot-spot-ish" the region :math:`Z` is.
+
+        By the reproductive property, :math:`c_Z := \sum_{k \in Z} c_k \sim \mathrm{Po}(\lambda_Z)` where :math:`\lambda_Z = \sum_{k \in Z} \lambda_k`. Similarly for :math:`Z^\mathrm{c}`.
+
+        We compare the maximum likelihood under :math:`\lambda_Z = \lambda_{Z^\mathrm{c}}` and :math:`\lambda_Z > \lambda_{Z^\mathrm{c}}`.
+        The maximum log likelihood in the first case is :math:`\ell_0 := \log \frac{c_{[K]}^{c_{[K]}} e^{-{c_{[K]}}}}{c_{[K]}!}`
+        That for the second case is :math:`\ell_1 := \log \frac{c_{Z}^{c_{Z}} e^{-{c_{Z}}}}{c_{Z}!} + \log \frac{c_{Z^\mathrm{c}}^{c_{Z^\mathrm{c}}} e^{-{c_{Z^\mathrm{c}}}}}{c_{Z^\mathrm{c}}!}`
+
+        Thus, we use
+        :math:`(\ell_1 - \ell_0) [[c_Z > c_{Z^\mathrm{c}}]]`
+        as the score.
+    """
+    def __init__(self, all_count, total_index_len):
+        self.all_count = all_count
+        self.total_index_len = total_index_len
+
+    def _score(self, c):
+        from math import lgamma
+        return c * np.log(c) - c - lgamma(c)
+
+    def score(self, Z):
+        cG = self.all_count
+        cZ = self.count(Z)
+        ## Stopping criterion
+        if len(Z) >= self.total_index_len * .5:
+            raise EchelonScanStop()
+        cZc = cG - cZ
+        ## Scores
+        log_lambda = (self._score(cZ) + self._score(cZc) - self._score(cG)) * (cZ/len(Z) > cZc/self.total_index_len)
+        return log_lambda, {'c(Z)': cZ, 'log_lambda': log_lambda}
+
+    @abstractmethod
+    def count(self, indices):
+        pass
+
+
+class NdarrayBinomialScanOracle(ApproxBinomialScanOracleBase):
+    """Hotspot scan oracle using approximate binomial score for numpy array data."""
     def __init__(self, total_count: np.ndarray, marked_count: np.ndarray):
         super().__init__(total_count.sum(), marked_count.sum())
         self.total_count_data = total_count.flatten()
@@ -93,8 +134,20 @@ class NdarrayScanOracle(ApproxBinomialScanOracleBase):
         return self.marked_count_data[indices].sum()
 
 
-class DataFrameScanOracle(ScanOracleBase):
+class NdarrayPoissonScanOracle(PoissonScanOracleBase):
+    """Hotspot scan oracle using Poisson score for numpy array data."""
+    def __init__(self, data):
+        super().__init__(data.sum(), len(data))
+        self.data = data
+
+    def count(self, indices):
+        return self.data[indices].sum()
+
+
+class DataFrameBinomialScanOracle(ApproxBinomialScanOracleBase):
+    """Hotspot scan oracle using approximate binomial score for DataFrame data."""
     def __init__(self, df, id_colname: str, total_count_col: str, marked_count_col: str):
+        super().__init__(df[total_count_col].sum(), df[marked_count_col].sum())
         self.df = df
         self.id_colname = id_colname
         self.total_count_col = total_count_col
@@ -108,3 +161,18 @@ class DataFrameScanOracle(ScanOracleBase):
 
     def marked_count(self, indices):
         return self._subset(indices)[self.marked_count_col].sum()
+
+
+class DataFramePoissonScanOracle(PoissonScanOracleBase):
+    """Hotspot scan oracle using Poisson score for DataFrame data."""
+    def __init__(self, df, id_colname: str, count_col: str):
+        super().__init__(df[count_col].sum(), len(df))
+        self.df = df
+        self.id_colname = id_colname
+        self.count_col = count_col
+
+    def _subset(self, indices):
+        return self.df[self.df[self.id_colname].isin(indices)]
+
+    def count(self, indices):
+        return self._subset(indices)[self.count_col].sum()

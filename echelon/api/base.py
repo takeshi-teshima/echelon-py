@@ -12,6 +12,12 @@ from typing import Tuple, List, Union, Any, Dict, NewType
 from anytree import Node
 from echelon.typing import EchelonsType
 
+Result_EchelonCluster = NewType('Result_EchelonCluster', pd.DataFrame)
+"""The result of echelon cluster analysis."""
+
+Result_EchelonHotspot = NewType('Result_EchelonHotspot', pd.DataFrame)
+"""The result of echelon scan for hot-spot detection."""
+
 
 @dataclass
 class Result_EchelonAnalysis:
@@ -37,16 +43,6 @@ class Result_EchelonAnalysis:
         return self.peak_echelons + self.foundation_echelons
 
 
-@dataclass
-class Result_EchelonCluster:
-    """Dataclass for storing the result of echelon cluster analysis."""
-    table: pd.DataFrame
-
-
-Result_EchelonHotspot = NewType('Result_EchelonHotspot', pd.DataFrame)
-"""Result of echelon scan for hot-spot detection."""
-
-
 class EchelonAnalysis:
     def cluster(self, result: Result_EchelonAnalysis) -> Result_EchelonCluster:
         """
@@ -57,7 +53,7 @@ class EchelonAnalysis:
             >>> from echelon.oracle import NdarrayEchelonOracle
             >>> oracle = NdarrayEchelonOracle(h, W)
             >>> result = analyzer._run_analysis(oracle)
-            >>> analyzer.cluster(result).table
+            >>> analyzer.cluster(result)
               representatives                               indices
             0            [16]  [16, 17, 15, 14, 18, 19, 20, 21, 22]
             1            [13]               [13, 12, 14, 11, 10, 9]
@@ -70,10 +66,7 @@ class EchelonAnalysis:
         for cluster in clusters:
             _argmax, _ = result.oracle.max_indices(cluster)
             echelon_clusters.append((_argmax, cluster))
-        echelon_cluster_table = pd.DataFrame(echelon_clusters, columns =['representatives', 'indices'])
-        return Result_EchelonCluster(
-            table=echelon_cluster_table
-        )
+        return pd.DataFrame(echelon_clusters, columns =['representatives', 'indices'])
 
     def dendrogram(self, result: Result_EchelonAnalysis,
                    plot_config_dict: dict=dict(num_linespace = 1)) -> str:
@@ -103,7 +96,7 @@ class EchelonAnalysis:
 
         return RenderTree(root).by_attr(lambda node: echelon_to_label(node.name))
 
-    def echelon_hotspots(self, result: Result_EchelonAnalysis, scan_oracle: ScanOracleBase) -> Result_EchelonHotspot:
+    def _hotspots(self, result: Result_EchelonAnalysis, scan_oracle: ScanOracleBase) -> Result_EchelonHotspot:
         hotspots = find_echelon_hotspots(scan_oracle,
                                             result.hierarchy_tree,
                                             result.echelons,

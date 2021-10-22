@@ -38,7 +38,7 @@ def find_echelon_hotspots(scan_oracle: ScanOracleBase, tree_root: Node, echelons
             try:
                 score, record_values = scan_oracle.score(Z)
             except EchelonScanStop as e:
-                continue
+                break
 
             _out.append({
                 'spot': copy(Z),

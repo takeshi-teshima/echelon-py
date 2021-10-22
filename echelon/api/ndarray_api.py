@@ -1,16 +1,39 @@
 import numpy as np
 from echelon.api.base import EchelonAnalysis
 from echelon.oracle import NdarrayEchelonOracle
-from echelon.scan_oracle import NdarrayScanOracle
+from echelon.scan_oracle import NdarrayBinomialScanOracle, NdarrayPoissonScanOracle
 
 # Type hinting
 from echelon.api.base import Result_EchelonAnalysis
 
 
 class NdarrayEchelonAnalysis(EchelonAnalysis):
-    def echelon_hotspots(self, result: Result_EchelonAnalysis, total_count_data, marked_count_data):
-        scan_oracle = NdarrayScanOracle(total_count_data, marked_count_data)
-        return super().echelon_hotspots(result, scan_oracle)
+    def hotspots(self, result: Result_EchelonAnalysis, data=None, score=['poisson', 'binomial'][0]):
+        """
+        Parameters:
+            data: tuple of data etc. The required data formats depend on the ``score`` parameter.
+
+                  * If ``score == 'poisson'``,
+
+                      * If ``data is None``, the original data is used.
+                      * Otherwise, ``data`` should be an ``np.ndarray``, and it will be used to score the hot-spot-ness.
+
+                  * If ``score == 'binomial'``,
+
+                      * ``data`` should be a tuple ``(total_count_data, marked_count_data)``.
+                        ``total_count_data`` should contain the total population of each index (the number of trials in the binomial distributions).
+                        ``marked_count_data`` should contain the positive population of each index (the realized values of the binomial distributions).
+        """
+        if score == 'poisson':
+            if data is None:
+                scan_oracle = NdarrayPoissonScanOracle(self.data)
+            else:
+                assert isinstance(data, np.ndarray)
+                scan_oracle = NdarrayPoissonScanOracle(data)
+        elif score == 'binomial':
+            total_count_data, marked_count_data = data
+            scan_oracle = NdarrayBinomialScanOracle(total_count_data, marked_count_data)
+        return super()._hotspots(result, scan_oracle)
 
     def __call__(self, data: np.ndarray, adjacency: np.ndarray) -> Result_EchelonAnalysis:
         """
@@ -28,6 +51,7 @@ class NdarrayEchelonAnalysis(EchelonAnalysis):
             >>> result.foundation_echelons
             [[12, 14, 18, 19, 11, 10, 20], [2, 4, 8], [1, 9, 21], [0, 22, 24]]
         """
+        self.data = data
         oracle = NdarrayEchelonOracle(data, adjacency)
         return self._run_analysis(oracle)
 
