@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>echelon.api.ndarray_api module &mdash; echelon-py  documentation</title>
+  <title>echelon.api.ndarray_api module &mdash; echelon-py 1.0.3 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -26,6 +26,9 @@
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> echelon-py
           </a>
+              <div class="version">
+                1.0.3
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -70,8 +73,507 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="echelon-api-ndarray-api-module">
-<h1>echelon.api.ndarray_api module<a class="headerlink" href="#echelon-api-ndarray-api-module" title="Permalink to this headline"></a></h1>
+  <div class="section" id="module-echelon.api.ndarray_api">
+<span id="echelon-api-ndarray-api-module"></span><h1>echelon.api.ndarray_api module<a class="headerlink" href="#module-echelon.api.ndarray_api" title="Permalink to this headline"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.NdarrayEchelonAnalysis">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">NdarrayEchelonAnalysis</span></span><a class="reference internal" href="../_modules/echelon/api/ndarray_api.html#NdarrayEchelonAnalysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.api.ndarray_api.NdarrayEchelonAnalysis" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="echelon.api.base.html#echelon.api.base.EchelonAnalysis" title="echelon.api.base.EchelonAnalysis"><code class="xref py py-class docutils literal notranslate"><span class="pre">echelon.api.base.EchelonAnalysis</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.NdarrayEchelonAnalysis.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjacency</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/api/ndarray_api.html#NdarrayEchelonAnalysis.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.api.ndarray_api.NdarrayEchelonAnalysis.__call__" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>numpy.ndarray</em>) – 1-dimensional data of realized values.</p></li>
+<li><p><strong>adjacency</strong> (<em>numpy.ndarray</em>) – <code class="docutils literal notranslate"><span class="pre">len(data)</span></code>-sized square array of adjacency.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis">echelon.api.base.Result_EchelonAnalysis</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">echelon.test</span> <span class="kn">import</span> <span class="n">_mock_1dim_data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">_mock_1dim_data</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">analyzer</span> <span class="o">=</span> <span class="n">NdarrayEchelonAnalysis</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">analyzer</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">peak_echelons</span>
+<span class="go">[[16, 17, 15], [13], [6, 5, 7], [3], [23]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">foundation_echelons</span>
+<span class="go">[[12, 14, 18, 19, 11, 10, 20], [2, 4, 8], [1, 9, 21], [0, 22, 24]]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.NdarrayEchelonAnalysis._hotspots">
+<span class="sig-name descname"><span class="pre">_hotspots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan_oracle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.api.ndarray_api.NdarrayEchelonAnalysis._hotspots" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result</strong> (<a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis"><em>echelon.api.base.Result_EchelonAnalysis</em></a>) – </p></li>
+<li><p><strong>scan_oracle</strong> (<a class="reference internal" href="echelon.scan_oracle.html#echelon.scan_oracle.ScanOracleBase" title="echelon.scan_oracle.ScanOracleBase"><em>echelon.scan_oracle.ScanOracleBase</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Result_EchelonHotspot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.NdarrayEchelonAnalysis._run_analysis">
+<span class="sig-name descname"><span class="pre">_run_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">oracle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.api.ndarray_api.NdarrayEchelonAnalysis._run_analysis" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>oracle</strong> (<a class="reference internal" href="echelon.oracle.html#echelon.oracle.EchelonOracleBase" title="echelon.oracle.EchelonOracleBase"><em>echelon.oracle.EchelonOracleBase</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis">echelon.api.base.Result_EchelonAnalysis</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.NdarrayEchelonAnalysis.cluster">
+<span class="sig-name descname"><span class="pre">cluster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.api.ndarray_api.NdarrayEchelonAnalysis.cluster" title="Permalink to this definition"></a></dt>
+<dd><p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">echelon.test</span> <span class="kn">import</span> <span class="n">_mock_1dim_data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">_mock_1dim_data</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">analyzer</span> <span class="o">=</span> <span class="n">EchelonAnalysis</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">echelon.oracle</span> <span class="kn">import</span> <span class="n">NdarrayEchelonOracle</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">oracle</span> <span class="o">=</span> <span class="n">NdarrayEchelonOracle</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">_run_analysis</span><span class="p">(</span><span class="n">oracle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">analyzer</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">  representatives                               indices</span>
+<span class="go">0            [16]  [16, 17, 15, 14, 18, 19, 20, 21, 22]</span>
+<span class="go">1            [13]               [13, 12, 14, 11, 10, 9]</span>
+<span class="go">2             [6]                    [6, 5, 7, 4, 8, 9]</span>
+<span class="go">3             [3]                       [3, 2, 4, 1, 0]</span>
+<span class="go">4            [23]                          [23, 22, 24]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis"><em>echelon.api.base.Result_EchelonAnalysis</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Result_EchelonCluster</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.NdarrayEchelonAnalysis.dendrogram">
+<span class="sig-name descname"><span class="pre">dendrogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_config_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'num_linespace':</span> <span class="pre">1}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.api.ndarray_api.NdarrayEchelonAnalysis.dendrogram" title="Permalink to this definition"></a></dt>
+<dd><p>Draw a simple dendrogram-like figure of the echelon hierarchy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result</strong> (<a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis"><em>echelon.api.base.Result_EchelonAnalysis</em></a>) – the result object of the echelon construction.</p></li>
+<li><p><strong>plot_config_dict</strong> (<em>dict</em>) – the dictionary to configure the visualization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.NdarrayEchelonAnalysis.hotspots">
+<span class="sig-name descname"><span class="pre">hotspots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'poisson'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/api/ndarray_api.html#NdarrayEchelonAnalysis.hotspots"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.api.ndarray_api.NdarrayEchelonAnalysis.hotspots" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – <p>tuple of data etc. The required data formats depend on the <code class="docutils literal notranslate"><span class="pre">score</span></code> parameter.</p>
+<ul>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">score</span> <span class="pre">==</span> <span class="pre">'poisson'</span></code>,</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">data</span> <span class="pre">is</span> <span class="pre">None</span></code>, the original data is used.</p></li>
+<li><p>Otherwise, <code class="docutils literal notranslate"><span class="pre">data</span></code> should be an <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code>, and it will be used to score the hot-spot-ness.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">score</span> <span class="pre">==</span> <span class="pre">'binomial'</span></code>,</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code> should be a tuple <code class="docutils literal notranslate"><span class="pre">(total_count_data,</span> <span class="pre">marked_count_data)</span></code>.
+<code class="docutils literal notranslate"><span class="pre">total_count_data</span></code> should contain the total population of each index (the number of trials in the binomial distributions).
+<code class="docutils literal notranslate"><span class="pre">marked_count_data</span></code> should contain the positive population of each index (the realized values of the binomial distributions).</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</p></li>
+<li><p><strong>result</strong> (<a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis"><em>echelon.api.base.Result_EchelonAnalysis</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.OneDimEchelonAnalysis">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">OneDimEchelonAnalysis</span></span><a class="reference internal" href="../_modules/echelon/api/ndarray_api.html#OneDimEchelonAnalysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.api.ndarray_api.OneDimEchelonAnalysis" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#echelon.api.ndarray_api.NdarrayEchelonAnalysis" title="echelon.api.ndarray_api.NdarrayEchelonAnalysis"><code class="xref py py-class docutils literal notranslate"><span class="pre">echelon.api.ndarray_api.NdarrayEchelonAnalysis</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.OneDimEchelonAnalysis.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/api/ndarray_api.html#OneDimEchelonAnalysis.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.api.ndarray_api.OneDimEchelonAnalysis.__call__" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>numpy.ndarray</em>) – 1-dimensional data of realized values.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis">echelon.api.base.Result_EchelonAnalysis</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">echelon.test</span> <span class="kn">import</span> <span class="n">_mock_1dim_data</span><span class="p">,</span> <span class="n">_visualize_echelons</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_mock_1dim_data</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">analyzer</span> <span class="o">=</span> <span class="n">OneDimEchelonAnalysis</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">analyzer</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">peak_echelons</span>
+<span class="go">[[16, 17, 15], [13], [6, 5, 7], [3], [23]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">foundation_echelons</span>
+<span class="go">[[12, 14, 18, 19, 11, 10, 20], [2, 4, 8], [1, 9, 21], [0, 22, 24]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+<span class="go">[1 2 3 4 3 4 5 4 3 2 3 4 5 6 5 6 7 6 5 4 3 2 1 2 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">_visualize_echelons</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">peak_echelons</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">foundation_echelons</span><span class="p">))</span>
+<span class="go">[9 8 7 4 7 3 3 3 7 8 6 6 6 2 6 1 1 1 6 6 6 8 9 5 9]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.OneDimEchelonAnalysis._hotspots">
+<span class="sig-name descname"><span class="pre">_hotspots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan_oracle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.api.ndarray_api.OneDimEchelonAnalysis._hotspots" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result</strong> (<a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis"><em>echelon.api.base.Result_EchelonAnalysis</em></a>) – </p></li>
+<li><p><strong>scan_oracle</strong> (<a class="reference internal" href="echelon.scan_oracle.html#echelon.scan_oracle.ScanOracleBase" title="echelon.scan_oracle.ScanOracleBase"><em>echelon.scan_oracle.ScanOracleBase</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Result_EchelonHotspot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.OneDimEchelonAnalysis._run_analysis">
+<span class="sig-name descname"><span class="pre">_run_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">oracle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.api.ndarray_api.OneDimEchelonAnalysis._run_analysis" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>oracle</strong> (<a class="reference internal" href="echelon.oracle.html#echelon.oracle.EchelonOracleBase" title="echelon.oracle.EchelonOracleBase"><em>echelon.oracle.EchelonOracleBase</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis">echelon.api.base.Result_EchelonAnalysis</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.OneDimEchelonAnalysis.cluster">
+<span class="sig-name descname"><span class="pre">cluster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.api.ndarray_api.OneDimEchelonAnalysis.cluster" title="Permalink to this definition"></a></dt>
+<dd><p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">echelon.test</span> <span class="kn">import</span> <span class="n">_mock_1dim_data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">_mock_1dim_data</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">analyzer</span> <span class="o">=</span> <span class="n">EchelonAnalysis</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">echelon.oracle</span> <span class="kn">import</span> <span class="n">NdarrayEchelonOracle</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">oracle</span> <span class="o">=</span> <span class="n">NdarrayEchelonOracle</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">_run_analysis</span><span class="p">(</span><span class="n">oracle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">analyzer</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">  representatives                               indices</span>
+<span class="go">0            [16]  [16, 17, 15, 14, 18, 19, 20, 21, 22]</span>
+<span class="go">1            [13]               [13, 12, 14, 11, 10, 9]</span>
+<span class="go">2             [6]                    [6, 5, 7, 4, 8, 9]</span>
+<span class="go">3             [3]                       [3, 2, 4, 1, 0]</span>
+<span class="go">4            [23]                          [23, 22, 24]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis"><em>echelon.api.base.Result_EchelonAnalysis</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Result_EchelonCluster</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.OneDimEchelonAnalysis.dendrogram">
+<span class="sig-name descname"><span class="pre">dendrogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_config_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'num_linespace':</span> <span class="pre">1}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.api.ndarray_api.OneDimEchelonAnalysis.dendrogram" title="Permalink to this definition"></a></dt>
+<dd><p>Draw a simple dendrogram-like figure of the echelon hierarchy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result</strong> (<a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis"><em>echelon.api.base.Result_EchelonAnalysis</em></a>) – the result object of the echelon construction.</p></li>
+<li><p><strong>plot_config_dict</strong> (<em>dict</em>) – the dictionary to configure the visualization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.OneDimEchelonAnalysis.hotspots">
+<span class="sig-name descname"><span class="pre">hotspots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'poisson'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.api.ndarray_api.OneDimEchelonAnalysis.hotspots" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – <p>tuple of data etc. The required data formats depend on the <code class="docutils literal notranslate"><span class="pre">score</span></code> parameter.</p>
+<ul>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">score</span> <span class="pre">==</span> <span class="pre">'poisson'</span></code>,</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">data</span> <span class="pre">is</span> <span class="pre">None</span></code>, the original data is used.</p></li>
+<li><p>Otherwise, <code class="docutils literal notranslate"><span class="pre">data</span></code> should be an <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code>, and it will be used to score the hot-spot-ness.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">score</span> <span class="pre">==</span> <span class="pre">'binomial'</span></code>,</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code> should be a tuple <code class="docutils literal notranslate"><span class="pre">(total_count_data,</span> <span class="pre">marked_count_data)</span></code>.
+<code class="docutils literal notranslate"><span class="pre">total_count_data</span></code> should contain the total population of each index (the number of trials in the binomial distributions).
+<code class="docutils literal notranslate"><span class="pre">marked_count_data</span></code> should contain the positive population of each index (the realized values of the binomial distributions).</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</p></li>
+<li><p><strong>result</strong> (<a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis"><em>echelon.api.base.Result_EchelonAnalysis</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.TwoDimEchelonAnalysis">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TwoDimEchelonAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adjacency_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'4'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/api/ndarray_api.html#TwoDimEchelonAnalysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.api.ndarray_api.TwoDimEchelonAnalysis" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#echelon.api.ndarray_api.NdarrayEchelonAnalysis" title="echelon.api.ndarray_api.NdarrayEchelonAnalysis"><code class="xref py py-class docutils literal notranslate"><span class="pre">echelon.api.ndarray_api.NdarrayEchelonAnalysis</span></code></a></p>
+<p>The standard API for two-dimensional matrix-shaped data.
+The API constructs the canonical adjacency matrix (i.e., the 4- or 8-neighborhood).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.TwoDimEchelonAnalysis.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/api/ndarray_api.html#TwoDimEchelonAnalysis.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.api.ndarray_api.TwoDimEchelonAnalysis.__call__" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>numpy.ndarray</em>) – 2-dimensional data of realized values.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis">echelon.api.base.Result_EchelonAnalysis</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">echelon.test</span> <span class="kn">import</span> <span class="n">_mock_2dim_data</span><span class="p">,</span> <span class="n">_visualize_echelons</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_mock_2dim_data</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">TwoDimEchelonAnalysis</span><span class="p">()(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">peak_echelons</span>
+<span class="go">[[14, 13, 8], [2], [11, 16], [24]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">foundation_echelons</span>
+<span class="go">[[12], [19, 15, 9], [7, 20, 17, 18, 6, 22, 1, 23, 21, 3, 10, 4, 0, 5]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="go">[[ 2  8 24  5  3]</span>
+<span class="go"> [ 1 10 14 22 15]</span>
+<span class="go"> [ 4 21 19 23 25]</span>
+<span class="go"> [16 20 12 11 17]</span>
+<span class="go"> [13  6  9  7 18]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">_visualize_echelons</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">peak_echelons</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">foundation_echelons</span><span class="p">))</span>
+<span class="go">[[7 7 2 7 7]</span>
+<span class="go"> [7 7 7 1 6]</span>
+<span class="go"> [7 3 5 1 1]</span>
+<span class="go"> [6 3 7 7 6]</span>
+<span class="go"> [7 7 7 7 4]]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">echelon.test</span> <span class="kn">import</span> <span class="n">_mock_2dim_data</span><span class="p">,</span> <span class="n">_visualize_echelons</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_mock_2dim_data</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">TwoDimEchelonAnalysis</span><span class="p">(</span><span class="s1">&#39;8&#39;</span><span class="p">)(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">peak_echelons</span>
+<span class="go">[[14, 13], [2], [11, 16], [24]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">foundation_echelons</span>
+<span class="go">[[8], [12], [19, 15, 9, 7, 20, 17, 18, 6, 22, 1, 23, 21, 3, 10, 4, 0, 5]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="go">[[ 2  8 24  5  3]</span>
+<span class="go"> [ 1 10 14 22 15]</span>
+<span class="go"> [ 4 21 19 23 25]</span>
+<span class="go"> [16 20 12 11 17]</span>
+<span class="go"> [13  6  9  7 18]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">_visualize_echelons</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">peak_echelons</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">foundation_echelons</span><span class="p">))</span>
+<span class="go">[[7 7 2 7 7]</span>
+<span class="go"> [7 7 7 5 7]</span>
+<span class="go"> [7 3 6 1 1]</span>
+<span class="go"> [7 3 7 7 7]</span>
+<span class="go"> [7 7 7 7 4]]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.TwoDimEchelonAnalysis._canonical_twodim_adjacency_4">
+<span class="sig-name descname"><span class="pre">_canonical_twodim_adjacency_4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/api/ndarray_api.html#TwoDimEchelonAnalysis._canonical_twodim_adjacency_4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.api.ndarray_api.TwoDimEchelonAnalysis._canonical_twodim_adjacency_4" title="Permalink to this definition"></a></dt>
+<dd><p>Construct the canonical adjacency matrix for two-dimensional data.
+The adjacency matrix is for the canonical 4-neighbors (up down left right;
+known as <em>von Neumann</em> neighborhood).</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">TwoDimEchelonAnalysis</span><span class="p">()</span><span class="o">.</span><span class="n">_canonical_twodim_adjacency_4</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">[[0 1]</span>
+<span class="go"> [1 0]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">TwoDimEchelonAnalysis</span><span class="p">()</span><span class="o">.</span><span class="n">_canonical_twodim_adjacency_4</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">[[0 1 0]</span>
+<span class="go"> [1 0 1]</span>
+<span class="go"> [0 1 0]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">TwoDimEchelonAnalysis</span><span class="p">()</span><span class="o">.</span><span class="n">_canonical_twodim_adjacency_4</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">[[0 0 1]</span>
+<span class="go"> [0 1 0]</span>
+<span class="go"> [0 0 1]]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.TwoDimEchelonAnalysis._canonical_twodim_adjacency_8">
+<span class="sig-name descname"><span class="pre">_canonical_twodim_adjacency_8</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/api/ndarray_api.html#TwoDimEchelonAnalysis._canonical_twodim_adjacency_8"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.api.ndarray_api.TwoDimEchelonAnalysis._canonical_twodim_adjacency_8" title="Permalink to this definition"></a></dt>
+<dd><p>Construct the canonical adjacency matrix for two-dimensional data.
+The adjacency matrix is for 8-neighbors (up down left right, and their combinations;
+known as <em>Moore</em> neighborhood).</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">TwoDimEchelonAnalysis</span><span class="p">()</span><span class="o">.</span><span class="n">_canonical_twodim_adjacency_8</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">[[0 1]</span>
+<span class="go"> [1 1]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">TwoDimEchelonAnalysis</span><span class="p">()</span><span class="o">.</span><span class="n">_canonical_twodim_adjacency_8</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">[[1 1 1]</span>
+<span class="go"> [1 0 1]</span>
+<span class="go"> [1 1 1]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">TwoDimEchelonAnalysis</span><span class="p">()</span><span class="o">.</span><span class="n">_canonical_twodim_adjacency_8</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">[[1 1 0]</span>
+<span class="go"> [0 1 0]</span>
+<span class="go"> [1 1 0]]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.TwoDimEchelonAnalysis._hotspots">
+<span class="sig-name descname"><span class="pre">_hotspots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan_oracle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.api.ndarray_api.TwoDimEchelonAnalysis._hotspots" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result</strong> (<a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis"><em>echelon.api.base.Result_EchelonAnalysis</em></a>) – </p></li>
+<li><p><strong>scan_oracle</strong> (<a class="reference internal" href="echelon.scan_oracle.html#echelon.scan_oracle.ScanOracleBase" title="echelon.scan_oracle.ScanOracleBase"><em>echelon.scan_oracle.ScanOracleBase</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Result_EchelonHotspot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.TwoDimEchelonAnalysis._run_analysis">
+<span class="sig-name descname"><span class="pre">_run_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">oracle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.api.ndarray_api.TwoDimEchelonAnalysis._run_analysis" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>oracle</strong> (<a class="reference internal" href="echelon.oracle.html#echelon.oracle.EchelonOracleBase" title="echelon.oracle.EchelonOracleBase"><em>echelon.oracle.EchelonOracleBase</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis">echelon.api.base.Result_EchelonAnalysis</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.TwoDimEchelonAnalysis.cluster">
+<span class="sig-name descname"><span class="pre">cluster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.api.ndarray_api.TwoDimEchelonAnalysis.cluster" title="Permalink to this definition"></a></dt>
+<dd><p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">echelon.test</span> <span class="kn">import</span> <span class="n">_mock_1dim_data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">_mock_1dim_data</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">analyzer</span> <span class="o">=</span> <span class="n">EchelonAnalysis</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">echelon.oracle</span> <span class="kn">import</span> <span class="n">NdarrayEchelonOracle</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">oracle</span> <span class="o">=</span> <span class="n">NdarrayEchelonOracle</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">_run_analysis</span><span class="p">(</span><span class="n">oracle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">analyzer</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">  representatives                               indices</span>
+<span class="go">0            [16]  [16, 17, 15, 14, 18, 19, 20, 21, 22]</span>
+<span class="go">1            [13]               [13, 12, 14, 11, 10, 9]</span>
+<span class="go">2             [6]                    [6, 5, 7, 4, 8, 9]</span>
+<span class="go">3             [3]                       [3, 2, 4, 1, 0]</span>
+<span class="go">4            [23]                          [23, 22, 24]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis"><em>echelon.api.base.Result_EchelonAnalysis</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Result_EchelonCluster</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.TwoDimEchelonAnalysis.dendrogram">
+<span class="sig-name descname"><span class="pre">dendrogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_config_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'num_linespace':</span> <span class="pre">1}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.api.ndarray_api.TwoDimEchelonAnalysis.dendrogram" title="Permalink to this definition"></a></dt>
+<dd><p>Draw a simple dendrogram-like figure of the echelon hierarchy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result</strong> (<a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis"><em>echelon.api.base.Result_EchelonAnalysis</em></a>) – the result object of the echelon construction.</p></li>
+<li><p><strong>plot_config_dict</strong> (<em>dict</em>) – the dictionary to configure the visualization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.ndarray_api.TwoDimEchelonAnalysis.hotspots">
+<span class="sig-name descname"><span class="pre">hotspots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'poisson'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.api.ndarray_api.TwoDimEchelonAnalysis.hotspots" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – <p>tuple of data etc. The required data formats depend on the <code class="docutils literal notranslate"><span class="pre">score</span></code> parameter.</p>
+<ul>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">score</span> <span class="pre">==</span> <span class="pre">'poisson'</span></code>,</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">data</span> <span class="pre">is</span> <span class="pre">None</span></code>, the original data is used.</p></li>
+<li><p>Otherwise, <code class="docutils literal notranslate"><span class="pre">data</span></code> should be an <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code>, and it will be used to score the hot-spot-ness.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">score</span> <span class="pre">==</span> <span class="pre">'binomial'</span></code>,</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code> should be a tuple <code class="docutils literal notranslate"><span class="pre">(total_count_data,</span> <span class="pre">marked_count_data)</span></code>.
+<code class="docutils literal notranslate"><span class="pre">total_count_data</span></code> should contain the total population of each index (the number of trials in the binomial distributions).
+<code class="docutils literal notranslate"><span class="pre">marked_count_data</span></code> should contain the positive population of each index (the realized values of the binomial distributions).</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</p></li>
+<li><p><strong>result</strong> (<a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis"><em>echelon.api.base.Result_EchelonAnalysis</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 

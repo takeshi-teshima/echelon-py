@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>echelon.scan_oracle module &mdash; echelon-py  documentation</title>
+  <title>echelon.scan_oracle module &mdash; echelon-py 1.0.3 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,6 +14,7 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -27,6 +28,9 @@
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> echelon-py
           </a>
+              <div class="version">
+                1.0.3
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -71,8 +75,287 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="echelon-scan-oracle-module">
-<h1>echelon.scan_oracle module<a class="headerlink" href="#echelon-scan-oracle-module" title="Permalink to this headline"></a></h1>
+  <div class="section" id="module-echelon.scan_oracle">
+<span id="echelon-scan-oracle-module"></span><h1>echelon.scan_oracle module<a class="headerlink" href="#module-echelon.scan_oracle" title="Permalink to this headline"></a></h1>
+<p>This module contains the oracles used to run the echelon scan for hot-spot detection.
+The oracles provide the scores for the hot-spot detection.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="echelon.scan_oracle.ApproxBinomialScanOracleBase">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ApproxBinomialScanOracleBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_total_count</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_marked_count</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#ApproxBinomialScanOracleBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.ApproxBinomialScanOracleBase" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#echelon.scan_oracle.ScanOracleBase" title="echelon.scan_oracle.ScanOracleBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">echelon.scan_oracle.ScanOracleBase</span></code></a></p>
+<p class="rubric">Notes</p>
+<p>Consider <span class="math notranslate nohighlight">\(K\)</span> regions and let us denote <span class="math notranslate nohighlight">\([K] := \{1, 2, \ldots, K\}\)</span>.
+For each region <span class="math notranslate nohighlight">\(k \in [K]\)</span>, assume <span class="math notranslate nohighlight">\(c_k \sim \mathrm{Bi}(\ heta_k, n_k)\)</span>.</p>
+<p>Consider a region <span class="math notranslate nohighlight">\(Z \subset [K]\)</span>. We assign a score <span class="math notranslate nohighlight">\(s\)</span> that indicates how “hot-spot-ish” the region <span class="math notranslate nohighlight">\(Z\)</span> is.</p>
+<p>Let us assume that <span class="math notranslate nohighlight">\((\theta_k)_{k\in Z}\)</span> and <span class="math notranslate nohighlight">\((\theta_k)_{k\in Z^\mathrm{c}}\)</span> are constants, <span class="math notranslate nohighlight">\(\theta_Z\)</span> and <span class="math notranslate nohighlight">\(\theta_{Z^\mathrm{c}}\)</span>, respectively.
+We compare the maximum likelihood under <span class="math notranslate nohighlight">\(\theta_Z = \theta_{Z^\mathrm{c}}\)</span> and <span class="math notranslate nohighlight">\(\theta_Z &gt; \theta_{Z^\mathrm{c}}\)</span>.
+Denote <span class="math notranslate nohighlight">\(c_Z := \sum_{k \in Z} c_k\)</span>, <span class="math notranslate nohighlight">\(n_Z := \sum_{k \in Z} n_k\)</span>, <span class="math notranslate nohighlight">\(n_{Z^{\mathrm{c}}} := \sum_{k \in Z^{\mathrm{c}}} n_k\)</span>, and <span class="math notranslate nohighlight">\(n_{Z^{\mathrm{c}}} := \sum_{k \in Z^{\mathrm{c}}} n_k\)</span>.</p>
+<p>Now, by the reproductive property, <span class="math notranslate nohighlight">\(c_Z \sim \mathrm{Bi}(\theta_Z, n_Z)\)</span> where <span class="math notranslate nohighlight">\(\theta_Z = \sum_{k \in Z} \theta_k\)</span>.
+Similarly for <span class="math notranslate nohighlight">\(c_{Z^\mathrm{c}}\)</span>.
+Since the maximum likelihood of <span class="math notranslate nohighlight">\(c \sim \mathrm{Bi}(\theta, n)\)</span> is <span class="math notranslate nohighlight">\(\mathrm{Bi}(\frac{c}{n}, n)(c)\)</span> (by abuse of notation, we denote the density of a distribution by the name of the distribution).</p>
+<p>Now, when <span class="math notranslate nohighlight">\(n &gt;&gt; c\)</span>, we have <span class="math notranslate nohighlight">\(\mathrm{Bi}(\theta, n)(c) \simeq (\theta)^c\)</span>.</p>
+<p>With this approximation, the score for the case that <span class="math notranslate nohighlight">\(\theta_Z &gt; \theta_{Z^\mathrm{c}}\)</span> is
+<span class="math notranslate nohighlight">\(\log (\frac{c_Z}{n_Z})^{c_Z} + \log (\frac{c_{Z^\mathrm{c}}}{n_{Z^\mathrm{c}}})^{c_{Z^\mathrm{c}}}\)</span>.</p>
+<p>Similarly, the score for the case that <span class="math notranslate nohighlight">\(\theta_Z = \theta_{Z^\mathrm{c}}\)</span> is <span class="math notranslate nohighlight">\(\log (\frac{c_{[K]}}{n_{[K]}})^{c_{[K]}}\)</span>.</p>
+<p>Thus, we use
+<span class="math notranslate nohighlight">\(\log (\frac{c_Z}{n_Z})^{c_Z} + \log (\frac{c_{Z^\mathrm{c}}}{n_{Z^\mathrm{c}}})^{c_{Z^\mathrm{c}}} - \log (\frac{c_{[K]}}{n_{[K]}})^{c_{[K]}}\)</span>
+as the score.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echelon.scan_oracle.ApproxBinomialScanOracleBase._abc_impl">
+<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;_abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#echelon.scan_oracle.ApproxBinomialScanOracleBase._abc_impl" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.ApproxBinomialScanOracleBase.marked_count">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">marked_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#ApproxBinomialScanOracleBase.marked_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.ApproxBinomialScanOracleBase.marked_count" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.ApproxBinomialScanOracleBase.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#ApproxBinomialScanOracleBase.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.ApproxBinomialScanOracleBase.score" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.ApproxBinomialScanOracleBase.total_count">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">total_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#ApproxBinomialScanOracleBase.total_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.ApproxBinomialScanOracleBase.total_count" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echelon.scan_oracle.DataFrameBinomialScanOracle">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">DataFrameBinomialScanOracle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_colname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_count_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">marked_count_col</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#DataFrameBinomialScanOracle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.DataFrameBinomialScanOracle" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#echelon.scan_oracle.ApproxBinomialScanOracleBase" title="echelon.scan_oracle.ApproxBinomialScanOracleBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">echelon.scan_oracle.ApproxBinomialScanOracleBase</span></code></a></p>
+<p>Hotspot scan oracle using approximate binomial score for DataFrame data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id_colname</strong> (<em>str</em>) – </p></li>
+<li><p><strong>total_count_col</strong> (<em>str</em>) – </p></li>
+<li><p><strong>marked_count_col</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echelon.scan_oracle.DataFrameBinomialScanOracle._abc_impl">
+<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;_abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#echelon.scan_oracle.DataFrameBinomialScanOracle._abc_impl" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.DataFrameBinomialScanOracle._subset">
+<span class="sig-name descname"><span class="pre">_subset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#DataFrameBinomialScanOracle._subset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.DataFrameBinomialScanOracle._subset" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.DataFrameBinomialScanOracle.marked_count">
+<span class="sig-name descname"><span class="pre">marked_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#DataFrameBinomialScanOracle.marked_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.DataFrameBinomialScanOracle.marked_count" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.DataFrameBinomialScanOracle.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.scan_oracle.DataFrameBinomialScanOracle.score" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.DataFrameBinomialScanOracle.total_count">
+<span class="sig-name descname"><span class="pre">total_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#DataFrameBinomialScanOracle.total_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.DataFrameBinomialScanOracle.total_count" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echelon.scan_oracle.DataFramePoissonScanOracle">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">DataFramePoissonScanOracle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_colname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_col</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#DataFramePoissonScanOracle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.DataFramePoissonScanOracle" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#echelon.scan_oracle.PoissonScanOracleBase" title="echelon.scan_oracle.PoissonScanOracleBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">echelon.scan_oracle.PoissonScanOracleBase</span></code></a></p>
+<p>Hotspot scan oracle using Poisson score for DataFrame data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id_colname</strong> (<em>str</em>) – </p></li>
+<li><p><strong>count_col</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echelon.scan_oracle.DataFramePoissonScanOracle._abc_impl">
+<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;_abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#echelon.scan_oracle.DataFramePoissonScanOracle._abc_impl" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.DataFramePoissonScanOracle._score">
+<span class="sig-name descname"><span class="pre">_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.scan_oracle.DataFramePoissonScanOracle._score" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.DataFramePoissonScanOracle._subset">
+<span class="sig-name descname"><span class="pre">_subset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#DataFramePoissonScanOracle._subset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.DataFramePoissonScanOracle._subset" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.DataFramePoissonScanOracle.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#DataFramePoissonScanOracle.count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.DataFramePoissonScanOracle.count" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.DataFramePoissonScanOracle.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.scan_oracle.DataFramePoissonScanOracle.score" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="echelon.scan_oracle.EchelonScanStop">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-name descname"><span class="pre">EchelonScanStop</span></span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#EchelonScanStop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.EchelonScanStop" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echelon.scan_oracle.EchelonScanStop.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#echelon.scan_oracle.EchelonScanStop.args" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.EchelonScanStop.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echelon.scan_oracle.EchelonScanStop.with_traceback" title="Permalink to this definition"></a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echelon.scan_oracle.NdarrayBinomialScanOracle">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">NdarrayBinomialScanOracle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">total_count</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">marked_count</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#NdarrayBinomialScanOracle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.NdarrayBinomialScanOracle" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#echelon.scan_oracle.ApproxBinomialScanOracleBase" title="echelon.scan_oracle.ApproxBinomialScanOracleBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">echelon.scan_oracle.ApproxBinomialScanOracleBase</span></code></a></p>
+<p>Hotspot scan oracle using approximate binomial score for numpy array data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>total_count</strong> (<em>numpy.ndarray</em>) – </p></li>
+<li><p><strong>marked_count</strong> (<em>numpy.ndarray</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echelon.scan_oracle.NdarrayBinomialScanOracle._abc_impl">
+<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;_abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#echelon.scan_oracle.NdarrayBinomialScanOracle._abc_impl" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.NdarrayBinomialScanOracle.marked_count">
+<span class="sig-name descname"><span class="pre">marked_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#NdarrayBinomialScanOracle.marked_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.NdarrayBinomialScanOracle.marked_count" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>indices</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.NdarrayBinomialScanOracle.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.scan_oracle.NdarrayBinomialScanOracle.score" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.NdarrayBinomialScanOracle.total_count">
+<span class="sig-name descname"><span class="pre">total_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#NdarrayBinomialScanOracle.total_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.NdarrayBinomialScanOracle.total_count" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>indices</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echelon.scan_oracle.NdarrayPoissonScanOracle">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">NdarrayPoissonScanOracle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#NdarrayPoissonScanOracle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.NdarrayPoissonScanOracle" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#echelon.scan_oracle.PoissonScanOracleBase" title="echelon.scan_oracle.PoissonScanOracleBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">echelon.scan_oracle.PoissonScanOracleBase</span></code></a></p>
+<p>Hotspot scan oracle using Poisson score for numpy array data.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echelon.scan_oracle.NdarrayPoissonScanOracle._abc_impl">
+<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;_abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#echelon.scan_oracle.NdarrayPoissonScanOracle._abc_impl" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.NdarrayPoissonScanOracle._score">
+<span class="sig-name descname"><span class="pre">_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.scan_oracle.NdarrayPoissonScanOracle._score" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.NdarrayPoissonScanOracle.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#NdarrayPoissonScanOracle.count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.NdarrayPoissonScanOracle.count" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.NdarrayPoissonScanOracle.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.scan_oracle.NdarrayPoissonScanOracle.score" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echelon.scan_oracle.PoissonScanOracleBase">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PoissonScanOracleBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_count</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_index_len</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#PoissonScanOracleBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.PoissonScanOracleBase" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#echelon.scan_oracle.ScanOracleBase" title="echelon.scan_oracle.ScanOracleBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">echelon.scan_oracle.ScanOracleBase</span></code></a></p>
+<p class="rubric">Notes</p>
+<p>Consider <span class="math notranslate nohighlight">\(K\)</span> regions and let us denote <span class="math notranslate nohighlight">\([K] := \{1, 2, \ldots, K\}\)</span>.
+For each region <span class="math notranslate nohighlight">\(k \in [K]\)</span>, assume <span class="math notranslate nohighlight">\(c_k \sim \mathrm{Po}(\lambda_k)\)</span> and that <span class="math notranslate nohighlight">\(\{c_k\}_{k \in [K]}\)</span> are independent.</p>
+<p>First, note that <span class="math notranslate nohighlight">\(\mathrm{Po}(c; \lambda) := \frac{\lambda^c e^{-\lambda}}{c!}\)</span> is maximized by <span class="math notranslate nohighlight">\(\lambda = c\)</span>.
+Thus, the maximum likelihood given <span class="math notranslate nohighlight">\(c\)</span> is <span class="math notranslate nohighlight">\(\frac{c^c e^{-c}}{c!}\)</span>.</p>
+<p>Consider a region <span class="math notranslate nohighlight">\(Z \subset [K]\)</span>. We assign a score <span class="math notranslate nohighlight">\(s\)</span> that indicates how “hot-spot-ish” the region <span class="math notranslate nohighlight">\(Z\)</span> is.</p>
+<p>By the reproductive property, <span class="math notranslate nohighlight">\(c_Z := \sum_{k \in Z} c_k \sim \mathrm{Po}(\lambda_Z)\)</span> where <span class="math notranslate nohighlight">\(\lambda_Z = \sum_{k \in Z} \lambda_k\)</span>. Similarly for <span class="math notranslate nohighlight">\(Z^\mathrm{c}\)</span>.</p>
+<p>We compare the maximum likelihood under <span class="math notranslate nohighlight">\(\lambda_Z = \lambda_{Z^\mathrm{c}}\)</span> and <span class="math notranslate nohighlight">\(\lambda_Z &gt; \lambda_{Z^\mathrm{c}}\)</span>.
+The maximum log likelihood in the first case is <span class="math notranslate nohighlight">\(\ell_0 := \log \frac{c_{[K]}^{c_{[K]}} e^{-{c_{[K]}}}}{c_{[K]}!}\)</span>
+That for the second case is <span class="math notranslate nohighlight">\(\ell_1 := \log \frac{c_{Z}^{c_{Z}} e^{-{c_{Z}}}}{c_{Z}!} + \log \frac{c_{Z^\mathrm{c}}^{c_{Z^\mathrm{c}}} e^{-{c_{Z^\mathrm{c}}}}}{c_{Z^\mathrm{c}}!}\)</span></p>
+<p>Thus, we use
+<span class="math notranslate nohighlight">\((\ell_1 - \ell_0) [[c_Z &gt; c_{Z^\mathrm{c}}]]\)</span>
+as the score.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echelon.scan_oracle.PoissonScanOracleBase._abc_impl">
+<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;_abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#echelon.scan_oracle.PoissonScanOracleBase._abc_impl" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.PoissonScanOracleBase._score">
+<span class="sig-name descname"><span class="pre">_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#PoissonScanOracleBase._score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.PoissonScanOracleBase._score" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.PoissonScanOracleBase.count">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#PoissonScanOracleBase.count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.PoissonScanOracleBase.count" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.PoissonScanOracleBase.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#PoissonScanOracleBase.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.PoissonScanOracleBase.score" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echelon.scan_oracle.ScanOracleBase">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ScanOracleBase</span></span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#ScanOracleBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.ScanOracleBase" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echelon.scan_oracle.ScanOracleBase._abc_impl">
+<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;_abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#echelon.scan_oracle.ScanOracleBase._abc_impl" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.scan_oracle.ScanOracleBase.score">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#ScanOracleBase.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.ScanOracleBase.score" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>indices</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tuple[Any, dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 

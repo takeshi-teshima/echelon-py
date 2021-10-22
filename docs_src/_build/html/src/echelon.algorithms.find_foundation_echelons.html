@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>echelon.algorithms.find_foundation_echelons module &mdash; echelon-py  documentation</title>
+  <title>echelon.algorithms.find_foundation_echelons module &mdash; echelon-py 1.0.3 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,6 +14,7 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -28,6 +29,9 @@
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> echelon-py
           </a>
+              <div class="version">
+                1.0.3
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -72,8 +76,120 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="echelon-algorithms-find-foundation-echelons-module">
-<h1>echelon.algorithms.find_foundation_echelons module<a class="headerlink" href="#echelon-algorithms-find-foundation-echelons-module" title="Permalink to this headline"></a></h1>
+  <div class="section" id="module-echelon.algorithms.find_foundation_echelons">
+<span id="echelon-algorithms-find-foundation-echelons-module"></span><h1>echelon.algorithms.find_foundation_echelons module<a class="headerlink" href="#module-echelon.algorithms.find_foundation_echelons" title="Permalink to this headline"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="echelon.algorithms.find_foundation_echelons.find_foundation_echelons">
+<span class="sig-name descname"><span class="pre">find_foundation_echelons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">oracle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peak_echelons</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/algorithms/find_foundation_echelons.html#find_foundation_echelons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.algorithms.find_foundation_echelons.find_foundation_echelons" title="Permalink to this definition"></a></dt>
+<dd><p>Construct foundation echelons.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>oracle</strong> (<a class="reference internal" href="echelon.oracle.html#echelon.oracle.EchelonOracleBase" title="echelon.oracle.EchelonOracleBase"><em>echelon.oracle.EchelonOracleBase</em></a>) – the oracle to query data.</p></li>
+<li><p><strong>peak_echelons</strong> (<a class="reference internal" href="echelon.typing.html"><span class="doc">EchelonsType</span></a>) – the peak echelons.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>foundation_echelons</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="echelon.typing.html"><span class="doc">EchelonsType</span></a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int8&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">W</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">W</span><span class="p">),</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;bool&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">W</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">W</span><span class="p">),</span> <span class="n">k</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;bool&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">echelon.oracle</span> <span class="kn">import</span> <span class="n">NdarrayEchelonOracle</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">oracle</span> <span class="o">=</span> <span class="n">NdarrayEchelonOracle</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">echelon.algorithms.find_peak_echelons</span> <span class="kn">import</span> <span class="n">find_peak_echelons</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">peak_echelons</span> <span class="o">=</span> <span class="n">find_peak_echelons</span><span class="p">(</span><span class="n">oracle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">find_foundation_echelons</span><span class="p">(</span><span class="n">oracle</span><span class="p">,</span> <span class="n">peak_echelons</span><span class="p">)</span>
+<span class="go">[[12, 14, 18, 19, 11, 10, 20], [2, 4, 8], [1, 9, 21], [0, 22, 24]]</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<p>The algorithm is as follows.
+In this algorithm, we keep track of the list of <em>families</em>.
+Each “family” is a set of indices, and the initial set of families consist of the peak echelons.
+In the latter steps, the set of families grow.</p>
+<p>We define <span class="math notranslate nohighlight">\(\mathrm{TangentFamily}(\mathrm{indices}) := \{F \in \mathrm{families} : F \cap \mathrm{nb}(\mathrm{indices}) ≠ \emptyset\}\)</span>.
+We also define <span class="math notranslate nohighlight">\(\mathrm{DataMax}(\mathrm{indices}) := \max_{i \in \mathrm{indices}}\mathrm{Data}_i\)</span>
+and <span class="math notranslate nohighlight">\(\mathrm{DataArgMax}(\mathrm{indices}) := \mathrm{argmax}_{i \in \mathrm{indices}}\mathrm{Data}_i\)</span></p>
+<blockquote>
+<div><div class="algorithm-find-foundations docutils container" id="algorithm-find-foundations">
+<p><strong>Algorithm</strong></p>
+<ol class="arabic">
+<li><p>Mark all indices in Peak Echelons as searched.</p></li>
+<li><p>We repeat the following until we run out of all unsearched indices.</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p>Select one maximum point (foundation-top, <span class="math notranslate nohighlight">\(t\)</span>) and the max value (<span class="math notranslate nohighlight">\(v\)</span>) among the unsearched indices. That is, <span class="math notranslate nohighlight">\(t \in \mathrm{DataArgMax}(\mathrm{unsearched})\)</span> and <span class="math notranslate nohighlight">\(v = \mathrm{DataMax}(\mathrm{unsearched})\)</span>.</p></li>
+<li><p>Initialize <span class="math notranslate nohighlight">\(\mathrm{foundation}=\{t\}\)</span>.</p></li>
+<li><p>Initialize the set of families <span class="math notranslate nohighlight">\(\mathrm{families} = \{\mathrm{peak}'s\}\)</span>.</p></li>
+<li><p>Initialize the temporary family <span class="math notranslate nohighlight">\(\mathrm{tempFamily} = \mathrm{foundation}\)</span>.</p></li>
+<li><p>We now run the following extension loop, consisting of two steps: <strong>family extension</strong> and <strong>neighbor extension</strong>.</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p><strong>Family extension</strong>.</p>
+<ol class="arabic">
+<li><p>Pop out the set of tangent families:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathcal{F} = \mathrm{TangentFamily}(\mathrm{tempFamily})\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathrm{families} \gets \mathrm{families} \setminus \mathcal{F}\)</span>.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Merge the tangent families as <span class="math notranslate nohighlight">\(\mathrm{tempFamily} \gets \mathrm{tempFamily} \cup (\cup \mathcal{F})\)</span>.</p></li>
+</ol>
+</li>
+<li><p><strong>Neighbor extension</strong>.
+We decide whether to extend the set of families to neighbors.</p>
+<ol class="arabic">
+<li><p>Get the set of neighbors <span class="math notranslate nohighlight">\(N := \mathrm{nb}(\mathrm{tempFamily})\)</span>.</p></li>
+<li><p>Find <span class="math notranslate nohighlight">\(A := \mathrm{DataArgMax}(N)\)</span>.</p>
+<blockquote>
+<div><ul>
+<li><p>If the maximum value <span class="math notranslate nohighlight">\(\mathrm{Data}_i\)</span> (<span class="math notranslate nohighlight">\(i \in A\)</span>) equals :math`v`, then we regard <span class="math notranslate nohighlight">\(A\)</span> to be as qualified as <span class="math notranslate nohighlight">\(t\)</span> to be part of <span class="math notranslate nohighlight">\(\mathrm{foundation}\)</span>,
+and therefore</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Add <span class="math notranslate nohighlight">\(A\)</span> to the foundation: <span class="math notranslate nohighlight">\(\mathrm{foundation} \gets \mathrm{foundation} \cup (A \cap \mathrm{unsearched})\)</span>.</p></li>
+<li><p>Add <span class="math notranslate nohighlight">\(A\)</span> to the temporary family: <span class="math notranslate nohighlight">\(\mathrm{tempFamily} \gets \mathrm{tempFamily} \cup (A \cap \mathrm{unsearched})\)</span>.</p></li>
+<li><p>Mark <span class="math notranslate nohighlight">\(A\)</span> as searched.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>If elements of <span class="math notranslate nohighlight">\(A\)</span> contains no local minima, i.e., if <span class="math notranslate nohighlight">\(\mathrm{DataMax}(A\cup \mathrm{tempFamily}) \geq \mathrm{DataMax}(\mathrm{nb}(A\cup \mathrm{tempFamily}))\)</span>, then</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Add <span class="math notranslate nohighlight">\(A\)</span> to the foundation: <span class="math notranslate nohighlight">\(\mathrm{foundation} \gets \mathrm{foundation} \cup (A \cap \mathrm{unsearched})\)</span>.</p></li>
+<li><p>Add <span class="math notranslate nohighlight">\(A\)</span> to the temporary family: <span class="math notranslate nohighlight">\(\mathrm{tempFamily} \gets \mathrm{tempFamily} \cup (A \cap \mathrm{unsearched})\)</span>.</p></li>
+<li><p>Mark <span class="math notranslate nohighlight">\(A\)</span> as searched.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Otherwise, we halt the iterative loop, register <span class="math notranslate nohighlight">\(\mathrm{foundation}\)</span> as a foundation echelon, add <span class="math notranslate nohighlight">\(\mathrm{tempFamily}\)</span> to the set <span class="math notranslate nohighlight">\(\mathrm{families}\)</span> as an element, and go back to the top of the loop</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+</li>
+</ol>
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p>After the loop is halted, we have the set of found <span class="math notranslate nohighlight">\(\mathrm{foundation}\)</span>’s.</p></li>
+</ol>
+<p>The set of foundation echelons and the set of peak echelons are mutually exclusive and collectively exhaustive.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
 </div>
 
 

@@ -23,10 +23,11 @@ project = 'echelon-py'
 copyright = '2021, Takeshi Teshima'
 author = 'Takeshi Teshima'
 
+from echelon import __version__
 # The short X.Y version
-version = ''
+version = __version__
 # The full version, including alpha/beta/rc tags
-release = ''
+release = __version__
 
 
 # -- General configuration ---------------------------------------------------
