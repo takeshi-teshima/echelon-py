@@ -72,7 +72,7 @@ Supplementary Documents
 
 Links
 -----------------------
-If you enjoy anytree: |buymeacoffee|
+If you enjoy this package: |buymeacoffee|
 
 .. |buymeacoffee| image:: https://cdn.buymeacoffee.com/buttons/default-orange.png
     :height: 2em
