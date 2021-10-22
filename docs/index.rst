@@ -70,13 +70,10 @@ Supplementary Documents
    :doc:`Algorithms Explained<algorithms>`
 
 
-Links
+Optional Dependencies
 -----------------------
-If you enjoy this package: |buymeacoffee|
-
-.. |buymeacoffee| image:: https://cdn.buymeacoffee.com/buttons/default-orange.png
-    :height: 2em
-    :target: https://www.buymeacoffee.com/diadochos
+- ``scipy`` to enable dendrogram.
+- ``anytree`` to store and visualize the echelon hierarchical structure.
 
 
 Call for Contributions
@@ -87,6 +84,15 @@ and there are probably obvious ways to improve the performance.
 * If you encounter a performance issue, please file it on GitHub.
 * If you notice an edge case, please file a ``test case`` issue on GitHub.
 * If you are kind enough to refactor the algorithms for efficiency, please feel free to open an issue and submit a pull request on GitHub.
+
+
+Links
+-----------------------
+If you enjoy this package: |buymeacoffee|
+
+.. |buymeacoffee| image:: https://cdn.buymeacoffee.com/buttons/default-orange.png
+    :height: 2em
+    :target: https://www.buymeacoffee.com/diadochos
 
 
 Indices and tables
