@@ -25,7 +25,7 @@ Check out the [documentation](https://takeshi-teshima.github.io/echelon-py/).
 - Bump version in `echelon/__init__.py`,
 - File the changes in `docs_src/CHANGELOG.rst`,
 - and run `$ make docs`.
-- Make sure that ``$ python setup.py sdist bdist_wheel`` runs without an error.
+- Make sure that ``$ make test-build`` runs without an error. Try ``$ pip install dist/echelon-py-<version>.tar.gz`` if you need.
 - Create a Release on GitHub (the deployment procedure is configured by `.github/workflows/python-publish.yml`).
 
 ### Documenting

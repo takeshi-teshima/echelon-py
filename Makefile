@@ -10,5 +10,5 @@ docs:
 	touch ./docs/.nojekyll
 	cd docs; xdg-open index.html
 
-package-test:
+test-build:
 	python setup.py sdist bdist_wheel
