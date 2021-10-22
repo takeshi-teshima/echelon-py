@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>echelon.algorithms.find_echelon_hotspots module &mdash; echelon-py  documentation</title>
+  <title>echelon.algorithms.find_echelon_hotspots module &mdash; echelon-py 1.0.3 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,6 +14,7 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -28,6 +29,9 @@
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> echelon-py
           </a>
+              <div class="version">
+                1.0.3
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -72,8 +76,36 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="echelon-algorithms-find-echelon-hotspots-module">
-<h1>echelon.algorithms.find_echelon_hotspots module<a class="headerlink" href="#echelon-algorithms-find-echelon-hotspots-module" title="Permalink to this headline"></a></h1>
+  <div class="section" id="module-echelon.algorithms.find_echelon_hotspots">
+<span id="echelon-algorithms-find-echelon-hotspots-module"></span><h1>echelon.algorithms.find_echelon_hotspots module<a class="headerlink" href="#module-echelon.algorithms.find_echelon_hotspots" title="Permalink to this headline"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="echelon.algorithms.find_echelon_hotspots.find_echelon_hotspots">
+<span class="sig-name descname"><span class="pre">find_echelon_hotspots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scan_oracle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tree_root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">echelons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">original_oracle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/algorithms/find_echelon_hotspots.html#find_echelon_hotspots"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.algorithms.find_echelon_hotspots.find_echelon_hotspots" title="Permalink to this definition"></a></dt>
+<dd><p class="rubric">Notes</p>
+<p>This method constructs the candidates of the hot spot <span class="math notranslate nohighlight">\(Z\)</span> using the information from the echelon hierarchy.
+<em>Algorithm</em></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Let <span class="math notranslate nohighlight">\(\{E_k\}_{k=1}^K\)</span> be the echelons sorted (in descending order) based on the maximum observation values of the indices in the echelon (used for constructing the echelons).</p></li>
+<li><p>Let <span class="math notranslate nohighlight">\(E_k = \{e_{k,j}\}_{j=1}^{n_k}\)</span> be the indices in each echelon sorted (in descending order) based on the original observation values.</p></li>
+<li><p>We define the hot-spot candidates <span class="math notranslate nohighlight">\(Z_{kj} := (\cup_{k' \in \mathrm{descendants}(k)} E_{k'}) \cup \{e_{k,1}, \ldots, e_{k,j}\}.\)</span> That is, we accumulate the elements in <span class="math notranslate nohighlight">\(E_k\)</span> up to the index <span class="math notranslate nohighlight">\(j\)</span>, as well as all of its descendants.</p></li>
+<li><p>We score the candidates based on the binomial scan score.</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scan_oracle</strong> (<a class="reference internal" href="echelon.scan_oracle.html#echelon.scan_oracle.ScanOracleBase" title="echelon.scan_oracle.ScanOracleBase"><em>echelon.scan_oracle.ScanOracleBase</em></a>) – </p></li>
+<li><p><strong>tree_root</strong> (<em>anytree.node.node.Node</em>) – </p></li>
+<li><p><strong>original_oracle</strong> (<a class="reference internal" href="echelon.oracle.html#echelon.oracle.EchelonOracleBase" title="echelon.oracle.EchelonOracleBase"><em>echelon.oracle.EchelonOracleBase</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pandas.core.frame.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 
 
