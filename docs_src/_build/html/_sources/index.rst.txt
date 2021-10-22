@@ -25,7 +25,7 @@ Installation
 
 Quick Start
 ------------
-Check out some `Examples (echelon-py-examples) <https://takeshi-teshima.github.io/echelon-py-examples/>`_!
+Learn by `examples (echelon-py-examples) <https://takeshi-teshima.github.io/echelon-py-examples/>`_!
 
 
 The API modules

@@ -22,27 +22,27 @@ class ApproxBinomialScanOracleBase(ScanOracleBase):
     """
     Notes:
         Consider :math:`K` regions and let us denote :math:`[K] := \{1, 2, \ldots, K\}`.
-        For each region :math:`k \in [K]`, assume :math:`c_k \sim \mathrm{Bi}(\theta_k, n_k)`.
+        For each region :math:`k \in [K]`, assume :math:`c_k \sim \mathrm{Bi}(\\\theta_k, n_k)`.
 
         Consider a region :math:`Z \subset [K]`. We assign a score :math:`s` that indicates how "hot-spot-ish" the region :math:`Z` is.
 
-        Let us assume that :math:`(\theta_k)_{k\in Z}` and :math:`(\theta_k)_{k\in Z^\mathrm{c}}` are constants, :math:`\theta_Z` and :math:`\theta_{Z^\mathrm{c}}`, respectively.
-        We compare the maximum likelihood under :math:`\theta_Z = \theta_{Z^\mathrm{c}}` and :math:`\theta_Z > \theta_{Z^\mathrm{c}}`.
+        Let us assume that :math:`(\\theta_k)_{k\in Z}` and :math:`(\\theta_k)_{k\in Z^\mathrm{c}}` are constants, :math:`\\theta_Z` and :math:`\\theta_{Z^\mathrm{c}}`, respectively.
+        We compare the maximum likelihood under :math:`\\theta_Z = \\theta_{Z^\mathrm{c}}` and :math:`\\theta_Z > \\theta_{Z^\mathrm{c}}`.
         Denote :math:`c_Z := \sum_{k \in Z} c_k`, :math:`n_Z := \sum_{k \in Z} n_k`, :math:`n_{Z^{\mathrm{c}}} := \sum_{k \in Z^{\mathrm{c}}} n_k`, and :math:`n_{Z^{\mathrm{c}}} := \sum_{k \in Z^{\mathrm{c}}} n_k`.
 
-        Now, by the reproductive property, :math:`c_Z \sim \mathrm{Bi}(\theta_Z, n_Z)` where :math:`\theta_Z = \sum_{k \in Z} \theta_k`.
+        Now, by the reproductive property, :math:`c_Z \sim \mathrm{Bi}(\\theta_Z, n_Z)` where :math:`\\theta_Z = \sum_{k \in Z} \\theta_k`.
         Similarly for :math:`c_{Z^\mathrm{c}}`.
-        Since the maximum likelihood of :math:`c \sim \mathrm{Bi}(\theta, n)` is :math:`\mathrm{Bi}(\frac{c}{n}, n)(c)` (by abuse of notation, we denote the density of a distribution by the name of the distribution).
+        Since the maximum likelihood of :math:`c \sim \mathrm{Bi}(\\theta, n)` is :math:`\mathrm{Bi}(\\frac{c}{n}, n)(c)` (by abuse of notation, we denote the density of a distribution by the name of the distribution).
 
-        Now, when :math:`n >> c`, we have :math:`\mathrm{Bi}(\theta, n)(c) \simeq (\theta)^c`.
+        Now, when :math:`n >> c`, we have :math:`\mathrm{Bi}(\\theta, n)(c) \simeq (\\theta)^c`.
 
-        With this approximation, the score for the case that :math:`\theta_Z > \theta_{Z^\mathrm{c}}` is
-        :math:`\log (\frac{c_Z}{n_Z})^{c_Z} + \log (\frac{c_{Z^\mathrm{c}}}{n_{Z^\mathrm{c}}})^{c_{Z^\mathrm{c}}}`.
+        With this approximation, the score for the case that :math:`\\theta_Z > \\theta_{Z^\mathrm{c}}` is
+        :math:`\log (\\frac{c_Z}{n_Z})^{c_Z} + \log (\\frac{c_{Z^\mathrm{c}}}{n_{Z^\mathrm{c}}})^{c_{Z^\mathrm{c}}}`.
 
-        Similarly, the score for the case that :math:`\theta_Z = \theta_{Z^\mathrm{c}}` is :math:`\log (\frac{c_{[K]}}{n_{[K]}})^{c_{[K]}}`.
+        Similarly, the score for the case that :math:`\\theta_Z = \\theta_{Z^\mathrm{c}}` is :math:`\log (\\frac{c_{[K]}}{n_{[K]}})^{c_{[K]}}`.
 
         Thus, we use
-        :math:`\log (\frac{c_Z}{n_Z})^{c_Z} + \log (\frac{c_{Z^\mathrm{c}}}{n_{Z^\mathrm{c}}})^{c_{Z^\mathrm{c}}} - \log (\frac{c_{[K]}}{n_{[K]}})^{c_{[K]}}`
+        :math:`\log (\\frac{c_Z}{n_Z})^{c_Z} + \log (\\frac{c_{Z^\mathrm{c}}}{n_{Z^\mathrm{c}}})^{c_{Z^\mathrm{c}}} - \log (\\frac{c_{[K]}}{n_{[K]}})^{c_{[K]}}`
         as the score.
     """
     def __init__(self, all_total_count, all_marked_count):
@@ -81,16 +81,16 @@ class PoissonScanOracleBase(ScanOracleBase):
         Consider :math:`K` regions and let us denote :math:`[K] := \{1, 2, \ldots, K\}`.
         For each region :math:`k \in [K]`, assume :math:`c_k \sim \mathrm{Po}(\lambda_k)` and that :math:`\{c_k\}_{k \in [K]}` are independent.
 
-        First, note that :math:`\mathrm{Po}(c; \lambda) := \frac{\lambda^c e^{-\lambda}}{c!}` is maximized by :math:`\lambda = c`.
-        Thus, the maximum likelihood given :math:`c` is :math:`\frac{c^c e^{-c}}{c!}`.
+        First, note that :math:`\mathrm{Po}(c; \lambda) := \\frac{\lambda^c e^{-\lambda}}{c!}` is maximized by :math:`\lambda = c`.
+        Thus, the maximum likelihood given :math:`c` is :math:`\\frac{c^c e^{-c}}{c!}`.
 
         Consider a region :math:`Z \subset [K]`. We assign a score :math:`s` that indicates how "hot-spot-ish" the region :math:`Z` is.
 
         By the reproductive property, :math:`c_Z := \sum_{k \in Z} c_k \sim \mathrm{Po}(\lambda_Z)` where :math:`\lambda_Z = \sum_{k \in Z} \lambda_k`. Similarly for :math:`Z^\mathrm{c}`.
 
         We compare the maximum likelihood under :math:`\lambda_Z = \lambda_{Z^\mathrm{c}}` and :math:`\lambda_Z > \lambda_{Z^\mathrm{c}}`.
-        The maximum log likelihood in the first case is :math:`\ell_0 := \log \frac{c_{[K]}^{c_{[K]}} e^{-{c_{[K]}}}}{c_{[K]}!}`
-        That for the second case is :math:`\ell_1 := \log \frac{c_{Z}^{c_{Z}} e^{-{c_{Z}}}}{c_{Z}!} + \log \frac{c_{Z^\mathrm{c}}^{c_{Z^\mathrm{c}}} e^{-{c_{Z^\mathrm{c}}}}}{c_{Z^\mathrm{c}}!}`
+        The maximum log likelihood in the first case is :math:`\ell_0 := \log \\frac{c_{[K]}^{c_{[K]}} e^{-{c_{[K]}}}}{c_{[K]}!}`
+        That for the second case is :math:`\ell_1 := \log \\frac{c_{Z}^{c_{Z}} e^{-{c_{Z}}}}{c_{Z}!} + \log \\frac{c_{Z^\mathrm{c}}^{c_{Z^\mathrm{c}}} e^{-{c_{Z^\mathrm{c}}}}}{c_{Z^\mathrm{c}}!}`
 
         Thus, we use
         :math:`(\ell_1 - \ell_0) [[c_Z > c_{Z^\mathrm{c}}]]`

@@ -9,10 +9,10 @@
 - Echelon scan (detection of spatial clusters)
 
 ## Quick Start
-Check out some [Examples (echelon-py-examples)](https://takeshi-teshima.github.io/echelon-py-examples/)!
+Check out some [examples (echelon-py-examples)](https://takeshi-teshima.github.io/echelon-py-examples/)!
 
 ## How to Use
-Check out the [Documentation](https://takeshi-teshima.github.io/echelon-py/).
+Check out the [documentation](https://takeshi-teshima.github.io/echelon-py/).
 
 ## Note for Developers
 - ``$ pip install -r requirements-dev.txt``
