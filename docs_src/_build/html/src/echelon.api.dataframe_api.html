@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>echelon.api.dataframe_api module &mdash; echelon-py  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> echelon-py
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="echelon.algorithms.find_peak_echelons.html">echelon.algorithms.find_peak_echelons module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="echelon.algorithms.find_foundation_echelons.html">echelon.algorithms.find_foundation_echelons module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="echelon.algorithms.find_echelon_clusters.html">echelon.algorithms.find_echelon_clusters module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="echelon.algorithms.find_echelon_hierarchy.html">echelon.algorithms.find_echelon_hierarchy module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="echelon.algorithms.find_echelon_hotspots.html">echelon.algorithms.find_echelon_hotspots module</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="echelon.oracle.html">echelon.oracle module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="echelon.scan_oracle.html">echelon.scan_oracle module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">echelon-py</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>echelon.api.dataframe_api module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/src/echelon.api.dataframe_api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="module-echelon.api.dataframe_api">
+<span id="echelon-api-dataframe-api-module"></span><h1>echelon.api.dataframe_api module<a class="headerlink" href="#module-echelon.api.dataframe_api" title="Permalink to this headline"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="echelon.api.dataframe_api.DataFrameEchelonAnalysis">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">DataFrameEchelonAnalysis</span></span><a class="reference internal" href="../_modules/echelon/api/dataframe_api.html#DataFrameEchelonAnalysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.api.dataframe_api.DataFrameEchelonAnalysis" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="echelon.api.base.html#echelon.api.base.EchelonAnalysis" title="echelon.api.base.EchelonAnalysis"><code class="xref py py-class docutils literal notranslate"><span class="pre">echelon.api.base.EchelonAnalysis</span></code></a></p>
+<p>The standard API for the data (realized values and neighborhood information) stored in a DataFrame.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.dataframe_api.DataFrameEchelonAnalysis.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_colname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_colname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjacency_colname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/api/dataframe_api.html#DataFrameEchelonAnalysis.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.api.dataframe_api.DataFrameEchelonAnalysis.__call__" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – the dataframe containing the indices, observed values, and adjacency information.</p></li>
+<li><p><strong>value_colname</strong> (<em>str</em>) – column name of <code class="docutils literal notranslate"><span class="pre">df</span></code> corresponding to the observed values.</p></li>
+<li><p><strong>id_colname</strong> (<em>str</em>) – column name of <code class="docutils literal notranslate"><span class="pre">df</span></code> corresponding to the index values. The values in this column needs to be unique.</p></li>
+<li><p><strong>adjacency_colname</strong> (<em>str</em>) – column name of <code class="docutils literal notranslate"><span class="pre">df</span></code> corresponding to the adjacency information. The cells must contain lists of indices to which the record is adjacent.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis">echelon.api.base.Result_EchelonAnalysis</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.dataframe_api.DataFrameEchelonAnalysis._hotspots">
+<span class="sig-name descname"><span class="pre">_hotspots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan_oracle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.api.dataframe_api.DataFrameEchelonAnalysis._hotspots" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result</strong> (<a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis"><em>echelon.api.base.Result_EchelonAnalysis</em></a>) – </p></li>
+<li><p><strong>scan_oracle</strong> (<a class="reference internal" href="echelon.scan_oracle.html#echelon.scan_oracle.ScanOracleBase" title="echelon.scan_oracle.ScanOracleBase"><em>echelon.scan_oracle.ScanOracleBase</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Result_EchelonHotspot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.dataframe_api.DataFrameEchelonAnalysis._run_analysis">
+<span class="sig-name descname"><span class="pre">_run_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">oracle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.api.dataframe_api.DataFrameEchelonAnalysis._run_analysis" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>oracle</strong> (<a class="reference internal" href="echelon.oracle.html#echelon.oracle.EchelonOracleBase" title="echelon.oracle.EchelonOracleBase"><em>echelon.oracle.EchelonOracleBase</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis">echelon.api.base.Result_EchelonAnalysis</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.dataframe_api.DataFrameEchelonAnalysis.cluster">
+<span class="sig-name descname"><span class="pre">cluster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.api.dataframe_api.DataFrameEchelonAnalysis.cluster" title="Permalink to this definition"></a></dt>
+<dd><p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">echelon.test</span> <span class="kn">import</span> <span class="n">_mock_1dim_data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">_mock_1dim_data</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">analyzer</span> <span class="o">=</span> <span class="n">EchelonAnalysis</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">echelon.oracle</span> <span class="kn">import</span> <span class="n">NdarrayEchelonOracle</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">oracle</span> <span class="o">=</span> <span class="n">NdarrayEchelonOracle</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">_run_analysis</span><span class="p">(</span><span class="n">oracle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">analyzer</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">  representatives                               indices</span>
+<span class="go">0            [16]  [16, 17, 15, 14, 18, 19, 20, 21, 22]</span>
+<span class="go">1            [13]               [13, 12, 14, 11, 10, 9]</span>
+<span class="go">2             [6]                    [6, 5, 7, 4, 8, 9]</span>
+<span class="go">3             [3]                       [3, 2, 4, 1, 0]</span>
+<span class="go">4            [23]                          [23, 22, 24]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis"><em>echelon.api.base.Result_EchelonAnalysis</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Result_EchelonCluster</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.dataframe_api.DataFrameEchelonAnalysis.dendrogram">
+<span class="sig-name descname"><span class="pre">dendrogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_config_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'num_linespace':</span> <span class="pre">1}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.api.dataframe_api.DataFrameEchelonAnalysis.dendrogram" title="Permalink to this definition"></a></dt>
+<dd><p>Draw a simple dendrogram-like figure of the echelon hierarchy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result</strong> (<a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis"><em>echelon.api.base.Result_EchelonAnalysis</em></a>) – the result object of the echelon construction.</p></li>
+<li><p><strong>plot_config_dict</strong> (<em>dict</em>) – the dictionary to configure the visualization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.api.dataframe_api.DataFrameEchelonAnalysis.hotspots">
+<span class="sig-name descname"><span class="pre">hotspots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'poisson'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/api/dataframe_api.html#DataFrameEchelonAnalysis.hotspots"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.api.dataframe_api.DataFrameEchelonAnalysis.hotspots" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – <p>tuple of data etc. The required data formats depend on the <code class="docutils literal notranslate"><span class="pre">score</span></code> parameter.</p>
+<ul>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">score</span> <span class="pre">==</span> <span class="pre">'poisson'</span></code>,</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">data</span> <span class="pre">is</span> <span class="pre">None</span></code>, the original data is used.</p></li>
+<li><p>Otherwise, <code class="docutils literal notranslate"><span class="pre">data</span></code> should be a tuple <code class="docutils literal notranslate"><span class="pre">(df:</span> <span class="pre">pd.DataFrame,</span> <span class="pre">id_colname:</span> <span class="pre">str,</span> <span class="pre">id_count:</span> <span class="pre">str)</span></code>, and it will be used to score the hot-spot-ness.
+<code class="docutils literal notranslate"><span class="pre">df</span></code> is the data. <code class="docutils literal notranslate"><span class="pre">id_colname</span></code> is the column name of the indices.
+<code class="docutils literal notranslate"><span class="pre">id_count</span></code> indicates the column containing the count of each index (the realized values of the Poisson distributions).</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">score</span> <span class="pre">==</span> <span class="pre">'binomial'</span></code>,</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code> should be a tuple <code class="docutils literal notranslate"><span class="pre">(df:</span> <span class="pre">pd.DataFrame,</span> <span class="pre">id_colname:</span> <span class="pre">str,</span> <span class="pre">total_count_colname:</span> <span class="pre">str,</span> <span class="pre">marked_count_colname:</span> <span class="pre">str)</span></code>, and it will be used to score the hot-spot-ness.
+<code class="docutils literal notranslate"><span class="pre">df</span></code> is the data. <code class="docutils literal notranslate"><span class="pre">id_colname</span></code> is the column name of the indices.
+<code class="docutils literal notranslate"><span class="pre">total_count_colname</span></code> indicates the column containing the total population of each index (the number of trials in the binomial distributions).
+<code class="docutils literal notranslate"><span class="pre">marked_count_colname</span></code> indicates the column containing the positive population of each index (the realized values of the binomial distributions).</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</p></li>
+<li><p><strong>result</strong> (<a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis"><em>echelon.api.base.Result_EchelonAnalysis</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Takeshi Teshima.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

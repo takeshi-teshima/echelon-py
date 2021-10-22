@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>echelon.scan_oracle &mdash; echelon-py  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> echelon-py
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../src/echelon.algorithms.find_peak_echelons.html">echelon.algorithms.find_peak_echelons module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/echelon.algorithms.find_foundation_echelons.html">echelon.algorithms.find_foundation_echelons module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/echelon.algorithms.find_echelon_clusters.html">echelon.algorithms.find_echelon_clusters module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/echelon.algorithms.find_echelon_hierarchy.html">echelon.algorithms.find_echelon_hierarchy module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/echelon.algorithms.find_echelon_hotspots.html">echelon.algorithms.find_echelon_hotspots module</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../src/echelon.oracle.html">echelon.oracle module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/echelon.scan_oracle.html">echelon.scan_oracle module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">echelon-py</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>echelon.scan_oracle</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for echelon.scan_oracle</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module contains the oracles used to run the echelon scan for hot-spot detection.</span>
+<span class="sd">The oracles provide the scores for the hot-spot detection.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Type hinting</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+
+<div class="viewcode-block" id="EchelonScanStop"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.EchelonScanStop">[docs]</a><span class="k">class</span> <span class="nc">EchelonScanStop</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="ScanOracleBase"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.ScanOracleBase">[docs]</a><span class="k">class</span> <span class="nc">ScanOracleBase</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="ScanOracleBase.score"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.ScanOracleBase.score">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="ApproxBinomialScanOracleBase"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.ApproxBinomialScanOracleBase">[docs]</a><span class="k">class</span> <span class="nc">ApproxBinomialScanOracleBase</span><span class="p">(</span><span class="n">ScanOracleBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Notes:</span>
+<span class="sd">        Consider :math:`K` regions and let us denote :math:`[K] := \{1, 2, \ldots, K\}`.</span>
+<span class="sd">        For each region :math:`k \in [K]`, assume :math:`c_k \sim \mathrm{Bi}(\theta_k, n_k)`.</span>
+
+<span class="sd">        Consider a region :math:`Z \subset [K]`. We assign a score :math:`s` that indicates how &quot;hot-spot-ish&quot; the region :math:`Z` is.</span>
+
+<span class="sd">        Let us assume that :math:`(\theta_k)_{k\in Z}` and :math:`(\theta_k)_{k\in Z^\mathrm{c}}` are constants, :math:`\theta_Z` and :math:`\theta_{Z^\mathrm{c}}`, respectively.</span>
+<span class="sd">        We compare the maximum likelihood under :math:`\theta_Z = \theta_{Z^\mathrm{c}}` and :math:`\theta_Z &gt; \theta_{Z^\mathrm{c}}`.</span>
+<span class="sd">        Denote :math:`c_Z := \sum_{k \in Z} c_k`, :math:`n_Z := \sum_{k \in Z} n_k`, :math:`n_{Z^{\mathrm{c}}} := \sum_{k \in Z^{\mathrm{c}}} n_k`, and :math:`n_{Z^{\mathrm{c}}} := \sum_{k \in Z^{\mathrm{c}}} n_k`.</span>
+
+<span class="sd">        Now, by the reproductive property, :math:`c_Z \sim \mathrm{Bi}(\theta_Z, n_Z)` where :math:`\theta_Z = \sum_{k \in Z} \theta_k`.</span>
+<span class="sd">        Similarly for :math:`c_{Z^\mathrm{c}}`.</span>
+<span class="sd">        Since the maximum likelihood of :math:`c \sim \mathrm{Bi}(\theta, n)` is :math:`\mathrm{Bi}(\frac{c}{n}, n)(c)` (by abuse of notation, we denote the density of a distribution by the name of the distribution).</span>
+
+<span class="sd">        Now, when :math:`n &gt;&gt; c`, we have :math:`\mathrm{Bi}(\theta, n)(c) \simeq (\theta)^c`.</span>
+
+<span class="sd">        With this approximation, the score for the case that :math:`\theta_Z &gt; \theta_{Z^\mathrm{c}}` is</span>
+<span class="sd">        :math:`\log (\frac{c_Z}{n_Z})^{c_Z} + \log (\frac{c_{Z^\mathrm{c}}}{n_{Z^\mathrm{c}}})^{c_{Z^\mathrm{c}}}`.</span>
+
+<span class="sd">        Similarly, the score for the case that :math:`\theta_Z = \theta_{Z^\mathrm{c}}` is :math:`\log (\frac{c_{[K]}}{n_{[K]}})^{c_{[K]}}`.</span>
+
+<span class="sd">        Thus, we use</span>
+<span class="sd">        :math:`\log (\frac{c_Z}{n_Z})^{c_Z} + \log (\frac{c_{Z^\mathrm{c}}}{n_{Z^\mathrm{c}}})^{c_{Z^\mathrm{c}}} - \log (\frac{c_{[K]}}{n_{[K]}})^{c_{[K]}}`</span>
+<span class="sd">        as the score.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">all_total_count</span><span class="p">,</span> <span class="n">all_marked_count</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_all_total_count</span> <span class="o">=</span> <span class="n">all_total_count</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_all_marked_count</span> <span class="o">=</span> <span class="n">all_marked_count</span>
+
+<div class="viewcode-block" id="ApproxBinomialScanOracleBase.score"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.ApproxBinomialScanOracleBase.score">[docs]</a>    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Z</span><span class="p">):</span>
+        <span class="n">nG</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_total_count</span>
+        <span class="n">cG</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_marked_count</span>
+        <span class="n">nZ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_count</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+        <span class="n">cZ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">marked_count</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+        <span class="c1">## Stopping criterion</span>
+        <span class="k">if</span> <span class="n">nZ</span> <span class="o">&gt;=</span> <span class="n">nG</span> <span class="o">*</span> <span class="mf">.5</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">EchelonScanStop</span><span class="p">()</span>
+        <span class="n">nZc</span> <span class="o">=</span> <span class="n">nG</span> <span class="o">-</span> <span class="n">nZ</span>
+        <span class="n">cZc</span> <span class="o">=</span> <span class="n">cG</span> <span class="o">-</span> <span class="n">cZ</span>
+        <span class="c1">## Scores</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="p">(</span><span class="n">cZ</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cZ</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">nZ</span><span class="p">))</span> <span class="o">+</span> <span class="n">cZc</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cZc</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">nZc</span><span class="p">)))</span> <span class="o">*</span> <span class="p">((</span><span class="n">cZ</span><span class="o">/</span><span class="n">nZ</span> <span class="o">&gt;</span> <span class="n">cZc</span><span class="o">/</span><span class="n">nZc</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.</span><span class="p">)</span>
+        <span class="n">log_lambda</span> <span class="o">=</span> <span class="n">score</span> <span class="o">-</span> <span class="n">cG</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cG</span> <span class="o">/</span> <span class="n">nG</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="n">cZ</span><span class="o">/</span><span class="n">nZ</span> <span class="o">&gt;</span> <span class="n">cZc</span><span class="o">/</span><span class="n">nZc</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">log_lambda</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;c(Z)&#39;</span><span class="p">:</span> <span class="n">cZ</span><span class="p">,</span>
+                            <span class="c1">#&#39;raw_score&#39;: score, # score may be too small in typical use cases, and hence may be confusing.</span>
+                            <span class="s1">&#39;log_lambda&#39;</span><span class="p">:</span> <span class="n">log_lambda</span><span class="p">}</span></div>
+
+<div class="viewcode-block" id="ApproxBinomialScanOracleBase.total_count"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.ApproxBinomialScanOracleBase.total_count">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">total_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ApproxBinomialScanOracleBase.marked_count"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.ApproxBinomialScanOracleBase.marked_count">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">marked_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="PoissonScanOracleBase"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.PoissonScanOracleBase">[docs]</a><span class="k">class</span> <span class="nc">PoissonScanOracleBase</span><span class="p">(</span><span class="n">ScanOracleBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Notes:</span>
+<span class="sd">        Consider :math:`K` regions and let us denote :math:`[K] := \{1, 2, \ldots, K\}`.</span>
+<span class="sd">        For each region :math:`k \in [K]`, assume :math:`c_k \sim \mathrm{Po}(\lambda_k)` and that :math:`\{c_k\}_{k \in [K]}` are independent.</span>
+
+<span class="sd">        First, note that :math:`\mathrm{Po}(c; \lambda) := \frac{\lambda^c e^{-\lambda}}{c!}` is maximized by :math:`\lambda = c`.</span>
+<span class="sd">        Thus, the maximum likelihood given :math:`c` is :math:`\frac{c^c e^{-c}}{c!}`.</span>
+
+<span class="sd">        Consider a region :math:`Z \subset [K]`. We assign a score :math:`s` that indicates how &quot;hot-spot-ish&quot; the region :math:`Z` is.</span>
+
+<span class="sd">        By the reproductive property, :math:`c_Z := \sum_{k \in Z} c_k \sim \mathrm{Po}(\lambda_Z)` where :math:`\lambda_Z = \sum_{k \in Z} \lambda_k`. Similarly for :math:`Z^\mathrm{c}`.</span>
+
+<span class="sd">        We compare the maximum likelihood under :math:`\lambda_Z = \lambda_{Z^\mathrm{c}}` and :math:`\lambda_Z &gt; \lambda_{Z^\mathrm{c}}`.</span>
+<span class="sd">        The maximum log likelihood in the first case is :math:`\ell_0 := \log \frac{c_{[K]}^{c_{[K]}} e^{-{c_{[K]}}}}{c_{[K]}!}`</span>
+<span class="sd">        That for the second case is :math:`\ell_1 := \log \frac{c_{Z}^{c_{Z}} e^{-{c_{Z}}}}{c_{Z}!} + \log \frac{c_{Z^\mathrm{c}}^{c_{Z^\mathrm{c}}} e^{-{c_{Z^\mathrm{c}}}}}{c_{Z^\mathrm{c}}!}`</span>
+
+<span class="sd">        Thus, we use</span>
+<span class="sd">        :math:`(\ell_1 - \ell_0) [[c_Z &gt; c_{Z^\mathrm{c}}]]`</span>
+<span class="sd">        as the score.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">all_count</span><span class="p">,</span> <span class="n">total_index_len</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_count</span> <span class="o">=</span> <span class="n">all_count</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_index_len</span> <span class="o">=</span> <span class="n">total_index_len</span>
+
+<div class="viewcode-block" id="PoissonScanOracleBase._score"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.PoissonScanOracleBase._score">[docs]</a>    <span class="k">def</span> <span class="nf">_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">lgamma</span>
+        <span class="k">return</span> <span class="n">c</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="n">c</span> <span class="o">-</span> <span class="n">lgamma</span><span class="p">(</span><span class="n">c</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PoissonScanOracleBase.score"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.PoissonScanOracleBase.score">[docs]</a>    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Z</span><span class="p">):</span>
+        <span class="n">cG</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_count</span>
+        <span class="n">cZ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+        <span class="c1">## Stopping criterion</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_index_len</span> <span class="o">*</span> <span class="mf">.5</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">EchelonScanStop</span><span class="p">()</span>
+        <span class="n">cZc</span> <span class="o">=</span> <span class="n">cG</span> <span class="o">-</span> <span class="n">cZ</span>
+        <span class="c1">## Scores</span>
+        <span class="n">log_lambda</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_score</span><span class="p">(</span><span class="n">cZ</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score</span><span class="p">(</span><span class="n">cZc</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score</span><span class="p">(</span><span class="n">cG</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">cZ</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">cZc</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">total_index_len</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">log_lambda</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;c(Z)&#39;</span><span class="p">:</span> <span class="n">cZ</span><span class="p">,</span> <span class="s1">&#39;log_lambda&#39;</span><span class="p">:</span> <span class="n">log_lambda</span><span class="p">}</span></div>
+
+<div class="viewcode-block" id="PoissonScanOracleBase.count"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.PoissonScanOracleBase.count">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="NdarrayBinomialScanOracle"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.NdarrayBinomialScanOracle">[docs]</a><span class="k">class</span> <span class="nc">NdarrayBinomialScanOracle</span><span class="p">(</span><span class="n">ApproxBinomialScanOracleBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Hotspot scan oracle using approximate binomial score for numpy array data.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">total_count</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">marked_count</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">total_count</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="n">marked_count</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_count_data</span> <span class="o">=</span> <span class="n">total_count</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">marked_count_data</span> <span class="o">=</span> <span class="n">marked_count</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<div class="viewcode-block" id="NdarrayBinomialScanOracle.total_count"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.NdarrayBinomialScanOracle.total_count">[docs]</a>    <span class="k">def</span> <span class="nf">total_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_count_data</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="NdarrayBinomialScanOracle.marked_count"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.NdarrayBinomialScanOracle.marked_count">[docs]</a>    <span class="k">def</span> <span class="nf">marked_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">marked_count_data</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="NdarrayPoissonScanOracle"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.NdarrayPoissonScanOracle">[docs]</a><span class="k">class</span> <span class="nc">NdarrayPoissonScanOracle</span><span class="p">(</span><span class="n">PoissonScanOracleBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Hotspot scan oracle using Poisson score for numpy array data.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+
+<div class="viewcode-block" id="NdarrayPoissonScanOracle.count"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.NdarrayPoissonScanOracle.count">[docs]</a>    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="DataFrameBinomialScanOracle"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.DataFrameBinomialScanOracle">[docs]</a><span class="k">class</span> <span class="nc">DataFrameBinomialScanOracle</span><span class="p">(</span><span class="n">ApproxBinomialScanOracleBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Hotspot scan oracle using approximate binomial score for DataFrame data.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">id_colname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">total_count_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">marked_count_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">total_count_col</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="n">df</span><span class="p">[</span><span class="n">marked_count_col</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id_colname</span> <span class="o">=</span> <span class="n">id_colname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_count_col</span> <span class="o">=</span> <span class="n">total_count_col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">marked_count_col</span> <span class="o">=</span> <span class="n">marked_count_col</span>
+
+<div class="viewcode-block" id="DataFrameBinomialScanOracle._subset"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.DataFrameBinomialScanOracle._subset">[docs]</a>    <span class="k">def</span> <span class="nf">_subset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id_colname</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">indices</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="DataFrameBinomialScanOracle.total_count"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.DataFrameBinomialScanOracle.total_count">[docs]</a>    <span class="k">def</span> <span class="nf">total_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subset</span><span class="p">(</span><span class="n">indices</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">total_count_col</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DataFrameBinomialScanOracle.marked_count"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.DataFrameBinomialScanOracle.marked_count">[docs]</a>    <span class="k">def</span> <span class="nf">marked_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subset</span><span class="p">(</span><span class="n">indices</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">marked_count_col</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="DataFramePoissonScanOracle"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.DataFramePoissonScanOracle">[docs]</a><span class="k">class</span> <span class="nc">DataFramePoissonScanOracle</span><span class="p">(</span><span class="n">PoissonScanOracleBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Hotspot scan oracle using Poisson score for DataFrame data.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">id_colname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">count_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">count_col</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id_colname</span> <span class="o">=</span> <span class="n">id_colname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">count_col</span> <span class="o">=</span> <span class="n">count_col</span>
+
+<div class="viewcode-block" id="DataFramePoissonScanOracle._subset"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.DataFramePoissonScanOracle._subset">[docs]</a>    <span class="k">def</span> <span class="nf">_subset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id_colname</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">indices</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="DataFramePoissonScanOracle.count"><a class="viewcode-back" href="../../src/echelon.scan_oracle.html#echelon.scan_oracle.DataFramePoissonScanOracle.count">[docs]</a>    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subset</span><span class="p">(</span><span class="n">indices</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">count_col</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Takeshi Teshima.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

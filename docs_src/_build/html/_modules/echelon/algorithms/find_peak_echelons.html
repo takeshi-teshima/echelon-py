@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>echelon.algorithms.find_peak_echelons &mdash; echelon-py  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> echelon-py
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/echelon.algorithms.find_peak_echelons.html">echelon.algorithms.find_peak_echelons module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/echelon.algorithms.find_foundation_echelons.html">echelon.algorithms.find_foundation_echelons module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/echelon.algorithms.find_echelon_clusters.html">echelon.algorithms.find_echelon_clusters module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/echelon.algorithms.find_echelon_hierarchy.html">echelon.algorithms.find_echelon_hierarchy module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/echelon.algorithms.find_echelon_hotspots.html">echelon.algorithms.find_echelon_hotspots module</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/echelon.oracle.html">echelon.oracle module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">echelon-py</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>echelon.algorithms.find_peak_echelons</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for echelon.algorithms.find_peak_echelons</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span><span class="p">,</span> <span class="n">deepcopy</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">echelon.oracle</span> <span class="kn">import</span> <span class="n">EchelonOracleBase</span>
+
+<span class="c1">## Type hinting</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Iterable</span>
+<span class="kn">from</span> <span class="nn">echelon.typing</span> <span class="kn">import</span> <span class="n">EchelonsType</span>
+
+
+<div class="viewcode-block" id="find_peak_echelons"><a class="viewcode-back" href="../../../src/echelon.algorithms.find_peak_echelons.html#echelon.algorithms.find_peak_echelons.find_peak_echelons">[docs]</a><span class="k">def</span> <span class="nf">find_peak_echelons</span><span class="p">(</span><span class="n">oracle</span><span class="p">:</span> <span class="n">EchelonOracleBase</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EchelonsType</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">        ``EchelonOracleBase`` oracle : the oracle to query the data.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        :doc:`EchelonsType &lt;echelon.typing&gt;` : peak_echelons</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; h = np.array([1, 2, 3, 4, 3, 4, 5, 4, 3, 2, 3, 4, 5, 6, 5, 6, 7, 6, 5, 4, 3, 2, 1, 2, 1])</span>
+<span class="sd">        &gt;&gt;&gt; W = np.zeros((25, 25), dtype=&#39;int8&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; W[np.eye(len(W), k=1, dtype=&#39;bool&#39;)] = 1</span>
+<span class="sd">        &gt;&gt;&gt; W[np.eye(len(W), k=-1, dtype=&#39;bool&#39;)] = 1</span>
+<span class="sd">        &gt;&gt;&gt; from echelon.oracle import NdarrayEchelonOracle</span>
+<span class="sd">        &gt;&gt;&gt; oracle = NdarrayEchelonOracle(h, W)</span>
+<span class="sd">        &gt;&gt;&gt; find_peak_echelons(oracle)</span>
+<span class="sd">        [[16, 17, 15], [13], [6, 5, 7], [3], [23]]</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        After finding the initial peaktop in each iteration,</span>
+<span class="sd">        the algorithm takes the &quot;set&quot; of argmax indices,</span>
+<span class="sd">        i.e., it considers the contour set in the neighborhood</span>
+<span class="sd">        simultaneously as candidates.</span>
+
+<span class="sd">            .. container:: algorithm-find-peaks</span>
+<span class="sd">                :name: algorithm-find-peaks</span>
+
+<span class="sd">                **Algorithm**</span>
+
+<span class="sd">                #. We repeat the following until we run out of all unsearched indices.</span>
+
+<span class="sd">                    #. Select one maximum point (summit, :math:`s`) and the max value (summit value, :math:`v`) among the unsearched indices. That is, :math:`s \in \mathrm{argmax}_{i \in \mathrm{unsearched}}\mathrm{Data}_i` and :math:`v = \mathrm{Data}_s`.</span>
+<span class="sd">                    #. Initialize :math:`\mathrm{peak}=\{s\}`.</span>
+<span class="sd">                    #. We now run the following extension loop:</span>
+
+<span class="sd">                        We consider whether to extend :math:`\mathrm{peak}` to newly include</span>
+<span class="sd">                        :math:`S := \mathrm{argmax}_{i \in N} \{\mathrm{Data}_i\}` where :math:`N := \mathrm{nb}(\mathrm{peak})`,</span>
+<span class="sd">                        i.e., the maximizers among the neighbors of :math:`\mathrm{peak}`.</span>
+<span class="sd">                        Here, argmax is understood as a set of indices.</span>
+
+<span class="sd">                        * If :math:`S` contains no local minimum (i.e., if :math:`\mathrm{Data}_{i} \geq \max_{i \in \mathrm{nb}(N\cup S)}\mathrm{Data}_{i}` where :math:`i \in S`), then we extend the peak set: :math:`\mathrm{peak}\gets \mathrm{peak}\cup S`.</span>
+<span class="sd">                        * Otherwise, we halt the extension loop, flag all elements of :math:`\mathrm{peak}` as searched, register :math:`\mathrm{peak}` as a found peak echelon, and go back to the top of the loop.</span>
+
+<span class="sd">                #. After the loop is halted, we have the set of found :math:`\mathrm{peak}`&#39;s (which may or may not jointly contain all indices. Those indices that do not belong to a peak echelon will belong to a foundation echelon later.).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">oracle</span><span class="o">.</span><span class="n">copy_indices</span><span class="p">()</span>
+    <span class="n">peak_echelons</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">):</span>
+        <span class="n">_current_echelon</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">_removed</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1">## Start from finding a single peak point among the remaining candidates.</span>
+        <span class="n">_argmax_single</span><span class="p">,</span> <span class="n">_max</span> <span class="o">=</span> <span class="n">oracle</span><span class="o">.</span><span class="n">find_peaktop</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+        <span class="n">_argmax</span> <span class="o">=</span> <span class="p">[</span><span class="n">_argmax_single</span><span class="p">]</span>
+
+        <span class="c1">## Extend from the peak point to its neighbors until the search hits a local minimum.</span>
+        <span class="c1">## Handle ties simultaneously (i.e., argmax is a set, not a point).</span>
+        <span class="k">while</span> <span class="n">_max</span> <span class="o">&gt;</span> <span class="n">oracle</span><span class="o">.</span><span class="n">max_nb</span><span class="p">(</span><span class="n">_current_echelon</span> <span class="o">+</span> <span class="n">_argmax</span><span class="p">)[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="c1">## If not local minimum, add to peak echelon</span>
+            <span class="c1">## and remove searched candidates.</span>
+            <span class="n">_current_echelon</span> <span class="o">+=</span> <span class="n">_argmax</span>
+            <span class="n">_removed</span> <span class="o">+=</span> <span class="n">_argmax</span>
+            <span class="c1">## And continue to next round</span>
+            <span class="n">_argmax</span><span class="p">,</span> <span class="n">_max</span> <span class="o">=</span> <span class="n">oracle</span><span class="o">.</span><span class="n">max_nb</span><span class="p">(</span><span class="n">_current_echelon</span><span class="p">)</span>
+        <span class="n">_removed</span> <span class="o">+=</span> <span class="n">_argmax</span> <span class="c1"># Remove searched candidates</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">_current_echelon</span><span class="p">):</span>
+            <span class="n">peak_echelons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_current_echelon</span><span class="p">)</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">_current_echelon</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">_removed</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">peak_echelons</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Takeshi Teshima.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

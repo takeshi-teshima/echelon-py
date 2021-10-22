@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>echelon.algorithms &mdash; echelon-py  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> echelon-py
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../src/echelon.api.html">echelon.api module</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../src/echelon.algorithms.html">echelon.algorithms module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/echelon.oracle.html">echelon.oracle module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">echelon-py</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>echelon.algorithms</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for echelon.algorithms</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span><span class="p">,</span> <span class="n">deepcopy</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">echelon.oracle</span> <span class="kn">import</span> <span class="n">EchelonOracleBase</span>
+
+<span class="c1">## Type hinting</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Iterable</span>
+<span class="n">IndexType</span> <span class="o">=</span> <span class="nb">int</span>
+
+
+<div class="viewcode-block" id="find_peak_echelons"><a class="viewcode-back" href="../../src/echelon.algorithms.html#echelon.algorithms.find_peak_echelons">[docs]</a><span class="k">def</span> <span class="nf">find_peak_echelons</span><span class="p">(</span><span class="n">oracle</span><span class="p">:</span> <span class="n">EchelonOracleBase</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">IndexType</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        peak_echelons</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from .test import _mock_1dim_data</span>
+<span class="sd">        &gt;&gt;&gt; h, W = _mock_1dim_data()</span>
+<span class="sd">        &gt;&gt;&gt; from .oracle import NdarrayEchelonOracle</span>
+<span class="sd">        &gt;&gt;&gt; oracle = NdarrayEchelonOracle(h, W)</span>
+<span class="sd">        &gt;&gt;&gt; find_peak_echelons(oracle)</span>
+<span class="sd">        [[16, 17, 15], [13], [6, 5, 7], [3], [23]]</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        After finding the initial peaktop in each iteration,</span>
+<span class="sd">        the algorithm takes the &quot;set&quot; of argmax indices,</span>
+<span class="sd">        i.e., it considers the contour set in the neighborhood</span>
+<span class="sd">        simultaneously as candidates.</span>
+
+<span class="sd">            .. container:: algorithm-find-peaks</span>
+<span class="sd">                :name: algorithm-find-peaks</span>
+
+<span class="sd">                **Algorithm**</span>
+
+<span class="sd">                #. We repeat the following until we run out of all unsearched indices.</span>
+
+<span class="sd">                    #. Select one maximum point (summit, :math:`s`) and the max value (summit value, :math:`v`) among the unsearched indices. That is, :math:`s \in \mathrm{argmax}_{i \in \mathrm{unsearched}}\mathrm{Data}_i` and :math:`v = \mathrm{Data}_s`.</span>
+<span class="sd">                    #. Initialize :math:`\mathrm{peak}=\{s\}`.</span>
+<span class="sd">                    #. We now run the following extension loop:</span>
+
+<span class="sd">                        We consider whether to extend :math:`\mathrm{peak}` to newly include</span>
+<span class="sd">                        :math:`S := \mathrm{argmax}_{i \in N} \{\mathrm{Data}_i\}` where :math:`N := \mathrm{nb}(\mathrm{peak})`,</span>
+<span class="sd">                        i.e., the maximizers among the neighbors of :math:`\mathrm{peak}`.</span>
+<span class="sd">                        Here, argmax is understood as a set of indices.</span>
+
+<span class="sd">                        * If :math:`S` contains no local minimum (i.e., if :math:`\mathrm{Data}_{i} \geq \max_{i \in \mathrm{nb}(N\cup S)}\mathrm{Data}_{i}` where :math:`i \in S`), then we extend the peak set: :math:`\mathrm{peak}\gets \mathrm{peak}\cup S`.</span>
+<span class="sd">                        * Otherwise, we halt the extension loop, flag all elements of :math:`\mathrm{peak}` as searched, register :math:`\mathrm{peak}` as a found peak echelon, and go back to the top of the loop.</span>
+
+<span class="sd">                #. After the loop is halted, we have the set of found :math:`\mathrm{peak}`&#39;s (which may or may not jointly contain all indices. Those indices that do not belong to a peak echelon will belong to a foundation echelon later.).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">oracle</span><span class="o">.</span><span class="n">copy_indices</span><span class="p">()</span>
+    <span class="n">peak_echelons</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">):</span>
+        <span class="n">_current_echelon</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">_removed</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1">## Start from finding a single peak point among the remaining candidates.</span>
+        <span class="n">_argmax_single</span><span class="p">,</span> <span class="n">_max</span> <span class="o">=</span> <span class="n">oracle</span><span class="o">.</span><span class="n">find_peaktop</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+        <span class="n">_argmax</span> <span class="o">=</span> <span class="p">[</span><span class="n">_argmax_single</span><span class="p">]</span>
+
+        <span class="c1">## Extend from the peak point to its neighbors until the search hits a local minimum.</span>
+        <span class="c1">## Handle ties simultaneously (i.e., argmax is a set, not a point).</span>
+        <span class="k">while</span> <span class="n">_max</span> <span class="o">&gt;</span> <span class="n">oracle</span><span class="o">.</span><span class="n">max_nb</span><span class="p">(</span><span class="n">_current_echelon</span> <span class="o">+</span> <span class="n">_argmax</span><span class="p">)[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="c1">## If not local minimum, add to peak echelon</span>
+            <span class="c1">## and remove searched candidates.</span>
+            <span class="n">_current_echelon</span> <span class="o">+=</span> <span class="n">_argmax</span>
+            <span class="n">_removed</span> <span class="o">+=</span> <span class="n">_argmax</span>
+            <span class="c1">## And continue to next round</span>
+            <span class="n">_argmax</span><span class="p">,</span> <span class="n">_max</span> <span class="o">=</span> <span class="n">oracle</span><span class="o">.</span><span class="n">max_nb</span><span class="p">(</span><span class="n">_current_echelon</span><span class="p">)</span>
+        <span class="n">_removed</span> <span class="o">+=</span> <span class="n">_argmax</span> <span class="c1"># Remove searched candidates</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">_current_echelon</span><span class="p">):</span>
+            <span class="n">peak_echelons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_current_echelon</span><span class="p">)</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">_current_echelon</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">_removed</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">peak_echelons</span></div>
+
+
+<div class="viewcode-block" id="_flatten_lists"><a class="viewcode-back" href="../../src/echelon.algorithms.html#echelon.algorithms._flatten_lists">[docs]</a><span class="k">def</span> <span class="nf">_flatten_lists</span><span class="p">(</span><span class="n">lists</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">list</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">lists</span><span class="p">,</span> <span class="p">[])</span></div>
+
+
+<div class="viewcode-block" id="find_foundation_echelons"><a class="viewcode-back" href="../../src/echelon.algorithms.html#echelon.algorithms.find_foundation_echelons">[docs]</a><span class="k">def</span> <span class="nf">find_foundation_echelons</span><span class="p">(</span><span class="n">oracle</span><span class="p">:</span> <span class="n">EchelonOracleBase</span><span class="p">,</span> <span class="n">peak_echelons</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">IndexType</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">IndexType</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;Construct foundation echelons.</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        The algorithm is as follows.</span>
+<span class="sd">        In this algorithm, we keep track of the list of *families*.</span>
+<span class="sd">        Each &quot;family&quot; is a set of indices, and the initial set of families consist of the peak echelons.</span>
+<span class="sd">        In the latter steps, the set of families grow.</span>
+
+<span class="sd">        We define :math:`\mathrm{TangentFamily}(\mathrm{indices}) := \{F \in \mathrm{families} : F \cap \mathrm{nb}(\mathrm{indices}) ≠ \emptyset\}`.</span>
+<span class="sd">        We also define :math:`\mathrm{DataMax}(\mathrm{indices}) := \max_{i \in \mathrm{indices}}\mathrm{Data}_i`</span>
+<span class="sd">        and :math:`\mathrm{DataArgMax}(\mathrm{indices}) := \mathrm{argmax}_{i \in \mathrm{indices}}\mathrm{Data}_i`</span>
+
+<span class="sd">            .. container:: algorithm-find-foundations</span>
+<span class="sd">                :name: algorithm-find-foundations</span>
+
+<span class="sd">                **Algorithm**</span>
+
+<span class="sd">                #. Mark all indices in Peak Echelons as searched.</span>
+<span class="sd">                #. We repeat the following until we run out of all unsearched indices.</span>
+
+<span class="sd">                    #. Select one maximum point (foundation-top, :math:`t`) and the max value (:math:`v`) among the unsearched indices. That is, :math:`t \in \mathrm{DataArgMax}(\mathrm{unsearched})` and :math:`v = \mathrm{DataMax}(\mathrm{unsearched})`.</span>
+<span class="sd">                    #. Initialize :math:`\mathrm{foundation}=\{t\}`.</span>
+<span class="sd">                    #. Initialize the set of families :math:`\mathrm{families} = \{\mathrm{peak}&#39;s\}`.</span>
+<span class="sd">                    #. Initialize the temporary family :math:`\mathrm{tempFamily} = \mathrm{foundation}`.</span>
+<span class="sd">                    #. We now run the following extension loop, consisting of two steps: **family extension** and **neighbor extension**.</span>
+
+<span class="sd">                        #. **Family extension**.</span>
+
+<span class="sd">                           #. Pop out the set of tangent families:</span>
+
+<span class="sd">                               * :math:`\mathcal{F} = \mathrm{TangentFamily}(\mathrm{tempFamily})`.</span>
+<span class="sd">                               * :math:`\mathrm{families} \gets \mathrm{families} \setminus \mathcal{F}`.</span>
+
+<span class="sd">                           #. Merge the tangent families as :math:`\mathrm{tempFamily} \gets \mathrm{tempFamily} \cup (\cup \mathcal{F})`.</span>
+
+<span class="sd">                        #. **Neighbor extension**.</span>
+<span class="sd">                           We decide whether to extend the set of families to neighbors.</span>
+
+<span class="sd">                           #. Get the set of neighbors :math:`N := \mathrm{nb}(\mathrm{tempFamily})`.</span>
+<span class="sd">                           #. Find :math:`A := \mathrm{DataArgMax}(N)`.</span>
+
+<span class="sd">                               * If the maximum value :math:`\mathrm{Data}_i` (:math:`i \in A`) equals :math`v`, then we regard :math:`A` to be as qualified as :math:`t` to be part of :math:`\mathrm{foundation}`,</span>
+<span class="sd">                                 and therefore</span>
+
+<span class="sd">                                   * Add :math:`A` to the foundation: :math:`\mathrm{foundation} \gets \mathrm{foundation} \cup (A \cap \mathrm{unsearched})`.</span>
+<span class="sd">                                   * Add :math:`A` to the temporary family: :math:`\mathrm{tempFamily} \gets \mathrm{tempFamily} \cup (A \cap \mathrm{unsearched})`.</span>
+<span class="sd">                                   * Mark :math:`A` as searched.</span>
+
+<span class="sd">                               * If elements of :math:`A` contains no local minima, i.e., if :math:`\mathrm{DataMax}(A\cup \mathrm{tempFamily}) \geq \mathrm{DataMax}(\mathrm{nb}(A\cup \mathrm{tempFamily}))`, then</span>
+
+<span class="sd">                                   * Add :math:`A` to the foundation: :math:`\mathrm{foundation} \gets \mathrm{foundation} \cup (A \cap \mathrm{unsearched})`.</span>
+<span class="sd">                                   * Add :math:`A` to the temporary family: :math:`\mathrm{tempFamily} \gets \mathrm{tempFamily} \cup (A \cap \mathrm{unsearched})`.</span>
+<span class="sd">                                   * Mark :math:`A` as searched.</span>
+
+<span class="sd">                               * Otherwise, we halt the iterative loop, register :math:`\mathrm{foundation}` as a foundation echelon, add :math:`\mathrm{tempFamily}` to the set :math:`\mathrm{families}` as an element, and go back to the top of the loop</span>
+
+<span class="sd">                #. After the loop is halted, we have the set of found :math:`\mathrm{foundation}`&#39;s.</span>
+
+<span class="sd">                The set of foundation echelons and the set of peak echelons are mutually exclusive and collectively exhaustive.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">unsearched_inds</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">oracle</span><span class="o">.</span><span class="n">copy_indices</span><span class="p">())</span><span class="o">-</span><span class="nb">set</span><span class="p">(</span><span class="n">_flatten_lists</span><span class="p">(</span><span class="n">peak_echelons</span><span class="p">)))</span>
+    <span class="n">families</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">peak_echelons</span><span class="p">)</span>
+    <span class="n">foundation_echelons</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">unsearched_inds</span><span class="p">):</span>
+        <span class="n">_current_echelon</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1">## Select a single point among the unsearched maxima.</span>
+        <span class="n">_argmax_single</span><span class="p">,</span> <span class="n">_initial_max</span> <span class="o">=</span> <span class="n">oracle</span><span class="o">.</span><span class="n">find_peaktop</span><span class="p">(</span><span class="n">unsearched_inds</span><span class="p">)</span>
+        <span class="n">_argmax</span> <span class="o">=</span> <span class="p">[</span><span class="n">_argmax_single</span><span class="p">]</span>
+        <span class="n">_current_echelon</span> <span class="o">+=</span> <span class="n">_argmax</span>
+        <span class="n">_current_family</span> <span class="o">=</span> <span class="n">_argmax</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="c1">## Blocking statement</span>
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">oracle</span><span class="o">.</span><span class="n">nb</span><span class="p">(</span><span class="n">_current_family</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">unsearched_inds</span><span class="p">):</span>
+                <span class="k">break</span>
+            <span class="c1">## Family extension</span>
+            <span class="n">_current_family</span><span class="p">,</span> <span class="n">families</span> <span class="o">=</span> <span class="n">oracle</span><span class="o">.</span><span class="n">pop_extend_family</span><span class="p">(</span><span class="n">_current_family</span><span class="p">,</span> <span class="n">families</span><span class="p">)</span>
+            <span class="c1">## Check neighbor argmax set</span>
+            <span class="n">_argmax</span><span class="p">,</span> <span class="n">_max</span> <span class="o">=</span> <span class="n">oracle</span><span class="o">.</span><span class="n">max_nb</span><span class="p">(</span><span class="n">_current_family</span><span class="p">)</span>
+            <span class="c1"># If the max value is the same as the original max, unconditionally accept them.</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">_max</span> <span class="o">==</span> <span class="n">_initial_max</span><span class="p">):</span>
+                <span class="n">_current_family</span> <span class="o">+=</span> <span class="n">_argmax</span>
+                <span class="n">_current_echelon</span> <span class="o">+=</span> <span class="n">_lists_intersection</span><span class="p">(</span><span class="n">_argmax</span><span class="p">,</span> <span class="n">unsearched_inds</span><span class="p">)</span> <span class="c1"># Foundation echelon contains only those which do not consist the peak echelons.</span>
+            <span class="c1"># If none of the neighboring candidates is a local minimum, accept the candidates.</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">_max</span> <span class="o">&gt;</span> <span class="n">oracle</span><span class="o">.</span><span class="n">max_nb</span><span class="p">(</span><span class="n">_current_family</span> <span class="o">+</span> <span class="n">_argmax</span><span class="p">)[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">_current_family</span> <span class="o">+=</span> <span class="n">_argmax</span>
+                <span class="n">_current_echelon</span> <span class="o">+=</span> <span class="n">_lists_intersection</span><span class="p">(</span><span class="n">_argmax</span><span class="p">,</span> <span class="n">unsearched_inds</span><span class="p">)</span> <span class="c1"># Foundation echelon contains only those which do not consist the peak echelons.</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="n">families</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_current_family</span><span class="p">)</span>
+        <span class="n">foundation_echelons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_current_echelon</span><span class="p">)</span>
+        <span class="n">unsearched_inds</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">unsearched_inds</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">_current_echelon</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">unsearched_inds</span><span class="p">:</span> <span class="c1"># If all marked as searched</span>
+            <span class="k">break</span>
+    <span class="k">return</span> <span class="n">foundation_echelons</span></div>
+
+
+<div class="viewcode-block" id="_lists_intersection"><a class="viewcode-back" href="../../src/echelon.algorithms.html#echelon.algorithms._lists_intersection">[docs]</a><span class="k">def</span> <span class="nf">_lists_intersection</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">list1</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">list2</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="find_echelon_clusters"><a class="viewcode-back" href="../../src/echelon.algorithms.html#echelon.algorithms.find_echelon_clusters">[docs]</a><span class="k">def</span> <span class="nf">find_echelon_clusters</span><span class="p">(</span><span class="n">peak_echelons</span><span class="p">,</span> <span class="n">foundation_echelons</span><span class="p">,</span> <span class="n">oracle</span><span class="p">):</span>
+    <span class="n">zones</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">peak_echelons</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">echelon</span> <span class="ow">in</span> <span class="n">foundation_echelons</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">echelon</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">zone</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">zones</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">_lists_intersection</span><span class="p">(</span><span class="n">oracle</span><span class="o">.</span><span class="n">nb</span><span class="p">([</span><span class="n">element</span><span class="p">]),</span> <span class="n">zone</span><span class="p">):</span>
+                    <span class="n">zones</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">zones</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Takeshi Teshima.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

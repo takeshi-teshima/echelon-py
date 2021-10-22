@@ -7,11 +7,8 @@ Welcome to echelon-py's documentation!
 ======================================
 
 ..
-   Installation
-   Introduction
    Overview
    Basics
-   API
    Tricks
    Documentation
    GitHub
@@ -21,10 +18,19 @@ Welcome to echelon-py's documentation!
    Contributors
    Feel free to share info about your anytree project.
 
+Installation
+------------
+::
+
+  $ pip install echelon-py
+
+Quick Start
+------------
+Check out some `Examples (echelon-py-examples) <https://takeshi-teshima.github.io/echelon-py-examples/>`_!
 
 
 The API modules
---------
+---------------
 All functionalities are accessible from the API classes.
 They are also *examples* of how the algorithms and other codes can be combined to serve the analysis.
 
@@ -33,36 +39,34 @@ They are also *examples* of how the algorithms and other codes can be combined t
 The module contents
 --------
 
-**Algorithms**
+* **Algorithms**:
+  implemented in the following modules.
+  How to combine the modules can be found in the API modules.
 
-Algorithms are implemented in the following modules.
-How to combine the modules can be found in the API modules.
+  .. toctree::
+    :maxdepth: 4
 
-.. toctree::
-   :maxdepth: 4
+    src/echelon.algorithms.find_peak_echelons
+    src/echelon.algorithms.find_foundation_echelons
+    src/echelon.algorithms.find_echelon_clusters
+    src/echelon.algorithms.find_echelon_hierarchy
+    src/echelon.algorithms.find_echelon_hotspots
 
-   src/echelon.algorithms.find_peak_echelons
-   src/echelon.algorithms.find_foundation_echelons
-   src/echelon.algorithms.find_echelon_clusters
-   src/echelon.algorithms.find_echelon_hierarchy
-   src/echelon.algorithms.find_echelon_hotspots
+* **Oracles**:
+  abstract the access to the data.
+  For custom input data structures, one can implement a new oracle (inheriting ``EchelonOracleBase``)
+  using the implemented classes such as ``DataFrameEchelonOracle`` as examples.
 
-**Oracles**
+  .. toctree::
+    :maxdepth: 4
 
-Oracles abstract the access to the data.
-For custom input data structures, one can implement a new oracle (inheriting ``EchelonOracleBase``)
-using the implemented classes such as ``DataFrameEchelonOracle`` as examples.
+    src/echelon.oracle
+    src/echelon.scan_oracle
 
-.. toctree::
-   :maxdepth: 4
+* **Typing**:
+  Some types for type hinting are defined in the following module:
 
-   src/echelon.oracle
-
-**Typing**
-
-Some types for type hinting are defined in the following module:
-
-   :doc:`src/echelon.typing`
+    :doc:`src/echelon.typing`
 
 
 Supplementary Documents
