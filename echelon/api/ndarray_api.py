@@ -1,132 +1,62 @@
 import numpy as np
-import pandas as pd
-from dataclasses import dataclass
+from echelon.api.base import EchelonAnalysis
+from echelon.oracle import NdarrayEchelonOracle
+from echelon.scan_oracle import NdarrayBinomialScanOracle, NdarrayPoissonScanOracle
 
-from echelon.algorithms import (find_peak_echelons,
-                                find_foundation_echelons,
-                                find_echelon_clusters,
-                                find_echelon_hierarchy)
-from echelon.oracle import EchelonOracleBase, NdarrayEchelonOracle, DataFrameEchelonOracle
-
-## Type hinting
-from typing import Tuple, List, Union, Any, Dict
-from anytree import Node
-IndexSetType = List[int]
-EchelonType = IndexSetType
-EchelonsType = List[EchelonType]
-NeighborsType = List[IndexSetType]
+# Type hinting
+from echelon.api.base import Result_EchelonAnalysis
 
 
-@dataclass
-class Result_EchelonAnalysis:
-    """Class for keeping the results of echelon analysis.
-
-    Parameters:
-        peak_echelons: list of peak echelons.
-        foundation_echelons: list of foundation echelons.
-        hierarchy_tree: root node (``anytree.Node``) of the hierarchy tree of the echelons.
-        oracle: the oracle that is internally constructed during the instantiation of the analysis. Mainly for debugging purposes.
-
-    Note:
-        Each echelon is a list of indices of the original data.
-    """
-    peak_echelons: EchelonsType
-    foundation_echelons: EchelonsType
-    hierarchy_tree: Node
-    oracle: EchelonOracleBase
-
-
-@dataclass
-class Result_EchelonCluster:
-    table: object
-
-
-class EchelonAnalysis:
-    def cluster(self, result: Result_EchelonAnalysis) -> Result_EchelonCluster:
+class NdarrayEchelonAnalysis(EchelonAnalysis):
+    def hotspots(self, result: Result_EchelonAnalysis, data=None, score=['poisson', 'binomial'][0]):
         """
-        Examples:
-            >>> from echelon.test import _mock_1dim_data
-            >>> h, W = _mock_1dim_data()
-            >>> analyzer = EchelonAnalysis()
-            >>> result = analyzer(h, W)
-            >>> analyzer.cluster(result).table
-              representatives                               indices
-            0            [16]  [16, 17, 15, 14, 18, 19, 20, 21, 22]
-            1            [13]               [13, 12, 14, 11, 10, 9]
-            2             [6]                    [6, 5, 7, 4, 8, 9]
-            3             [3]                       [3, 2, 4, 1, 0]
-            4            [23]                          [23, 22, 24]
-        """
-        clusters = find_echelon_clusters(result.peak_echelons, result.foundation_echelons, result.oracle)
-        echelon_clusters = []
-        for cluster in clusters:
-            _argmax, _ = result.oracle.max_indices(cluster)
-            echelon_clusters.append((_argmax, cluster))
-        echelon_cluster_table = pd.DataFrame(echelon_clusters, columns =['representatives', 'indices'])
-        return Result_EchelonCluster(
-            table=echelon_cluster_table
-        )
-
-    def dendrogram(self, result: Result_EchelonAnalysis,
-                   plot_config_dict: dict=dict(num_linespace = 1)) -> str:
-        """Draw a simple dendrogram-like figure of the echelon hierarchy.
-
         Parameters:
-            result : the result object of the echelon construction.
-            plot_config_dict : the dictionary to configure the visualization.
+            data: tuple of data etc. The required data formats depend on the ``score`` parameter.
 
-        Note:
-            To format the output, the method calls ``self._echelon_to_str()``.
+                  * If ``score == 'poisson'``,
+
+                      * If ``data is None``, the original data is used.
+                      * Otherwise, ``data`` should be an ``np.ndarray``, and it will be used to score the hot-spot-ness.
+
+                  * If ``score == 'binomial'``,
+
+                      * ``data`` should be a tuple ``(total_count_data, marked_count_data)``.
+                        ``total_count_data`` should contain the total population of each index (the number of trials in the binomial distributions).
+                        ``marked_count_data`` should contain the positive population of each index (the realized values of the binomial distributions).
         """
-        from anytree import RenderTree
-
-        root = result.hierarchy_tree
-        echelons = result.peak_echelons + result.foundation_echelons
-
-        def _echelon_to_str(echelon_id, _echelon, _max_idx, value, plot_config_dict):
-            """Default function to convert echelon information to a string."""
-            return f'E{echelon_id+1}({_max_idx[0]}): [' + ', '.join(map(str, reversed(_echelon))) + f']\n (max: {value})' + '\n' * plot_config_dict.get('num_linespace', 0)
-
-        def echelon_to_label(echelon_id):
-            _echelon = echelons[echelon_id]
-            _max_idx, value = result.oracle.max_indices(_echelon)
-            _echelon_to_str = plot_config_dict.get('_echelon_to_str', _echelon_to_str)
-            return _echelon_to_str(echelon_id, _echelon, _max_idx, value, plot_config_dict)
-
-        return RenderTree(root).by_attr(lambda node: echelon_to_label(node.name))
-
-    def _run_analysis(self, oracle: EchelonOracleBase) -> Result_EchelonAnalysis:
-        peak_echelons = find_peak_echelons(oracle)
-        foundation_echelons = find_foundation_echelons(oracle, peak_echelons)
-        hierarchy = find_echelon_hierarchy(peak_echelons, foundation_echelons, oracle)
-        return Result_EchelonAnalysis(
-            peak_echelons=peak_echelons,
-            foundation_echelons=foundation_echelons,
-            hierarchy_tree = hierarchy,
-            oracle=oracle
-        )
-
+        if score == 'poisson':
+            if data is None:
+                scan_oracle = NdarrayPoissonScanOracle(self.data)
+            else:
+                assert isinstance(data, np.ndarray)
+                scan_oracle = NdarrayPoissonScanOracle(data)
+        elif score == 'binomial':
+            total_count_data, marked_count_data = data
+            scan_oracle = NdarrayBinomialScanOracle(total_count_data, marked_count_data)
+        return super()._hotspots(result, scan_oracle)
 
     def __call__(self, data: np.ndarray, adjacency: np.ndarray) -> Result_EchelonAnalysis:
         """
         Parameters:
             data: 1-dimensional data of realized values.
-            adjacency: size-$len(data)$ square array of adjacency.
+            adjacency: ``len(data)``-sized square array of adjacency.
 
         Examples:
             >>> from echelon.test import _mock_1dim_data
             >>> h, W = _mock_1dim_data()
-            >>> result = EchelonAnalysis()(h, W)
+            >>> analyzer = NdarrayEchelonAnalysis()
+            >>> result = analyzer(h, W)
             >>> result.peak_echelons
             [[16, 17, 15], [13], [6, 5, 7], [3], [23]]
             >>> result.foundation_echelons
             [[12, 14, 18, 19, 11, 10, 20], [2, 4, 8], [1, 9, 21], [0, 22, 24]]
         """
+        self.data = data
         oracle = NdarrayEchelonOracle(data, adjacency)
         return self._run_analysis(oracle)
 
 
-class OneDimEchelonAnalysis(EchelonAnalysis):
+class OneDimEchelonAnalysis(NdarrayEchelonAnalysis):
     def __call__(self, data: np.ndarray) -> Result_EchelonAnalysis:
         """
         Parameters:
@@ -135,7 +65,8 @@ class OneDimEchelonAnalysis(EchelonAnalysis):
         Examples:
             >>> from echelon.test import _mock_1dim_data, _visualize_echelons
             >>> h, _ = _mock_1dim_data()
-            >>> result = OneDimEchelonAnalysis()(h)
+            >>> analyzer = OneDimEchelonAnalysis()
+            >>> result = analyzer(h)
             >>> result.peak_echelons
             [[16, 17, 15], [13], [6, 5, 7], [3], [23]]
             >>> result.foundation_echelons
@@ -151,7 +82,7 @@ class OneDimEchelonAnalysis(EchelonAnalysis):
         return super().__call__(data, W)
 
 
-class TwoDimEchelonAnalysis(EchelonAnalysis):
+class TwoDimEchelonAnalysis(NdarrayEchelonAnalysis):
     """The standard API for two-dimensional matrix-shaped data.
     The API constructs the canonical adjacency matrix (i.e., the 4- or 8-neighborhood).
     """
@@ -284,20 +215,3 @@ class TwoDimEchelonAnalysis(EchelonAnalysis):
             W = self._canonical_twodim_adjacency_8(*data.shape)
 
         return super().__call__(data.flatten(), W)
-
-
-class DataFrameEchelonAnalysis(EchelonAnalysis):
-    """The standard API for the data (realized values and neighborhood information) stored in a DataFrame."""
-    def __call__(self, df,
-                 value_colname: str,
-                 id_colname: str,
-                 adjacency_colname: str) -> Result_EchelonAnalysis:
-        """
-        Parameters:
-            df (pd.DataFrame): the dataframe containing the indices, observed values, and adjacency information.
-            value_colname: column name of ``df`` corresponding to the observed values.
-            id_colname: column name of ``df`` corresponding to the index values. The values in this column needs to be unique.
-            adjacency_colname: column name of ``df`` corresponding to the adjacency information. The cells must contain lists of indices to which the record is adjacent.
-        """
-        oracle = DataFrameEchelonOracle(df, value_colname, id_colname, adjacency_colname)
-        return self._run_analysis(oracle)

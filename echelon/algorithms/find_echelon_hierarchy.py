@@ -5,16 +5,14 @@ from echelon.oracle import EchelonOracleBase
 
 ## Type hinting
 from typing import Tuple, List, Iterable, Any, Callable
-IndexType = int
+from echelon.typing import EchelonsType
 
 
-
-def find_echelon_hierarchy(peak_echelons, foundation_echelons, oracle) -> Node:
+def find_echelon_hierarchy(peak_echelons: EchelonsType, foundation_echelons: EchelonsType, oracle) -> Node:
     """
-
     Parameters:
-        peak_echelons
-        foundation_echelons
+        peak_echelons (:doc:`EchelonsType <echelon.typing>`)
+        foundation_echelons (:doc:`EchelonsType <echelon.typing>`)
 
     Returns:
         Root node of the hierarchy.

@@ -4,13 +4,16 @@ from echelon.oracle import EchelonOracleBase
 
 ## Type hinting
 from typing import Tuple, List, Iterable
-IndexType = int
+from echelon.typing import EchelonsType
 
 
-def find_peak_echelons(oracle: EchelonOracleBase) -> List[List[IndexType]]:
+def find_peak_echelons(oracle: EchelonOracleBase) -> EchelonsType:
     """
+    Parameters:
+        ``EchelonOracleBase`` oracle : the oracle to query the data.
+
     Returns:
-        peak_echelons
+        :doc:`EchelonsType <echelon.typing>` : peak_echelons
 
     Examples:
         >>> h = np.array([1, 2, 3, 4, 3, 4, 5, 4, 3, 2, 3, 4, 5, 6, 5, 6, 7, 6, 5, 4, 3, 2, 1, 2, 1])
