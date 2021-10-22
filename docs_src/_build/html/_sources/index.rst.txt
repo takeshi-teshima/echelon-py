@@ -13,7 +13,6 @@ Welcome to echelon-py's documentation!
    Documentation
    GitHub
    PyPI
-   Changelog
    Issues
    Contributors
    Feel free to share info about your anytree project.
@@ -71,7 +70,8 @@ The module contents
 
 Supplementary Documents
 -----------------------
-   :doc:`Algorithms Explained<algorithms>`
+* :doc:`Algorithms Explained <algorithms>`
+* :doc:`Changelog <CHANGELOG>`
 
 
 Optional Dependencies
