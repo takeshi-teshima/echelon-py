@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>echelon.oracle module &mdash; echelon-py  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="echelon.scan_oracle module" href="echelon.scan_oracle.html" />
+    <link rel="prev" title="echelon.algorithms.find_echelon_hotspots module" href="echelon.algorithms.find_echelon_hotspots.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> echelon-py
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="echelon.algorithms.find_peak_echelons.html">echelon.algorithms.find_peak_echelons module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="echelon.algorithms.find_foundation_echelons.html">echelon.algorithms.find_foundation_echelons module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="echelon.algorithms.find_echelon_clusters.html">echelon.algorithms.find_echelon_clusters module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="echelon.algorithms.find_echelon_hierarchy.html">echelon.algorithms.find_echelon_hierarchy module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="echelon.algorithms.find_echelon_hotspots.html">echelon.algorithms.find_echelon_hotspots module</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">echelon.oracle module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="echelon.scan_oracle.html">echelon.scan_oracle module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">echelon-py</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>echelon.oracle module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/src/echelon.oracle.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="module-echelon.oracle">
+<span id="echelon-oracle-module"></span><h1>echelon.oracle module<a class="headerlink" href="#module-echelon.oracle" title="Permalink to this headline"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="echelon.oracle.DataFrameEchelonOracle">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">DataFrameEchelonOracle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_colname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_colname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjacency_colname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/oracle.html#DataFrameEchelonOracle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.oracle.DataFrameEchelonOracle" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#echelon.oracle.EchelonOracleBase" title="echelon.oracle.EchelonOracleBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">echelon.oracle.EchelonOracleBase</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_of_empty</strong> – value to return if the indices list is empty.</p></li>
+<li><p><strong>val_colname</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id_colname</strong> (<em>str</em>) – </p></li>
+<li><p><strong>adjacency_colname</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.DataFrameEchelonOracle.copy_indices">
+<span class="sig-name descname"><span class="pre">copy_indices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/oracle.html#DataFrameEchelonOracle.copy_indices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.oracle.DataFrameEchelonOracle.copy_indices" title="Permalink to this definition"></a></dt>
+<dd><p>Return a copy of the set of all indices (copy thus mutation is allowed).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[Union[int, str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.DataFrameEchelonOracle.find_peaktop">
+<span class="sig-name descname"><span class="pre">find_peaktop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.oracle.DataFrameEchelonOracle.find_peaktop" title="Permalink to this definition"></a></dt>
+<dd><p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NdarrayEchelonOracle</span><span class="p">(</span><span class="o">*</span><span class="n">_mock_pytest_data</span><span class="p">())</span><span class="o">.</span><span class="n">find_peaktop</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">(3, 5)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>indices</strong> (<em>List</em><em>[</em><em>Union</em><em>[</em><em>int</em><em>, </em><em>str</em><em>]</em><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tuple[Union[int, str], Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.DataFrameEchelonOracle.is_neighbor">
+<span class="sig-name descname"><span class="pre">is_neighbor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.oracle.DataFrameEchelonOracle.is_neighbor" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.DataFrameEchelonOracle.max_indices">
+<span class="sig-name descname"><span class="pre">max_indices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/oracle.html#DataFrameEchelonOracle.max_indices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.oracle.DataFrameEchelonOracle.max_indices" title="Permalink to this definition"></a></dt>
+<dd><p>Find the maximum and argmax of the data among the input indices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>indices</strong> (<em>List</em><em>[</em><em>Union</em><em>[</em><em>int</em><em>, </em><em>str</em><em>]</em><em>]</em>) – indices to query.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tuple[List[Union[int, str]], Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.DataFrameEchelonOracle.max_nb">
+<span class="sig-name descname"><span class="pre">max_nb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.oracle.DataFrameEchelonOracle.max_nb" title="Permalink to this definition"></a></dt>
+<dd><p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NdarrayEchelonOracle</span><span class="p">(</span><span class="o">*</span><span class="n">_mock_pytest_data</span><span class="p">())</span><span class="o">.</span><span class="n">max_nb</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="go">([0, 3], 5)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>indices</strong> (<em>List</em><em>[</em><em>Union</em><em>[</em><em>int</em><em>, </em><em>str</em><em>]</em><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tuple[List[Union[int, str]], Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.DataFrameEchelonOracle.max_nb_indices">
+<span class="sig-name descname"><span class="pre">max_nb_indices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ind1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ind2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.oracle.DataFrameEchelonOracle.max_nb_indices" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.DataFrameEchelonOracle.nb">
+<span class="sig-name descname"><span class="pre">nb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/oracle.html#DataFrameEchelonOracle.nb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.oracle.DataFrameEchelonOracle.nb" title="Permalink to this definition"></a></dt>
+<dd><p>Find neighboring indices (excluding the input indices themselves).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>indices</strong> (<em>List</em><em>[</em><em>Union</em><em>[</em><em>int</em><em>, </em><em>str</em><em>]</em><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[Union[int, str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.DataFrameEchelonOracle.pop_extend_family">
+<span class="sig-name descname"><span class="pre">pop_extend_family</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">families</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.oracle.DataFrameEchelonOracle.pop_extend_family" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echelon.oracle.EchelonOracleBase">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">EchelonOracleBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_of_empty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">inf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/oracle.html#EchelonOracleBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.oracle.EchelonOracleBase" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>max_of_empty</strong> (<em>Any</em>) – value to return if the indices list is empty.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.EchelonOracleBase.copy_indices">
+<span class="sig-name descname"><span class="pre">copy_indices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/oracle.html#EchelonOracleBase.copy_indices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.oracle.EchelonOracleBase.copy_indices" title="Permalink to this definition"></a></dt>
+<dd><p>Return a copy of the set of all indices (copy thus mutation is allowed).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[Union[int, str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.EchelonOracleBase.find_peaktop">
+<span class="sig-name descname"><span class="pre">find_peaktop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/oracle.html#EchelonOracleBase.find_peaktop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.oracle.EchelonOracleBase.find_peaktop" title="Permalink to this definition"></a></dt>
+<dd><p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NdarrayEchelonOracle</span><span class="p">(</span><span class="o">*</span><span class="n">_mock_pytest_data</span><span class="p">())</span><span class="o">.</span><span class="n">find_peaktop</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">(3, 5)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>indices</strong> (<em>List</em><em>[</em><em>Union</em><em>[</em><em>int</em><em>, </em><em>str</em><em>]</em><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tuple[Union[int, str], Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.EchelonOracleBase.is_neighbor">
+<span class="sig-name descname"><span class="pre">is_neighbor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/oracle.html#EchelonOracleBase.is_neighbor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.oracle.EchelonOracleBase.is_neighbor" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.EchelonOracleBase.max_indices">
+<span class="sig-name descname"><span class="pre">max_indices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/oracle.html#EchelonOracleBase.max_indices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.oracle.EchelonOracleBase.max_indices" title="Permalink to this definition"></a></dt>
+<dd><p>Find the maximum and argmax of the data among the input indices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>indices</strong> (<em>List</em><em>[</em><em>Union</em><em>[</em><em>int</em><em>, </em><em>str</em><em>]</em><em>]</em>) – indices to query.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tuple[List[Union[int, str]], Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.EchelonOracleBase.max_nb">
+<span class="sig-name descname"><span class="pre">max_nb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/oracle.html#EchelonOracleBase.max_nb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.oracle.EchelonOracleBase.max_nb" title="Permalink to this definition"></a></dt>
+<dd><p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NdarrayEchelonOracle</span><span class="p">(</span><span class="o">*</span><span class="n">_mock_pytest_data</span><span class="p">())</span><span class="o">.</span><span class="n">max_nb</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="go">([0, 3], 5)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>indices</strong> (<em>List</em><em>[</em><em>Union</em><em>[</em><em>int</em><em>, </em><em>str</em><em>]</em><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tuple[List[Union[int, str]], Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.EchelonOracleBase.max_nb_indices">
+<span class="sig-name descname"><span class="pre">max_nb_indices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ind1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ind2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/oracle.html#EchelonOracleBase.max_nb_indices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.oracle.EchelonOracleBase.max_nb_indices" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.EchelonOracleBase.nb">
+<span class="sig-name descname"><span class="pre">nb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/oracle.html#EchelonOracleBase.nb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.oracle.EchelonOracleBase.nb" title="Permalink to this definition"></a></dt>
+<dd><p>Find neighboring indices (excluding the input indices themselves).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>indices</strong> (<em>List</em><em>[</em><em>Union</em><em>[</em><em>int</em><em>, </em><em>str</em><em>]</em><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[Union[int, str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.EchelonOracleBase.pop_extend_family">
+<span class="sig-name descname"><span class="pre">pop_extend_family</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">families</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/oracle.html#EchelonOracleBase.pop_extend_family"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.oracle.EchelonOracleBase.pop_extend_family" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echelon.oracle.NdarrayEchelonOracle">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">NdarrayEchelonOracle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjacency</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/oracle.html#NdarrayEchelonOracle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.oracle.NdarrayEchelonOracle" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#echelon.oracle.EchelonOracleBase" title="echelon.oracle.EchelonOracleBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">echelon.oracle.EchelonOracleBase</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – 1-dimensional array of the observed values for the grids.</p></li>
+<li><p><strong>adjacency</strong> (<em>numpy.ndarray</em>) – 2-dimensional adjacency matrix for the grids.</p></li>
+<li><p><strong>values</strong> (<em>numpy.ndarray</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.NdarrayEchelonOracle.copy_indices">
+<span class="sig-name descname"><span class="pre">copy_indices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/oracle.html#NdarrayEchelonOracle.copy_indices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.oracle.NdarrayEchelonOracle.copy_indices" title="Permalink to this definition"></a></dt>
+<dd><p>Return a copy of the set of all indices (copy thus mutation is allowed).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[Union[int, str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.NdarrayEchelonOracle.find_peaktop">
+<span class="sig-name descname"><span class="pre">find_peaktop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.oracle.NdarrayEchelonOracle.find_peaktop" title="Permalink to this definition"></a></dt>
+<dd><p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NdarrayEchelonOracle</span><span class="p">(</span><span class="o">*</span><span class="n">_mock_pytest_data</span><span class="p">())</span><span class="o">.</span><span class="n">find_peaktop</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">(3, 5)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>indices</strong> (<em>List</em><em>[</em><em>Union</em><em>[</em><em>int</em><em>, </em><em>str</em><em>]</em><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tuple[Union[int, str], Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.NdarrayEchelonOracle.is_neighbor">
+<span class="sig-name descname"><span class="pre">is_neighbor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.oracle.NdarrayEchelonOracle.is_neighbor" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.NdarrayEchelonOracle.max_indices">
+<span class="sig-name descname"><span class="pre">max_indices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/oracle.html#NdarrayEchelonOracle.max_indices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.oracle.NdarrayEchelonOracle.max_indices" title="Permalink to this definition"></a></dt>
+<dd><p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NdarrayEchelonOracle</span><span class="p">(</span><span class="o">*</span><span class="n">_mock_pytest_data</span><span class="p">())</span><span class="o">.</span><span class="n">max_indices</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="go">([1], 3)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>indices</strong> (<em>List</em><em>[</em><em>Union</em><em>[</em><em>int</em><em>, </em><em>str</em><em>]</em><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tuple[List[Union[int, str]], Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.NdarrayEchelonOracle.max_nb">
+<span class="sig-name descname"><span class="pre">max_nb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.oracle.NdarrayEchelonOracle.max_nb" title="Permalink to this definition"></a></dt>
+<dd><p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NdarrayEchelonOracle</span><span class="p">(</span><span class="o">*</span><span class="n">_mock_pytest_data</span><span class="p">())</span><span class="o">.</span><span class="n">max_nb</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="go">([0, 3], 5)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>indices</strong> (<em>List</em><em>[</em><em>Union</em><em>[</em><em>int</em><em>, </em><em>str</em><em>]</em><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tuple[List[Union[int, str]], Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.NdarrayEchelonOracle.max_nb_indices">
+<span class="sig-name descname"><span class="pre">max_nb_indices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ind1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ind2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.oracle.NdarrayEchelonOracle.max_nb_indices" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.NdarrayEchelonOracle.nb">
+<span class="sig-name descname"><span class="pre">nb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/oracle.html#NdarrayEchelonOracle.nb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.oracle.NdarrayEchelonOracle.nb" title="Permalink to this definition"></a></dt>
+<dd><p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NdarrayEchelonOracle</span><span class="p">(</span><span class="o">*</span><span class="n">_mock_pytest_data</span><span class="p">())</span><span class="o">.</span><span class="n">nb</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="go">[0, 3]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>indices</strong> (<em>List</em><em>[</em><em>Union</em><em>[</em><em>int</em><em>, </em><em>str</em><em>]</em><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[Union[int, str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.oracle.NdarrayEchelonOracle.pop_extend_family">
+<span class="sig-name descname"><span class="pre">pop_extend_family</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">families</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.oracle.NdarrayEchelonOracle.pop_extend_family" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echelon.oracle._lists_intersection">
+<span class="sig-name descname"><span class="pre">_lists_intersection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">list2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/oracle.html#_lists_intersection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.oracle._lists_intersection" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echelon.oracle._mock_pytest_data">
+<span class="sig-name descname"><span class="pre">_mock_pytest_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/oracle.html#_mock_pytest_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.oracle._mock_pytest_data" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="echelon.algorithms.find_echelon_hotspots.html" class="btn btn-neutral float-left" title="echelon.algorithms.find_echelon_hotspots module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="echelon.scan_oracle.html" class="btn btn-neutral float-right" title="echelon.scan_oracle module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Takeshi Teshima.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
