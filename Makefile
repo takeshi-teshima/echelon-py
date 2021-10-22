@@ -9,3 +9,6 @@ docs:
 	rsync -av ./docs_src/_build/html/ docs
 	touch ./docs/.nojekyll
 	cd docs; xdg-open index.html
+
+package-test:
+	python setup.py sdist bdist_wheel
