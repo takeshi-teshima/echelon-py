@@ -3,3 +3,5 @@ pbr>=5.6.0
 
 ## Data
 anytree>=2.8.0
+numpy
+pandas
