@@ -10,10 +10,7 @@ IndexType = TypeVar('IndexType')
 """Generic index type."""
 
 EchelonType = NewType('EchelonType', List[IndexType])
-"""Abstraction of the type of an echelon.
-Each echelon is a list of indices of the original data.
-It is implemented as mere list of ``IndexType``.
-"""
+"""Nothing but a list of indices of the data."""
 
 EchelonsType = NewType('EchelonsType', List[EchelonType])
 """List of echelons."""

@@ -80,42 +80,23 @@ The oracles provide the scores for the hot-spot detection.</p>
 <dt class="sig sig-object py" id="echelon.scan_oracle.ApproxBinomialScanOracleBase">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ApproxBinomialScanOracleBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_total_count</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_marked_count</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#ApproxBinomialScanOracleBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.ApproxBinomialScanOracleBase" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#echelon.scan_oracle.ScanOracleBase" title="echelon.scan_oracle.ScanOracleBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">echelon.scan_oracle.ScanOracleBase</span></code></a></p>
-<blockquote>
-<div><dl>
-<dt>Notes:</dt><dd><p>Consider <span class="math notranslate nohighlight">\(K\)</span> regions and let us denote <span class="math notranslate nohighlight">\([K] := \{1, 2, \ldots, K\}\)</span>.
-For each region <span class="math notranslate nohighlight">\(k \in [K]\)</span>, assume <span class="math notranslate nohighlight">\(c_k \sim \mathrm{Bi}(  heta_k, n_k)\)</span>.</p>
+<p class="rubric">Notes</p>
+<p>Consider <span class="math notranslate nohighlight">\(K\)</span> regions and let us denote <span class="math notranslate nohighlight">\([K] := \{1, 2, \ldots, K\}\)</span>.
+For each region <span class="math notranslate nohighlight">\(k \in [K]\)</span>, assume <span class="math notranslate nohighlight">\(c_k \sim \mathrm{Bi}(\ heta_k, n_k)\)</span>.</p>
 <p>Consider a region <span class="math notranslate nohighlight">\(Z \subset [K]\)</span>. We assign a score <span class="math notranslate nohighlight">\(s\)</span> that indicates how “hot-spot-ish” the region <span class="math notranslate nohighlight">\(Z\)</span> is.</p>
-<p>Let us assume that <span class="math notranslate nohighlight">\((     heta_k)_{k\in Z}\)</span> and <span class="math notranslate nohighlight">\((  heta_k)_{k\in Z^\mathrm{c}}\)</span> are constants, :math:`     heta_Z` and :math:`     heta_{Z^mathrm{c}}`, respectively.
-We compare the maximum likelihood under :math:` heta_Z =        heta_{Z^mathrm{c}}` and :math:`        heta_Z &gt;        heta_{Z^mathrm{c}}`.
+<p>Let us assume that <span class="math notranslate nohighlight">\((\theta_k)_{k\in Z}\)</span> and <span class="math notranslate nohighlight">\((\theta_k)_{k\in Z^\mathrm{c}}\)</span> are constants, <span class="math notranslate nohighlight">\(\theta_Z\)</span> and <span class="math notranslate nohighlight">\(\theta_{Z^\mathrm{c}}\)</span>, respectively.
+We compare the maximum likelihood under <span class="math notranslate nohighlight">\(\theta_Z = \theta_{Z^\mathrm{c}}\)</span> and <span class="math notranslate nohighlight">\(\theta_Z &gt; \theta_{Z^\mathrm{c}}\)</span>.
 Denote <span class="math notranslate nohighlight">\(c_Z := \sum_{k \in Z} c_k\)</span>, <span class="math notranslate nohighlight">\(n_Z := \sum_{k \in Z} n_k\)</span>, <span class="math notranslate nohighlight">\(n_{Z^{\mathrm{c}}} := \sum_{k \in Z^{\mathrm{c}}} n_k\)</span>, and <span class="math notranslate nohighlight">\(n_{Z^{\mathrm{c}}} := \sum_{k \in Z^{\mathrm{c}}} n_k\)</span>.</p>
-<p>Now, by the reproductive property, <span class="math notranslate nohighlight">\(c_Z \sim \mathrm{Bi}( heta_Z, n_Z)\)</span> where :math:`     heta_Z = sum_{k in Z}         heta_k`.
+<p>Now, by the reproductive property, <span class="math notranslate nohighlight">\(c_Z \sim \mathrm{Bi}(\theta_Z, n_Z)\)</span> where <span class="math notranslate nohighlight">\(\theta_Z = \sum_{k \in Z} \theta_k\)</span>.
 Similarly for <span class="math notranslate nohighlight">\(c_{Z^\mathrm{c}}\)</span>.
-Since the maximum likelihood of <span class="math notranslate nohighlight">\(c \sim \mathrm{Bi}(      heta, n)\)</span> is :math:<a href="#id1"><span class="problematic" id="id2">`</span></a>mathrm{Bi}(</p>
-</dd>
-</dl>
-</div></blockquote>
-<p>rac{c}{n}, n)(c)` (by abuse of notation, we denote the density of a distribution by the name of the distribution).</p>
-<blockquote>
-<div><p>Now, when <span class="math notranslate nohighlight">\(n &gt;&gt; c\)</span>, we have <span class="math notranslate nohighlight">\(\mathrm{Bi}(   heta, n)(c) \simeq (    heta)^c\)</span>.</p>
-<p>With this approximation, the score for the case that :math:`    heta_Z &gt;        heta_{Z^mathrm{c}}` is
-:math:<a href="#id3"><span class="problematic" id="id4">`</span></a>log (</p>
-</div></blockquote>
-<p>rac{c_Z}{n_Z})^{c_Z} + log (
-rac{c_{Z^mathrm{c}}}{n_{Z^mathrm{c}}})^{c_{Z^mathrm{c}}}`.</p>
-<blockquote>
-<div><p>Similarly, the score for the case that :math:`  heta_Z =        heta_{Z^mathrm{c}}` is :math:<a href="#id5"><span class="problematic" id="id6">`</span></a>log (</p>
-</div></blockquote>
-<p>rac{c_{[K]}}{n_{[K]}})^{c_{[K]}}`.</p>
-<blockquote>
-<div><p>Thus, we use
-:math:<a href="#id7"><span class="problematic" id="id8">`</span></a>log (</p>
-</div></blockquote>
-<p>rac{c_Z}{n_Z})^{c_Z} + log (
-rac{c_{Z^mathrm{c}}}{n_{Z^mathrm{c}}})^{c_{Z^mathrm{c}}} - log (
-rac{c_{[K]}}{n_{[K]}})^{c_{[K]}}`</p>
-<blockquote>
-<div><p>as the score.</p>
-</div></blockquote>
+Since the maximum likelihood of <span class="math notranslate nohighlight">\(c \sim \mathrm{Bi}(\theta, n)\)</span> is <span class="math notranslate nohighlight">\(\mathrm{Bi}(\frac{c}{n}, n)(c)\)</span> (by abuse of notation, we denote the density of a distribution by the name of the distribution).</p>
+<p>Now, when <span class="math notranslate nohighlight">\(n &gt;&gt; c\)</span>, we have <span class="math notranslate nohighlight">\(\mathrm{Bi}(\theta, n)(c) \simeq (\theta)^c\)</span>.</p>
+<p>With this approximation, the score for the case that <span class="math notranslate nohighlight">\(\theta_Z &gt; \theta_{Z^\mathrm{c}}\)</span> is
+<span class="math notranslate nohighlight">\(\log (\frac{c_Z}{n_Z})^{c_Z} + \log (\frac{c_{Z^\mathrm{c}}}{n_{Z^\mathrm{c}}})^{c_{Z^\mathrm{c}}}\)</span>.</p>
+<p>Similarly, the score for the case that <span class="math notranslate nohighlight">\(\theta_Z = \theta_{Z^\mathrm{c}}\)</span> is <span class="math notranslate nohighlight">\(\log (\frac{c_{[K]}}{n_{[K]}})^{c_{[K]}}\)</span>.</p>
+<p>Thus, we use
+<span class="math notranslate nohighlight">\(\log (\frac{c_Z}{n_Z})^{c_Z} + \log (\frac{c_{Z^\mathrm{c}}}{n_{Z^\mathrm{c}}})^{c_{Z^\mathrm{c}}} - \log (\frac{c_{[K]}}{n_{[K]}})^{c_{[K]}}\)</span>
+as the score.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="echelon.scan_oracle.ApproxBinomialScanOracleBase._abc_impl">
 <span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;_abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#echelon.scan_oracle.ApproxBinomialScanOracleBase._abc_impl" title="Permalink to this definition"></a></dt>
@@ -313,36 +294,19 @@ set self.__traceback__ to tb and return self.</p>
 <dt class="sig sig-object py" id="echelon.scan_oracle.PoissonScanOracleBase">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PoissonScanOracleBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_count</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_index_len</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/scan_oracle.html#PoissonScanOracleBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.scan_oracle.PoissonScanOracleBase" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#echelon.scan_oracle.ScanOracleBase" title="echelon.scan_oracle.ScanOracleBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">echelon.scan_oracle.ScanOracleBase</span></code></a></p>
-<blockquote>
-<div><dl>
-<dt>Notes:</dt><dd><p>Consider <span class="math notranslate nohighlight">\(K\)</span> regions and let us denote <span class="math notranslate nohighlight">\([K] := \{1, 2, \ldots, K\}\)</span>.
+<p class="rubric">Notes</p>
+<p>Consider <span class="math notranslate nohighlight">\(K\)</span> regions and let us denote <span class="math notranslate nohighlight">\([K] := \{1, 2, \ldots, K\}\)</span>.
 For each region <span class="math notranslate nohighlight">\(k \in [K]\)</span>, assume <span class="math notranslate nohighlight">\(c_k \sim \mathrm{Po}(\lambda_k)\)</span> and that <span class="math notranslate nohighlight">\(\{c_k\}_{k \in [K]}\)</span> are independent.</p>
-<p>First, note that :math:<a href="#id9"><span class="problematic" id="id10">`</span></a>mathrm{Po}(c; lambda) :=</p>
-</dd>
-</dl>
-</div></blockquote>
-<dl class="simple">
-<dt>rac{lambda^c e^{-lambda}}{c!}` is maximized by <span class="math notranslate nohighlight">\(\lambda = c\)</span>.</dt><dd><p>Thus, the maximum likelihood given <span class="math notranslate nohighlight">\(c\)</span> is :math:<a href="#id11"><span class="problematic" id="id12">`</span></a></p>
-</dd>
-</dl>
-<p>rac{c^c e^{-c}}{c!}`.</p>
-<blockquote>
-<div><p>Consider a region <span class="math notranslate nohighlight">\(Z \subset [K]\)</span>. We assign a score <span class="math notranslate nohighlight">\(s\)</span> that indicates how “hot-spot-ish” the region <span class="math notranslate nohighlight">\(Z\)</span> is.</p>
+<p>First, note that <span class="math notranslate nohighlight">\(\mathrm{Po}(c; \lambda) := \frac{\lambda^c e^{-\lambda}}{c!}\)</span> is maximized by <span class="math notranslate nohighlight">\(\lambda = c\)</span>.
+Thus, the maximum likelihood given <span class="math notranslate nohighlight">\(c\)</span> is <span class="math notranslate nohighlight">\(\frac{c^c e^{-c}}{c!}\)</span>.</p>
+<p>Consider a region <span class="math notranslate nohighlight">\(Z \subset [K]\)</span>. We assign a score <span class="math notranslate nohighlight">\(s\)</span> that indicates how “hot-spot-ish” the region <span class="math notranslate nohighlight">\(Z\)</span> is.</p>
 <p>By the reproductive property, <span class="math notranslate nohighlight">\(c_Z := \sum_{k \in Z} c_k \sim \mathrm{Po}(\lambda_Z)\)</span> where <span class="math notranslate nohighlight">\(\lambda_Z = \sum_{k \in Z} \lambda_k\)</span>. Similarly for <span class="math notranslate nohighlight">\(Z^\mathrm{c}\)</span>.</p>
 <p>We compare the maximum likelihood under <span class="math notranslate nohighlight">\(\lambda_Z = \lambda_{Z^\mathrm{c}}\)</span> and <span class="math notranslate nohighlight">\(\lambda_Z &gt; \lambda_{Z^\mathrm{c}}\)</span>.
-The maximum log likelihood in the first case is :math:<a href="#id13"><span class="problematic" id="id14">`</span></a>ell_0 := log</p>
-</div></blockquote>
-<dl class="simple">
-<dt>rac{c_{[K]}^{c_{[K]}} e^{-{c_{[K]}}}}{c_{[K]}!}`</dt><dd><p>That for the second case is :math:<a href="#id15"><span class="problematic" id="id16">`</span></a>ell_1 := log</p>
-</dd>
-</dl>
-<p>rac{c_{Z}^{c_{Z}} e^{-{c_{Z}}}}{c_{Z}!} + log
-rac{c_{Z^mathrm{c}}^{c_{Z^mathrm{c}}} e^{-{c_{Z^mathrm{c}}}}}{c_{Z^mathrm{c}}!}`</p>
-<blockquote>
-<div><p>Thus, we use
+The maximum log likelihood in the first case is <span class="math notranslate nohighlight">\(\ell_0 := \log \frac{c_{[K]}^{c_{[K]}} e^{-{c_{[K]}}}}{c_{[K]}!}\)</span>
+That for the second case is <span class="math notranslate nohighlight">\(\ell_1 := \log \frac{c_{Z}^{c_{Z}} e^{-{c_{Z}}}}{c_{Z}!} + \log \frac{c_{Z^\mathrm{c}}^{c_{Z^\mathrm{c}}} e^{-{c_{Z^\mathrm{c}}}}}{c_{Z^\mathrm{c}}!}\)</span></p>
+<p>Thus, we use
 <span class="math notranslate nohighlight">\((\ell_1 - \ell_0) [[c_Z &gt; c_{Z^\mathrm{c}}]]\)</span>
 as the score.</p>
-</div></blockquote>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="echelon.scan_oracle.PoissonScanOracleBase._abc_impl">
 <span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;_abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#echelon.scan_oracle.PoissonScanOracleBase._abc_impl" title="Permalink to this definition"></a></dt>
