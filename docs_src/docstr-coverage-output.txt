@@ -1,0 +1,95 @@
+Using deprecated --skipmagic, should use --skip-magic
+Using deprecated --skipfiledoc, should use --skip-file-doc
+Using deprecated --failunder, should use --fail-under
+
+File: "/Users/teshima/echelon/echelon-py/src/echelon/algorithms/find_echelon_hierarchy.py"
+ - No docstring for `_EchelonSetOracle.__init__`
+ - No docstring for `_EchelonSetOracle.is_connected`
+ Needed: 6; Found: 4; Missing: 2; Coverage: 66.7%
+
+
+File: "/Users/teshima/echelon/echelon-py/src/echelon/algorithms/util.py"
+ - No docstring for `_lists_intersection`
+ - No docstring for `_flatten_lists`
+ Needed: 2; Found: 0; Missing: 2; Coverage: 0.0%
+
+
+File: "/Users/teshima/echelon/echelon-py/src/echelon/api/base.py"
+ - No docstring for `EchelonAnalysis`
+ - No docstring for `dendrogram.echelon_to_label`
+ - No docstring for `EchelonAnalysis._hotspots`
+ - No docstring for `EchelonAnalysis._run_analysis`
+ Needed: 9; Found: 5; Missing: 4; Coverage: 55.6%
+
+
+File: "/Users/teshima/echelon/echelon-py/src/echelon/api/ndarray_api.py"
+ - No docstring for `NdarrayEchelonAnalysis`
+ - No docstring for `OneDimEchelonAnalysis`
+ - No docstring for `TwoDimEchelonAnalysis.__init__`
+ Needed: 7; Found: 4; Missing: 3; Coverage: 57.1%
+
+
+File: "/Users/teshima/echelon/echelon-py/src/echelon/contrib/gis.py"
+ - No docstring for `read_shp`
+ - No docstring for `plot_labeled_map`
+ Needed: 2; Found: 0; Missing: 2; Coverage: 0.0%
+
+
+File: "/Users/teshima/echelon/echelon-py/src/echelon/oracle.py"
+ - No docstring for `_lists_intersection`
+ - No docstring for `_mock_pytest_data`
+ - No docstring for `EchelonOracleBase`
+ - No docstring for `EchelonOracleBase.max_nb_indices`
+ - No docstring for `EchelonOracleBase.is_neighbor`
+ - No docstring for `EchelonOracleBase.pop_extend_family`
+ - No docstring for `NdarrayEchelonOracle`
+ - No docstring for `NdarrayEchelonOracle.copy_indices`
+ - No docstring for `DataFrameEchelonOracle`
+ - No docstring for `DataFrameEchelonOracle.__init__`
+ - No docstring for `DataFrameEchelonOracle.copy_indices`
+ - No docstring for `DataFrameEchelonOracle.nb`
+ - No docstring for `DataFrameEchelonOracle.max_indices`
+ Needed: 22; Found: 9; Missing: 13; Coverage: 40.9%
+
+
+File: "/Users/teshima/echelon/echelon-py/src/echelon/scan_oracle.py"
+ - No docstring for `EchelonScanStop`
+ - No docstring for `ScanOracleBase`
+ - No docstring for `ScanOracleBase.score`
+ - No docstring for `ApproxBinomialScanOracleBase.__init__`
+ - No docstring for `ApproxBinomialScanOracleBase.score`
+ - No docstring for `ApproxBinomialScanOracleBase.total_count`
+ - No docstring for `ApproxBinomialScanOracleBase.marked_count`
+ - No docstring for `PoissonScanOracleBase.__init__`
+ - No docstring for `PoissonScanOracleBase._score`
+ - No docstring for `PoissonScanOracleBase.score`
+ - No docstring for `PoissonScanOracleBase.count`
+ - No docstring for `NdarrayBinomialScanOracle.__init__`
+ - No docstring for `NdarrayBinomialScanOracle.total_count`
+ - No docstring for `NdarrayBinomialScanOracle.marked_count`
+ - No docstring for `NdarrayPoissonScanOracle.__init__`
+ - No docstring for `NdarrayPoissonScanOracle.count`
+ - No docstring for `DataFrameBinomialScanOracle.__init__`
+ - No docstring for `DataFrameBinomialScanOracle._subset`
+ - No docstring for `DataFrameBinomialScanOracle.total_count`
+ - No docstring for `DataFrameBinomialScanOracle.marked_count`
+ - No docstring for `DataFramePoissonScanOracle.__init__`
+ - No docstring for `DataFramePoissonScanOracle._subset`
+ - No docstring for `DataFramePoissonScanOracle.count`
+ Needed: 30; Found: 7; Missing: 23; Coverage: 23.3%
+
+
+File: "/Users/teshima/echelon/echelon-py/src/echelon/test.py"
+ - No docstring for `_mock_1dim_data`
+ - No docstring for `_mock_2dim_data`
+ - No docstring for `_visualize_echelons`
+ - No docstring for `AdjacencyOracleMockup`
+ - No docstring for `AdjacencyOracleMockup.__init__`
+ - No docstring for `AdjacencyOracleMockup.is_neighbor`
+ Needed: 7; Found: 1; Missing: 6; Coverage: 14.3%
+
+
+Overall statistics for 14 files (skipped all non-init magic methods) (skipped file-level docstrings):
+Needed: 92  -  Found: 37  -  Missing: 55
+Total coverage: 40.2%  -  Grade: Not bad
+Docstring coverage badge saved to '/Users/teshima/echelon/echelon-py/docs_src/coverage_badge.svg'
