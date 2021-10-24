@@ -1,6 +1,8 @@
 # echelon-py: Echelon analysis in Python
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/takeshi-teshima/echelon-py/blob/master/LICENSE)
 [![Documentation Coverage Rate Badge](./docs_src/coverage_badge.svg)](https://takeshi-teshima.github.io/echelon-py/index.html)
+[![PyPI version](https://badge.fury.io/py/echelon-py.svg)](https://badge.fury.io/py/echelon-py)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/echelon-py)](https://takeshi-teshima.github.io/echelon-py/index.html)
 
 ## Install
 `$ pip install echelon-py`
