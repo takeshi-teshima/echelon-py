@@ -19,7 +19,7 @@ Check out some [examples (echelon-py-examples)](https://takeshi-teshima.github.i
 Check out the [documentation](https://takeshi-teshima.github.io/echelon-py/).
 
 ## Notes for Contributors
-[documentation](./README-dev.md).
+[Notes for Contributors](./README-dev.md).
 
 ## References
 - R Package [‘echelon’](https://cran.r-project.org/web/packages/echelon/echelon.pdf)
