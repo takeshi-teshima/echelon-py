@@ -6,6 +6,10 @@
 Welcome to echelon-py's documentation!
 ======================================
 
+|logo|
+
+.. |logo| image:: logo.svg
+
 ..
    Overview
    Basics
