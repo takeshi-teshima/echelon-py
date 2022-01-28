@@ -6,6 +6,7 @@
   <title>Welcome to echelon-py’s documentation! &mdash; echelon-py 1.0.3 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -82,22 +83,35 @@
 </pre></div>
 </div>
 </div>
-<div class="section" id="quick-start">
-<h2>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline"></a></h2>
-<p>Learn by <a class="reference external" href="https://takeshi-teshima.github.io/echelon-py-examples/">examples (echelon-py-examples)</a>!</p>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h2>
+<p>Various examples are implemented in the <a class="reference external" href="https://takeshi-teshima.github.io/echelon-py-examples/">echelon-py-examples</a> repository.</p>
 </div>
 <div class="section" id="the-api-modules">
 <h2>The API modules<a class="headerlink" href="#the-api-modules" title="Permalink to this headline"></a></h2>
-<p>All functionalities are accessible from the API classes.
-They are also <em>examples</em> of how the algorithms and other codes can be combined to serve the analysis.</p>
-<p><a class="reference internal" href="src/echelon.api.html"><span class="doc">echelon.api package</span></a></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="src/echelon.api.dataframe_api.html"><span class="doc">echelon.api.dataframe_api module</span></a></p></li>
+<li><p><a class="reference internal" href="src/echelon.api.ndarray_api.html"><span class="doc">echelon.api.ndarray_api module</span></a></p></li>
+</ul>
+<p>The API modules provide easy interface to access the integrated functionalities of the package.</p>
+<p>In case these APIs do not match your needs, you can also combine the algorithms separately.
+To learn how to combine the different modules in this package, you can look into the API code.</p>
+<p>Some of the functionalities that are common to the APIs are implemented in the base module (<a class="reference internal" href="src/echelon.api.base.html"><span class="doc">echelon.api.base module</span></a>).</p>
+</div>
+<div class="section" id="the-contributed-modules">
+<h2>The Contributed modules<a class="headerlink" href="#the-contributed-modules" title="Permalink to this headline"></a></h2>
+<p>The “contributed” modules provide utility functionalities to handle external packages, various data types, etc.
+Currently, the following modules are available:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="src/echelon.contrib.geo.html"><span class="doc">echelon.contrib.geo module</span></a></p></li>
+</ul>
 </div>
 <div class="section" id="the-module-contents">
 <h2>The module contents<a class="headerlink" href="#the-module-contents" title="Permalink to this headline"></a></h2>
+<p>These modules are called from the API modules.</p>
 <ul>
 <li><p><strong>Algorithms</strong>:
-implemented in the following modules.
-How to combine the modules can be found in the API modules.</p>
+implemented in the following modules.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="src/echelon.algorithms.find_peak_echelons.html">echelon.algorithms.find_peak_echelons module</a></li>
@@ -110,7 +124,7 @@ How to combine the modules can be found in the API modules.</p>
 </li>
 <li><p><strong>Oracles</strong>:
 abstract the access to the data.
-For custom input data structures, one can implement a new oracle (inheriting <code class="docutils literal notranslate"><span class="pre">EchelonOracleBase</span></code>)
+For custom input data structures, you can implement a new oracle (inheriting <code class="docutils literal notranslate"><span class="pre">EchelonOracleBase</span></code>)
 using the implemented classes such as <code class="docutils literal notranslate"><span class="pre">DataFrameEchelonOracle</span></code> as examples.</p>
 <div class="toctree-wrapper compound">
 <ul>

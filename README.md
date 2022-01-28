@@ -1,4 +1,8 @@
 # echelon-py: Echelon analysis in Python
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/takeshi-teshima/echelon-py/blob/master/LICENSE)
+[![Documentation Coverage Rate Badge](./docs_src/coverage_badge.svg)](https://takeshi-teshima.github.io/echelon-py/index.html)
+[![PyPI version](https://badge.fury.io/py/echelon-py.svg)](https://badge.fury.io/py/echelon-py)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/echelon-py)](https://takeshi-teshima.github.io/echelon-py/index.html)
 
 ## Install
 `$ pip install echelon-py`
@@ -14,27 +18,8 @@ Check out some [examples (echelon-py-examples)](https://takeshi-teshima.github.i
 ## How to Use
 Check out the [documentation](https://takeshi-teshima.github.io/echelon-py/).
 
-## Note for Developers
-- ``$ pip install -r requirements-dev.txt``
-
-### Testing
-- ``$ make test``.
-
-### Deploying
-- ``$ make test``.
-- Bump version in `echelon/__init__.py`,
-- File the changes in `docs_src/CHANGELOG.rst`,
-- and run `$ make docs`.
-- Make sure that ``$ make test-build`` runs without an error. Try ``$ pip install dist/echelon-py-<version>.tar.gz`` if you need.
-- Create a Release on GitHub (the deployment procedure is configured by `.github/workflows/python-publish.yml`).
-
-### Documenting
-- ``$ make docs``
-  - This also runs ``pytest``.
-- Edit ``conf.py`` to change the configurations.
-- The following contents are auto-generated (and thus overwritten).
-  - ``docs_src/src``
-  - ``docs``
+## Notes for Contributors
+[Notes for Contributors](./README-dev.md).
 
 ## References
 - R Package [‘echelon’](https://cran.r-project.org/web/packages/echelon/echelon.pdf)

@@ -23,24 +23,42 @@ Installation
 
   $ pip install echelon-py
 
-Quick Start
-------------
-Learn by `examples (echelon-py-examples) <https://takeshi-teshima.github.io/echelon-py-examples/>`_!
+Usage
+-----
+Various examples are implemented in the `echelon-py-examples <https://takeshi-teshima.github.io/echelon-py-examples/>`_ repository.
 
 
 The API modules
 ---------------
-All functionalities are accessible from the API classes.
-They are also *examples* of how the algorithms and other codes can be combined to serve the analysis.
 
-:doc:`src/echelon.api`
+* :doc:`src/echelon.api.dataframe_api`
+* :doc:`src/echelon.api.ndarray_api`
+
+The API modules provide easy interface to access the integrated functionalities of the package.
+
+In case these APIs do not match your needs, you can also combine the algorithms separately.
+To learn how to combine the different modules in this package, you can look into the API code.
+
+Some of the functionalities that are common to the APIs are implemented in the base module (:doc:`src/echelon.api.base`).
+
+..
+   All functionalities are accessible from the API classes.
+   They are also *examples* of how the algorithms and other codes can be combined to serve the analysis.
+
+The Contributed modules
+---------------
+The "contributed" modules provide utility functionalities to handle external packages, various data types, etc.
+Currently, the following modules are available:
+
+* :doc:`src/echelon.contrib.geo`
+
 
 The module contents
 --------
+These modules are called from the API modules.
 
 * **Algorithms**:
   implemented in the following modules.
-  How to combine the modules can be found in the API modules.
 
   .. toctree::
     :maxdepth: 4
@@ -53,7 +71,7 @@ The module contents
 
 * **Oracles**:
   abstract the access to the data.
-  For custom input data structures, one can implement a new oracle (inheriting ``EchelonOracleBase``)
+  For custom input data structures, you can implement a new oracle (inheriting ``EchelonOracleBase``)
   using the implemented classes such as ``DataFrameEchelonOracle`` as examples.
 
   .. toctree::

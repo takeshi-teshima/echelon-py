@@ -6,6 +6,7 @@
   <title>echelon.api.dataframe_api module &mdash; echelon-py 1.0.3 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -75,6 +76,32 @@
              
   <div class="section" id="module-echelon.api.dataframe_api">
 <span id="echelon-api-dataframe-api-module"></span><h1>echelon.api.dataframe_api module<a class="headerlink" href="#module-echelon.api.dataframe_api" title="Permalink to this headline"></a></h1>
+<div class="section" id="usage-visualization">
+<h2>Usage visualization<a class="headerlink" href="#usage-visualization" title="Permalink to this headline"></a></h2>
+<div class="graphviz"><img src="../_images/graphviz-f341632e6cbb2ab233ea111867584a9ac8cbbbb7.png" alt="digraph G1 {
+  Data [shape=oval, label=&quot;Data (pd.DataFrame)
+* Observed values
+* Adjacency information&quot;];
+
+  API [shape=box, color=blue, label=&quot;API's __call__() method&quot;];
+  Echelon [shape=oval, color=red, label=&quot;Echelon List Object&quot;];
+  Data -&gt; API -&gt; Echelon;
+
+  API_hotspots [shape=box, color=blue, label=&quot;API's hotspots() method&quot;];
+  ScoreData [shape=oval, label=&quot;Auxiliary data
+for scoring
+(pd.DataFrame)&quot;];
+  Hotspots [shape=oval, label=&quot;Hotspot candidates&quot;];
+  ScoreData -&gt; API_hotspots; Echelon -&gt; API_hotspots -&gt; Hotspots;
+
+  API_cluster [shape=box, color=blue, label=&quot;API's cluster() method&quot;];
+  Clusters [shape=oval, label=&quot;Echelon clusters&quot;];
+  Echelon -&gt; API_cluster -&gt; Clusters;
+
+  API_dendrogram [shape=box, color=blue, label=&quot;API's dendrogram() method&quot;];
+  Dendrogram [shape=oval, label=&quot;Dendrogram&quot;];
+  Echelon -&gt; API_dendrogram -&gt; Dendrogram;
+}" class="graphviz" /></div>
 <dl class="py class">
 <dt class="sig sig-object py" id="echelon.api.dataframe_api.DataFrameEchelonAnalysis">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">DataFrameEchelonAnalysis</span></span><a class="reference internal" href="../_modules/echelon/api/dataframe_api.html#DataFrameEchelonAnalysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.api.dataframe_api.DataFrameEchelonAnalysis" title="Permalink to this definition"></a></dt>
@@ -211,6 +238,7 @@
 
 </dd></dl>
 
+</div>
 </div>
 
 

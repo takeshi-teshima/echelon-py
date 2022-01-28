@@ -12,8 +12,10 @@ from typing import Tuple, List, Union, Any, Dict, NewType
 from anytree import Node
 from echelon.typing import EchelonsType
 
+
 Result_EchelonCluster = NewType('Result_EchelonCluster', pd.DataFrame)
 """The result of echelon cluster analysis."""
+
 
 Result_EchelonHotspot = NewType('Result_EchelonHotspot', pd.DataFrame)
 """The result of echelon scan for hot-spot detection."""

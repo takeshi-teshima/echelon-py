@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>echelon.contrib.geo module &mdash; echelon-py 1.0.3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> echelon-py
+          </a>
+              <div class="version">
+                1.0.3
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="echelon.algorithms.find_peak_echelons.html">echelon.algorithms.find_peak_echelons module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="echelon.algorithms.find_foundation_echelons.html">echelon.algorithms.find_foundation_echelons module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="echelon.algorithms.find_echelon_clusters.html">echelon.algorithms.find_echelon_clusters module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="echelon.algorithms.find_echelon_hierarchy.html">echelon.algorithms.find_echelon_hierarchy module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="echelon.algorithms.find_echelon_hotspots.html">echelon.algorithms.find_echelon_hotspots module</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="echelon.oracle.html">echelon.oracle module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="echelon.scan_oracle.html">echelon.scan_oracle module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">echelon-py</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>echelon.contrib.geo module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/src/echelon.contrib.geo.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="module-echelon.contrib.geo">
+<span id="echelon-contrib-geo-module"></span><h1>echelon.contrib.geo module<a class="headerlink" href="#module-echelon.contrib.geo" title="Permalink to this headline"></a></h1>
+<div class="section" id="usage-visualization">
+<h2>Usage visualization<a class="headerlink" href="#usage-visualization" title="Permalink to this headline"></a></h2>
+<div class="graphviz"><img src="../_images/graphviz-223d1beefb944af57d3bf9292bcb8ba44d105293.png" alt="digraph G1 {
+  Data [shape=oval, label=&quot;Observed values
+(pd.DataFrame)&quot;];
+  Shapefile [shape=oval, label=&quot;Shapefile data
+(gpd.DataFrame)&quot;];
+  API [shape=box, color=blue, label=&quot;API's __call__() method&quot;];
+  Echelon [shape=oval, color=red, label=&quot;Echelon List Object&quot;];
+  Shapefile -&gt; API;
+  Data -&gt; API -&gt; Echelon;
+
+  API_hotspots [shape=box, color=blue, label=&quot;API's hotspots() method&quot;];
+  ScoreData [shape=oval, label=&quot;Auxiliary data
+for scoring
+(pd.DataFrame)&quot;];
+  Hotspots [shape=oval, color=red, label=&quot;Hotspot candidates&quot;];
+  ScoreData -&gt; API_hotspots; Echelon -&gt; API_hotspots -&gt; Hotspots;
+
+  API_cluster [shape=box, color=blue, label=&quot;API's cluster() method&quot;];
+  Clusters [shape=oval, color=red, label=&quot;Echelon clusters&quot;];
+  Echelon -&gt; API_cluster -&gt; Clusters;
+
+  API_dendrogram [shape=box, color=blue, label=&quot;API's dendrogram() method&quot;];
+  Dendrogram [shape=oval, color=red, label=&quot;Dendrogram&quot;];
+  Echelon -&gt; API_dendrogram -&gt; Dendrogram;
+
+  print [shape=none]
+  Dendrogram -&gt; print;
+
+  API_geoplot_hotspot [shape=box, color=blue, label=&quot;API's plot_hotspot() method&quot;];
+  Geoplot_hotspot [shape=oval, color=red, label=&quot;Hotspot map&quot;];
+  Hotspots -&gt; API_geoplot_hotspot -&gt; Geoplot_hotspot;
+
+  API_geoplot_cluster [shape=box, color=blue, label=&quot;API's plot_cluster() method&quot;];
+  Geoplot_cluster [shape=oval, color=red, label=&quot;Cluster coloring map&quot;];
+  Clusters -&gt; API_geoplot_cluster -&gt; Geoplot_cluster;
+}" class="graphviz" /></div>
+<dl class="py class">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISAdjacency">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">GISAdjacency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjacency_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Queen'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/contrib/geo.html#GISAdjacency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.contrib.geo.GISAdjacency" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Helper class to generate adjacency information from Shapefiles (.shp) or GeoPandas DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gdf</strong> (<em>geopandas.geodataframe.GeoDataFrame</em>) – GeoDataFrame with an ID column indicated by <code class="docutils literal notranslate"><span class="pre">id_col</span></code>.</p></li>
+<li><p><strong>id_col</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – column name of the ID. The index is used if <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>adjacency_type</strong> (<em>str</em>) – the name of the adjacency type (the name is used to import a submodule from <code class="docutils literal notranslate"><span class="pre">libpysal.weights</span></code>).</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The default <code class="docutils literal notranslate"><span class="pre">adjacency_type='Queen'</span></code> means using “Queen” adjacency graph.
+Two polygons are connected if they share a single point on their boundary
+(analogously to the “Moore” neighborhood).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISAdjacency._build_adjacency">
+<span class="sig-name descname"><span class="pre">_build_adjacency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gdf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/contrib/geo.html#GISAdjacency._build_adjacency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.contrib.geo.GISAdjacency._build_adjacency" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISAdjacency._build_series">
+<span class="sig-name descname"><span class="pre">_build_series</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/contrib/geo.html#GISAdjacency._build_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.contrib.geo.GISAdjacency._build_series" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISAdjacency.from_shapefile">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_shapefile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape_file_path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/contrib/geo.html#GISAdjacency.from_shapefile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.contrib.geo.GISAdjacency.from_shapefile" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISAdjacency.to_networkx">
+<span class="sig-name descname"><span class="pre">to_networkx</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/contrib/geo.html#GISAdjacency.to_networkx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.contrib.geo.GISAdjacency.to_networkx" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISAdjacency.to_series">
+<span class="sig-name descname"><span class="pre">to_series</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/contrib/geo.html#GISAdjacency.to_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.contrib.geo.GISAdjacency.to_series" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISEchelonAnalysis">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">GISEchelonAnalysis</span></span><a class="reference internal" href="../_modules/echelon/contrib/geo.html#GISEchelonAnalysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.contrib.geo.GISEchelonAnalysis" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="echelon.api.dataframe_api.html#echelon.api.dataframe_api.DataFrameEchelonAnalysis" title="echelon.api.dataframe_api.DataFrameEchelonAnalysis"><code class="xref py py-class docutils literal notranslate"><span class="pre">echelon.api.dataframe_api.DataFrameEchelonAnalysis</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISEchelonAnalysis.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_col</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/contrib/geo.html#GISEchelonAnalysis.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.contrib.geo.GISEchelonAnalysis.__call__" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – the dataframe containing the indices, observed values, and adjacency information.</p></li>
+<li><p><strong>value_colname</strong> – column name of <code class="docutils literal notranslate"><span class="pre">df</span></code> corresponding to the observed values.</p></li>
+<li><p><strong>id_colname</strong> – column name of <code class="docutils literal notranslate"><span class="pre">df</span></code> corresponding to the index values. The values in this column needs to be unique.</p></li>
+<li><p><strong>adjacency_colname</strong> – column name of <code class="docutils literal notranslate"><span class="pre">df</span></code> corresponding to the adjacency information. The cells must contain lists of indices to which the record is adjacent.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISEchelonAnalysis._hotspots">
+<span class="sig-name descname"><span class="pre">_hotspots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan_oracle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.contrib.geo.GISEchelonAnalysis._hotspots" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result</strong> (<a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis"><em>echelon.api.base.Result_EchelonAnalysis</em></a>) – </p></li>
+<li><p><strong>scan_oracle</strong> (<a class="reference internal" href="echelon.scan_oracle.html#echelon.scan_oracle.ScanOracleBase" title="echelon.scan_oracle.ScanOracleBase"><em>echelon.scan_oracle.ScanOracleBase</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Result_EchelonHotspot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISEchelonAnalysis._run_analysis">
+<span class="sig-name descname"><span class="pre">_run_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">oracle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.contrib.geo.GISEchelonAnalysis._run_analysis" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>oracle</strong> (<a class="reference internal" href="echelon.oracle.html#echelon.oracle.EchelonOracleBase" title="echelon.oracle.EchelonOracleBase"><em>echelon.oracle.EchelonOracleBase</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis">echelon.api.base.Result_EchelonAnalysis</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISEchelonAnalysis.cluster">
+<span class="sig-name descname"><span class="pre">cluster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.contrib.geo.GISEchelonAnalysis.cluster" title="Permalink to this definition"></a></dt>
+<dd><p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">echelon.test</span> <span class="kn">import</span> <span class="n">_mock_1dim_data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">_mock_1dim_data</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">analyzer</span> <span class="o">=</span> <span class="n">EchelonAnalysis</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">echelon.oracle</span> <span class="kn">import</span> <span class="n">NdarrayEchelonOracle</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">oracle</span> <span class="o">=</span> <span class="n">NdarrayEchelonOracle</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">_run_analysis</span><span class="p">(</span><span class="n">oracle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">analyzer</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">  representatives                               indices</span>
+<span class="go">0            [16]  [16, 17, 15, 14, 18, 19, 20, 21, 22]</span>
+<span class="go">1            [13]               [13, 12, 14, 11, 10, 9]</span>
+<span class="go">2             [6]                    [6, 5, 7, 4, 8, 9]</span>
+<span class="go">3             [3]                       [3, 2, 4, 1, 0]</span>
+<span class="go">4            [23]                          [23, 22, 24]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis"><em>echelon.api.base.Result_EchelonAnalysis</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Result_EchelonCluster</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISEchelonAnalysis.dendrogram">
+<span class="sig-name descname"><span class="pre">dendrogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/contrib/geo.html#GISEchelonAnalysis.dendrogram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.contrib.geo.GISEchelonAnalysis.dendrogram" title="Permalink to this definition"></a></dt>
+<dd><p>Draw a simple dendrogram-like figure of the echelon hierarchy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result</strong> – the result object of the echelon construction.</p></li>
+<li><p><strong>plot_config_dict</strong> – the dictionary to configure the visualization.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISEchelonAnalysis.hotspots">
+<span class="sig-name descname"><span class="pre">hotspots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'poisson'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echelon.contrib.geo.GISEchelonAnalysis.hotspots" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – <p>tuple of data etc. The required data formats depend on the <code class="docutils literal notranslate"><span class="pre">score</span></code> parameter.</p>
+<ul>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">score</span> <span class="pre">==</span> <span class="pre">'poisson'</span></code>,</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">data</span> <span class="pre">is</span> <span class="pre">None</span></code>, the original data is used.</p></li>
+<li><p>Otherwise, <code class="docutils literal notranslate"><span class="pre">data</span></code> should be a tuple <code class="docutils literal notranslate"><span class="pre">(df:</span> <span class="pre">pd.DataFrame,</span> <span class="pre">id_colname:</span> <span class="pre">str,</span> <span class="pre">id_count:</span> <span class="pre">str)</span></code>, and it will be used to score the hot-spot-ness.
+<code class="docutils literal notranslate"><span class="pre">df</span></code> is the data. <code class="docutils literal notranslate"><span class="pre">id_colname</span></code> is the column name of the indices.
+<code class="docutils literal notranslate"><span class="pre">id_count</span></code> indicates the column containing the count of each index (the realized values of the Poisson distributions).</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">score</span> <span class="pre">==</span> <span class="pre">'binomial'</span></code>,</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code> should be a tuple <code class="docutils literal notranslate"><span class="pre">(df:</span> <span class="pre">pd.DataFrame,</span> <span class="pre">id_colname:</span> <span class="pre">str,</span> <span class="pre">total_count_colname:</span> <span class="pre">str,</span> <span class="pre">marked_count_colname:</span> <span class="pre">str)</span></code>, and it will be used to score the hot-spot-ness.
+<code class="docutils literal notranslate"><span class="pre">df</span></code> is the data. <code class="docutils literal notranslate"><span class="pre">id_colname</span></code> is the column name of the indices.
+<code class="docutils literal notranslate"><span class="pre">total_count_colname</span></code> indicates the column containing the total population of each index (the number of trials in the binomial distributions).
+<code class="docutils literal notranslate"><span class="pre">marked_count_colname</span></code> indicates the column containing the positive population of each index (the realized values of the binomial distributions).</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</p></li>
+<li><p><strong>result</strong> (<a class="reference internal" href="echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis" title="echelon.api.base.Result_EchelonAnalysis"><em>echelon.api.base.Result_EchelonAnalysis</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISEchelonAnalysis.plot_adjacency">
+<span class="sig-name descname"><span class="pre">plot_adjacency</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/contrib/geo.html#GISEchelonAnalysis.plot_adjacency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.contrib.geo.GISEchelonAnalysis.plot_adjacency" title="Permalink to this definition"></a></dt>
+<dd><p>Plot adjacency graph with shapes and names.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISEchelonAnalysis.plot_column">
+<span class="sig-name descname"><span class="pre">plot_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/contrib/geo.html#GISEchelonAnalysis.plot_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.contrib.geo.GISEchelonAnalysis.plot_column" title="Permalink to this definition"></a></dt>
+<dd><p>Plot heatmap (specified column) with shapes and names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value_transform</strong> (<em>Optional</em><em>[</em><em>callable</em><em>]</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISEchelonAnalysis.plot_hotspot">
+<span class="sig-name descname"><span class="pre">plot_hotspot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hotspots</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/contrib/geo.html#GISEchelonAnalysis.plot_hotspot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.contrib.geo.GISEchelonAnalysis.plot_hotspot" title="Permalink to this definition"></a></dt>
+<dd><p>Plot heatmap (hotspot score) with shapes and names.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISPlotter">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">GISPlotter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/contrib/geo.html#GISPlotter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.contrib.geo.GISPlotter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Helper class to plot geographical data.
+Some information can be stored by the class, but the configurations can be overwritten in each plot:
+- Default figure size
+- GeoPandas DataFrame of (ID, Shape) table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gdf</strong> (<em>geopandas.geodataframe.GeoDataFrame</em>) – </p></li>
+<li><p><strong>name_col</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISPlotter._maybe_plot_names">
+<span class="sig-name descname"><span class="pre">_maybe_plot_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_plot_options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/contrib/geo.html#GISPlotter._maybe_plot_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.contrib.geo.GISPlotter._maybe_plot_names" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISPlotter._plot_labeled_map">
+<span class="sig-name descname"><span class="pre">_plot_labeled_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gdf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/contrib/geo.html#GISPlotter._plot_labeled_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.contrib.geo.GISPlotter._plot_labeled_map" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value_col</strong> (<em>str</em>) – </p></li>
+<li><p><strong>gdf</strong> (<em>Optional</em><em>[</em><em>geopandas.geodataframe.GeoDataFrame</em><em>]</em>) – </p></li>
+<li><p><strong>value_transform</strong> (<em>Optional</em><em>[</em><em>callable</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISPlotter._set_coords">
+<span class="sig-name descname"><span class="pre">_set_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/contrib/geo.html#GISPlotter._set_coords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.contrib.geo.GISPlotter._set_coords" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISPlotter.plot_adjacency">
+<span class="sig-name descname"><span class="pre">plot_adjacency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/contrib/geo.html#GISPlotter.plot_adjacency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.contrib.geo.GISPlotter.plot_adjacency" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>adj</strong> (<a class="reference internal" href="#echelon.contrib.geo.GISAdjacency" title="echelon.contrib.geo.GISAdjacency"><em>echelon.contrib.geo.GISAdjacency</em></a>) – </p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISPlotter.plot_hotspot">
+<span class="sig-name descname"><span class="pre">plot_hotspot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hotspots</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/contrib/geo.html#GISPlotter.plot_hotspot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.contrib.geo.GISPlotter.plot_hotspot" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>options</strong> (<em>dict</em>) – <p>dict containing the plot configurations.</p>
+<p>Dict keys:</p>
+<blockquote>
+<div><ul>
+<li><p>nth: How-many-th hot spot to plot.</p></li>
+<li><p>id_col: the column containing the IDs that appear in the hot-spot detection results.</p></li>
+</ul>
+</div></blockquote>
+</p></li>
+<li><p><strong>hotspots</strong> (<em>Result_EchelonHotspot</em>) – </p></li>
+<li><p><strong>label_col</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echelon.contrib.geo.GISPlotter.plot_values">
+<span class="sig-name descname"><span class="pre">plot_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'figsize':</span> <span class="pre">(40,</span> <span class="pre">40)}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">28</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/echelon/contrib/geo.html#GISPlotter.plot_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#echelon.contrib.geo.GISPlotter.plot_values" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value_col</strong> (<em>str</em>) – </p></li>
+<li><p><strong>value_transform</strong> (<em>Optional</em><em>[</em><em>callable</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Takeshi Teshima.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
