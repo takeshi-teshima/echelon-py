@@ -6,6 +6,7 @@
   <title>Index &mdash; echelon-py 1.0.3 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -82,6 +83,7 @@
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#M"><strong>M</strong></a>
@@ -100,6 +102,8 @@
       <li><a href="src/echelon.api.dataframe_api.html#echelon.api.dataframe_api.DataFrameEchelonAnalysis.__call__">__call__() (DataFrameEchelonAnalysis method)</a>
 
       <ul>
+        <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISEchelonAnalysis.__call__">(GISEchelonAnalysis method)</a>
+</li>
         <li><a href="src/echelon.api.ndarray_api.html#echelon.api.ndarray_api.NdarrayEchelonAnalysis.__call__">(NdarrayEchelonAnalysis method)</a>
 </li>
         <li><a href="src/echelon.api.ndarray_api.html#echelon.api.ndarray_api.OneDimEchelonAnalysis.__call__">(OneDimEchelonAnalysis method)</a>
@@ -123,6 +127,10 @@
         <li><a href="src/echelon.scan_oracle.html#echelon.scan_oracle.ScanOracleBase._abc_impl">(ScanOracleBase attribute)</a>
 </li>
       </ul></li>
+      <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISAdjacency._build_adjacency">_build_adjacency() (GISAdjacency method)</a>
+</li>
+      <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISAdjacency._build_series">_build_series() (GISAdjacency method)</a>
+</li>
       <li><a href="src/echelon.api.ndarray_api.html#echelon.api.ndarray_api.TwoDimEchelonAnalysis._canonical_twodim_adjacency_4">_canonical_twodim_adjacency_4() (TwoDimEchelonAnalysis method)</a>
 </li>
       <li><a href="src/echelon.api.ndarray_api.html#echelon.api.ndarray_api.TwoDimEchelonAnalysis._canonical_twodim_adjacency_8">_canonical_twodim_adjacency_8() (TwoDimEchelonAnalysis method)</a>
@@ -133,6 +141,8 @@
 
       <ul>
         <li><a href="src/echelon.api.base.html#echelon.api.base.EchelonAnalysis._hotspots">(EchelonAnalysis method)</a>
+</li>
+        <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISEchelonAnalysis._hotspots">(GISEchelonAnalysis method)</a>
 </li>
         <li><a href="src/echelon.api.ndarray_api.html#echelon.api.ndarray_api.NdarrayEchelonAnalysis._hotspots">(NdarrayEchelonAnalysis method)</a>
 </li>
@@ -149,16 +159,22 @@
         <li><a href="src/echelon.oracle.html#echelon.oracle._lists_intersection">(in module echelon.oracle)</a>
 </li>
       </ul></li>
+      <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISPlotter._maybe_plot_names">_maybe_plot_names() (GISPlotter method)</a>
+</li>
       <li><a href="src/echelon.test.html#echelon.test._mock_1dim_data">_mock_1dim_data() (in module echelon.test)</a>
 </li>
       <li><a href="src/echelon.test.html#echelon.test._mock_2dim_data">_mock_2dim_data() (in module echelon.test)</a>
 </li>
       <li><a href="src/echelon.oracle.html#echelon.oracle._mock_pytest_data">_mock_pytest_data() (in module echelon.oracle)</a>
 </li>
+      <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISPlotter._plot_labeled_map">_plot_labeled_map() (GISPlotter method)</a>
+</li>
       <li><a href="src/echelon.api.dataframe_api.html#echelon.api.dataframe_api.DataFrameEchelonAnalysis._run_analysis">_run_analysis() (DataFrameEchelonAnalysis method)</a>
 
       <ul>
         <li><a href="src/echelon.api.base.html#echelon.api.base.EchelonAnalysis._run_analysis">(EchelonAnalysis method)</a>
+</li>
+        <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISEchelonAnalysis._run_analysis">(GISEchelonAnalysis method)</a>
 </li>
         <li><a href="src/echelon.api.ndarray_api.html#echelon.api.ndarray_api.NdarrayEchelonAnalysis._run_analysis">(NdarrayEchelonAnalysis method)</a>
 </li>
@@ -175,6 +191,8 @@
         <li><a href="src/echelon.scan_oracle.html#echelon.scan_oracle.PoissonScanOracleBase._score">(PoissonScanOracleBase method)</a>
 </li>
       </ul></li>
+      <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISPlotter._set_coords">_set_coords() (GISPlotter method)</a>
+</li>
       <li><a href="src/echelon.scan_oracle.html#echelon.scan_oracle.DataFrameBinomialScanOracle._subset">_subset() (DataFrameBinomialScanOracle method)</a>
 
       <ul>
@@ -209,6 +227,8 @@
 
       <ul>
         <li><a href="src/echelon.api.base.html#echelon.api.base.EchelonAnalysis.cluster">(EchelonAnalysis method)</a>
+</li>
+        <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISEchelonAnalysis.cluster">(GISEchelonAnalysis method)</a>
 </li>
         <li><a href="src/echelon.api.ndarray_api.html#echelon.api.ndarray_api.NdarrayEchelonAnalysis.cluster">(NdarrayEchelonAnalysis method)</a>
 </li>
@@ -249,12 +269,12 @@
 </li>
       <li><a href="src/echelon.scan_oracle.html#echelon.scan_oracle.DataFramePoissonScanOracle">DataFramePoissonScanOracle (class in echelon.scan_oracle)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/echelon.api.dataframe_api.html#echelon.api.dataframe_api.DataFrameEchelonAnalysis.dendrogram">dendrogram() (DataFrameEchelonAnalysis method)</a>
 
       <ul>
         <li><a href="src/echelon.api.base.html#echelon.api.base.EchelonAnalysis.dendrogram">(EchelonAnalysis method)</a>
+</li>
+        <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISEchelonAnalysis.dendrogram">(GISEchelonAnalysis method)</a>
 </li>
         <li><a href="src/echelon.api.ndarray_api.html#echelon.api.ndarray_api.NdarrayEchelonAnalysis.dendrogram">(NdarrayEchelonAnalysis method)</a>
 </li>
@@ -356,6 +376,13 @@
 </li>
       </ul></li>
       <li>
+    echelon.contrib.geo
+
+      <ul>
+        <li><a href="src/echelon.contrib.geo.html#module-echelon.contrib.geo">module</a>
+</li>
+      </ul></li>
+      <li>
     echelon.oracle
 
       <ul>
@@ -409,10 +436,10 @@
 </li>
       <li><a href="src/echelon.algorithms.find_foundation_echelons.html#echelon.algorithms.find_foundation_echelons.find_foundation_echelons">find_foundation_echelons() (in module echelon.algorithms.find_foundation_echelons)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/echelon.algorithms.find_peak_echelons.html#echelon.algorithms.find_peak_echelons.find_peak_echelons">find_peak_echelons() (in module echelon.algorithms.find_peak_echelons)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/echelon.oracle.html#echelon.oracle.DataFrameEchelonOracle.find_peaktop">find_peaktop() (DataFrameEchelonOracle method)</a>
 
       <ul>
@@ -422,6 +449,22 @@
 </li>
       </ul></li>
       <li><a href="src/echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis.foundation_echelons">foundation_echelons (Result_EchelonAnalysis attribute)</a>
+</li>
+      <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISAdjacency.from_shapefile">from_shapefile() (GISAdjacency class method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISAdjacency">GISAdjacency (class in echelon.contrib.geo)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISEchelonAnalysis">GISEchelonAnalysis (class in echelon.contrib.geo)</a>
+</li>
+      <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISPlotter">GISPlotter (class in echelon.contrib.geo)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -434,6 +477,8 @@
       <li><a href="src/echelon.api.dataframe_api.html#echelon.api.dataframe_api.DataFrameEchelonAnalysis.hotspots">hotspots() (DataFrameEchelonAnalysis method)</a>
 
       <ul>
+        <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISEchelonAnalysis.hotspots">(GISEchelonAnalysis method)</a>
+</li>
         <li><a href="src/echelon.api.ndarray_api.html#echelon.api.ndarray_api.NdarrayEchelonAnalysis.hotspots">(NdarrayEchelonAnalysis method)</a>
 </li>
         <li><a href="src/echelon.api.ndarray_api.html#echelon.api.ndarray_api.OneDimEchelonAnalysis.hotspots">(OneDimEchelonAnalysis method)</a>
@@ -525,6 +570,8 @@
 </li>
         <li><a href="src/echelon.api.ndarray_api.html#module-echelon.api.ndarray_api">echelon.api.ndarray_api</a>
 </li>
+        <li><a href="src/echelon.contrib.geo.html#module-echelon.contrib.geo">echelon.contrib.geo</a>
+</li>
         <li><a href="src/echelon.oracle.html#module-echelon.oracle">echelon.oracle</a>
 </li>
         <li><a href="src/echelon.scan_oracle.html#module-echelon.scan_oracle">echelon.scan_oracle</a>
@@ -578,10 +625,26 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/echelon.api.base.html#echelon.api.base.Result_EchelonAnalysis.peak_echelons">peak_echelons (Result_EchelonAnalysis attribute)</a>
 </li>
-      <li><a href="src/echelon.scan_oracle.html#echelon.scan_oracle.PoissonScanOracleBase">PoissonScanOracleBase (class in echelon.scan_oracle)</a>
+      <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISEchelonAnalysis.plot_adjacency">plot_adjacency() (GISEchelonAnalysis method)</a>
+
+      <ul>
+        <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISPlotter.plot_adjacency">(GISPlotter method)</a>
 </li>
+      </ul></li>
+      <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISEchelonAnalysis.plot_column">plot_column() (GISEchelonAnalysis method)</a>
+</li>
+      <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISEchelonAnalysis.plot_hotspot">plot_hotspot() (GISEchelonAnalysis method)</a>
+
+      <ul>
+        <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISPlotter.plot_hotspot">(GISPlotter method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISPlotter.plot_values">plot_values() (GISPlotter method)</a>
+</li>
+      <li><a href="src/echelon.scan_oracle.html#echelon.scan_oracle.PoissonScanOracleBase">PoissonScanOracleBase (class in echelon.scan_oracle)</a>
+</li>
       <li><a href="src/echelon.oracle.html#echelon.oracle.DataFrameEchelonOracle.pop_extend_family">pop_extend_family() (DataFrameEchelonOracle method)</a>
 
       <ul>
@@ -634,6 +697,10 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISAdjacency.to_networkx">to_networkx() (GISAdjacency method)</a>
+</li>
+      <li><a href="src/echelon.contrib.geo.html#echelon.contrib.geo.GISAdjacency.to_series">to_series() (GISAdjacency method)</a>
+</li>
       <li><a href="src/echelon.scan_oracle.html#echelon.scan_oracle.ApproxBinomialScanOracleBase.total_count">total_count() (ApproxBinomialScanOracleBase method)</a>
 
       <ul>

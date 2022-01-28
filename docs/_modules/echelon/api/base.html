@@ -6,6 +6,7 @@
   <title>echelon.api.base &mdash; echelon-py 1.0.3 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -88,8 +89,10 @@
 <span class="kn">from</span> <span class="nn">anytree</span> <span class="kn">import</span> <span class="n">Node</span>
 <span class="kn">from</span> <span class="nn">echelon.typing</span> <span class="kn">import</span> <span class="n">EchelonsType</span>
 
+
 <span class="n">Result_EchelonCluster</span> <span class="o">=</span> <span class="n">NewType</span><span class="p">(</span><span class="s1">&#39;Result_EchelonCluster&#39;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
 <span class="sd">&quot;&quot;&quot;The result of echelon cluster analysis.&quot;&quot;&quot;</span>
+
 
 <span class="n">Result_EchelonHotspot</span> <span class="o">=</span> <span class="n">NewType</span><span class="p">(</span><span class="s1">&#39;Result_EchelonHotspot&#39;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
 <span class="sd">&quot;&quot;&quot;The result of echelon scan for hot-spot detection.&quot;&quot;&quot;</span>

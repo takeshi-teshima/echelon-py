@@ -29,10 +29,21 @@ File: "/Users/teshima/echelon/echelon-py/src/echelon/api/ndarray_api.py"
  Needed: 7; Found: 4; Missing: 3; Coverage: 57.1%
 
 
-File: "/Users/teshima/echelon/echelon-py/src/echelon/contrib/gis.py"
- - No docstring for `read_shp`
- - No docstring for `plot_labeled_map`
- Needed: 2; Found: 0; Missing: 2; Coverage: 0.0%
+File: "/Users/teshima/echelon/echelon-py/src/echelon/contrib/geo.py"
+ - No docstring for `GISEchelonAnalysis`
+ - No docstring for `GISEchelonAnalysis.dendrogram`
+ - No docstring for `GISAdjacency.from_shapefile`
+ - No docstring for `GISAdjacency._build_adjacency`
+ - No docstring for `GISAdjacency._build_series`
+ - No docstring for `GISAdjacency.to_series`
+ - No docstring for `GISAdjacency.to_networkx`
+ - No docstring for `GISPlotter.__init__`
+ - No docstring for `GISPlotter._set_coords`
+ - No docstring for `GISPlotter._plot_labeled_map`
+ - No docstring for `GISPlotter._maybe_plot_names`
+ - No docstring for `GISPlotter.plot_values`
+ - No docstring for `GISPlotter.plot_adjacency`
+ Needed: 21; Found: 8; Missing: 13; Coverage: 38.1%
 
 
 File: "/Users/teshima/echelon/echelon-py/src/echelon/oracle.py"
@@ -90,6 +101,6 @@ File: "/Users/teshima/echelon/echelon-py/src/echelon/test.py"
 
 
 Overall statistics for 14 files (skipped all non-init magic methods) (skipped file-level docstrings):
-Needed: 92  -  Found: 37  -  Missing: 55
-Total coverage: 40.2%  -  Grade: Not bad
+Needed: 112  -  Found: 46  -  Missing: 66
+Total coverage: 41.1%  -  Grade: Not bad
 Docstring coverage badge saved to '/Users/teshima/echelon/echelon-py/docs_src/coverage_badge.svg'

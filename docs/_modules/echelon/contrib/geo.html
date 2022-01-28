@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>echelon.contrib.geo &mdash; echelon-py 1.0.3 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> echelon-py
+          </a>
+              <div class="version">
+                1.0.3
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/echelon.algorithms.find_peak_echelons.html">echelon.algorithms.find_peak_echelons module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/echelon.algorithms.find_foundation_echelons.html">echelon.algorithms.find_foundation_echelons module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/echelon.algorithms.find_echelon_clusters.html">echelon.algorithms.find_echelon_clusters module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/echelon.algorithms.find_echelon_hierarchy.html">echelon.algorithms.find_echelon_hierarchy module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/echelon.algorithms.find_echelon_hotspots.html">echelon.algorithms.find_echelon_hotspots module</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/echelon.oracle.html">echelon.oracle module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/echelon.scan_oracle.html">echelon.scan_oracle module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">echelon-py</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>echelon.contrib.geo</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for echelon.contrib.geo</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Usage visualization</span>
+<span class="sd">=============</span>
+
+<span class="sd">.. digraph:: G1</span>
+
+<span class="sd">   Data [shape=oval, label=&quot;Observed values \n (pd.DataFrame)&quot;];</span>
+<span class="sd">   Shapefile [shape=oval, label=&quot;Shapefile data \n (gpd.DataFrame)&quot;];</span>
+<span class="sd">   API [shape=box, color=blue, label=&quot;API&#39;s __call__() method&quot;];</span>
+<span class="sd">   Echelon [shape=oval, color=red, label=&quot;Echelon List Object&quot;];</span>
+<span class="sd">   Shapefile -&gt; API;</span>
+<span class="sd">   Data -&gt; API -&gt; Echelon;</span>
+
+<span class="sd">   API_hotspots [shape=box, color=blue, label=&quot;API&#39;s hotspots() method&quot;];</span>
+<span class="sd">   ScoreData [shape=oval, label=&quot;Auxiliary data \n for scoring \n (pd.DataFrame)&quot;];</span>
+<span class="sd">   Hotspots [shape=oval, color=red, label=&quot;Hotspot candidates&quot;];</span>
+<span class="sd">   ScoreData -&gt; API_hotspots; Echelon -&gt; API_hotspots -&gt; Hotspots;</span>
+
+<span class="sd">   API_cluster [shape=box, color=blue, label=&quot;API&#39;s cluster() method&quot;];</span>
+<span class="sd">   Clusters [shape=oval, color=red, label=&quot;Echelon clusters&quot;];</span>
+<span class="sd">   Echelon -&gt; API_cluster -&gt; Clusters;</span>
+
+<span class="sd">   API_dendrogram [shape=box, color=blue, label=&quot;API&#39;s dendrogram() method&quot;];</span>
+<span class="sd">   Dendrogram [shape=oval, color=red, label=&quot;Dendrogram&quot;];</span>
+<span class="sd">   Echelon -&gt; API_dendrogram -&gt; Dendrogram;</span>
+
+<span class="sd">   print [shape=none]</span>
+<span class="sd">   Dendrogram -&gt; print;</span>
+
+<span class="sd">   API_geoplot_hotspot [shape=box, color=blue, label=&quot;API&#39;s plot_hotspot() method&quot;];</span>
+<span class="sd">   Geoplot_hotspot [shape=oval, color=red, label=&quot;Hotspot map&quot;];</span>
+<span class="sd">   Hotspots -&gt; API_geoplot_hotspot -&gt; Geoplot_hotspot;</span>
+
+<span class="sd">   API_geoplot_cluster [shape=box, color=blue, label=&quot;API&#39;s plot_cluster() method&quot;];</span>
+<span class="sd">   Geoplot_cluster [shape=oval, color=red, label=&quot;Cluster coloring map&quot;];</span>
+<span class="sd">   Clusters -&gt; API_geoplot_cluster -&gt; Geoplot_cluster;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">importlib</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>  <span class="c1"># For reading shapefiles.</span>
+<span class="kn">import</span> <span class="nn">libpysal</span>  <span class="c1"># For constructing &quot;Queen&quot; neighborhoods.</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">to_rgba</span>
+<span class="kn">from</span> <span class="nn">echelon.api.dataframe_api</span> <span class="kn">import</span> <span class="n">DataFrameEchelonAnalysis</span>
+
+<span class="c1"># Type hinting</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">echelon.api.base</span> <span class="kn">import</span> <span class="n">Result_EchelonHotspot</span>
+
+<span class="n">required_modules</span> <span class="o">=</span> <span class="p">[</span><span class="n">gpd</span><span class="p">,</span> <span class="n">libpysal</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="GISEchelonAnalysis"><a class="viewcode-back" href="../../../src/echelon.contrib.geo.html#echelon.contrib.geo.GISEchelonAnalysis">[docs]</a><span class="k">class</span> <span class="nc">GISEchelonAnalysis</span><span class="p">(</span><span class="n">DataFrameEchelonAnalysis</span><span class="p">):</span>
+<div class="viewcode-block" id="GISEchelonAnalysis.__call__"><a class="viewcode-back" href="../../../src/echelon.contrib.geo.html#echelon.contrib.geo.GISEchelonAnalysis.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">gdf</span><span class="p">,</span> <span class="n">id_col</span><span class="p">,</span> <span class="n">name_col</span><span class="p">,</span> <span class="n">value_col</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id_col</span> <span class="o">=</span> <span class="n">id_col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span> <span class="o">=</span> <span class="n">GISAdjacency</span><span class="p">(</span><span class="n">gdf</span><span class="p">,</span> <span class="n">id_col</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id_col</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name_col</span> <span class="o">=</span> <span class="n">name_col</span>
+
+        <span class="n">_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">_df</span><span class="p">[</span><span class="s1">&#39;__adjacency&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span><span class="o">.</span><span class="n">to_series</span><span class="p">()[</span><span class="s1">&#39;adjacency&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="n">_df</span><span class="p">,</span> <span class="n">value_col</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_col</span><span class="p">,</span> <span class="s1">&#39;__adjacency&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GISEchelonAnalysis.dendrogram"><a class="viewcode-back" href="../../../src/echelon.contrib.geo.html#echelon.contrib.geo.GISEchelonAnalysis.dendrogram">[docs]</a>    <span class="k">def</span> <span class="nf">dendrogram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">idx_map_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_col</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">name_col</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s1">&#39;plot_config_dict&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;plot_config_dict&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;idx_map&#39;</span><span class="p">:</span> <span class="n">idx_map_dict</span><span class="o">.</span><span class="n">get</span><span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;plot_config_dict&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;idx_map&#39;</span><span class="p">:</span> <span class="n">idx_map_dict</span><span class="o">.</span><span class="n">get</span><span class="p">}</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">dendrogram</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GISEchelonAnalysis.plot_adjacency"><a class="viewcode-back" href="../../../src/echelon.contrib.geo.html#echelon.contrib.geo.GISEchelonAnalysis.plot_adjacency">[docs]</a>    <span class="k">def</span> <span class="nf">plot_adjacency</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plot adjacency graph with shapes and names.&quot;&quot;&quot;</span>
+        <span class="n">plotter</span> <span class="o">=</span> <span class="n">GISPlotter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gdf</span><span class="p">,</span> <span class="n">name_col</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name_col</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">plotter</span><span class="o">.</span><span class="n">plot_adjacency</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GISEchelonAnalysis.plot_hotspot"><a class="viewcode-back" href="../../../src/echelon.contrib.geo.html#echelon.contrib.geo.GISEchelonAnalysis.plot_hotspot">[docs]</a>    <span class="k">def</span> <span class="nf">plot_hotspot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hotspots</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plot heatmap (hotspot score) with shapes and names.&quot;&quot;&quot;</span>
+        <span class="n">plotter</span> <span class="o">=</span> <span class="n">GISPlotter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gdf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name_col</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">plotter</span><span class="o">.</span><span class="n">plot_hotspot</span><span class="p">(</span><span class="n">hotspots</span><span class="p">,</span> <span class="n">label_col</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name_col</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">nth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">id_col</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id_col</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="GISEchelonAnalysis.plot_column"><a class="viewcode-back" href="../../../src/echelon.contrib.geo.html#echelon.contrib.geo.GISEchelonAnalysis.plot_column">[docs]</a>    <span class="k">def</span> <span class="nf">plot_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colname</span><span class="p">,</span> <span class="n">value_transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">callable</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plot heatmap (specified column) with shapes and names.&quot;&quot;&quot;</span>
+        <span class="n">_merged_gdf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gdf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id_col</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">GISPlotter</span><span class="p">(</span><span class="n">_merged_gdf</span><span class="p">)</span><span class="o">.</span><span class="n">plot_values</span><span class="p">(</span><span class="n">colname</span><span class="p">,</span> <span class="n">value_transform</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="GISAdjacency"><a class="viewcode-back" href="../../../src/echelon.contrib.geo.html#echelon.contrib.geo.GISAdjacency">[docs]</a><span class="k">class</span> <span class="nc">GISAdjacency</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Helper class to generate adjacency information from Shapefiles (.shp) or GeoPandas DataFrame.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gdf</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">,</span> <span class="n">id_col</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">adjacency_type</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;Queen&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">            gdf : GeoDataFrame with an ID column indicated by ``id_col``.</span>
+<span class="sd">            id_col : column name of the ID. The index is used if ``None``.</span>
+<span class="sd">            adjacency_type : the name of the adjacency type (the name is used to import a submodule from ``libpysal.weights``).</span>
+<span class="sd">        Notes:</span>
+<span class="sd">            The default ``adjacency_type=&#39;Queen&#39;`` means using &quot;Queen&quot; adjacency graph.</span>
+<span class="sd">            Two polygons are connected if they share a single point on their boundary</span>
+<span class="sd">            (analogously to the &quot;Moore&quot; neighborhood).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adjacency_type</span> <span class="o">=</span> <span class="n">adjacency_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_adjacency</span><span class="p">(</span><span class="n">gdf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id_col</span> <span class="o">=</span> <span class="n">id_col</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gdf</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id_col</span><span class="p">])</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">id_col</span><span class="si">}</span><span class="s1"> is required to contain unique identifiers.&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GISAdjacency.from_shapefile"><a class="viewcode-back" href="../../../src/echelon.contrib.geo.html#echelon.contrib.geo.GISAdjacency.from_shapefile">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_shapefile</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span> <span class="n">shape_file_path</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
+        <span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">shape_file_path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">klass</span><span class="p">(</span><span class="n">gdf</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GISAdjacency._build_adjacency"><a class="viewcode-back" href="../../../src/echelon.contrib.geo.html#echelon.contrib.geo.GISAdjacency._build_adjacency">[docs]</a>    <span class="k">def</span> <span class="nf">_build_adjacency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gdf</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">libpysal</span> <span class="kn">import</span> <span class="n">weights</span>
+        <span class="n">adjacency_mod</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjacency_type</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">adjacency_mod</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">gdf</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GISAdjacency._build_series"><a class="viewcode-back" href="../../../src/echelon.contrib.geo.html#echelon.contrib.geo.GISAdjacency._build_series">[docs]</a>    <span class="k">def</span> <span class="nf">_build_series</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">adj_series</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adj</span><span class="o">.</span><span class="n">to_adjlist</span><span class="p">()</span>
+                      <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;focal&#39;</span><span class="p">)[</span><span class="s1">&#39;neighbor&#39;</span><span class="p">]</span>
+                      <span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">&#39;adjacency&#39;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_col</span><span class="p">:</span>
+            <span class="n">adj_series</span> <span class="o">=</span> <span class="n">adj_series</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">l</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">gdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">id_col</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">l</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">adj_series</span></div>
+
+<div class="viewcode-block" id="GISAdjacency.to_series"><a class="viewcode-back" href="../../../src/echelon.contrib.geo.html#echelon.contrib.geo.GISAdjacency.to_series">[docs]</a>    <span class="k">def</span> <span class="nf">to_series</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">adj_series</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_series</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">id_series</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gdf</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id_col</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">id_series</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gdf</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">id_series</span><span class="p">,</span> <span class="n">adj_series</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GISAdjacency.to_networkx"><a class="viewcode-back" href="../../../src/echelon.contrib.geo.html#echelon.contrib.geo.GISAdjacency.to_networkx">[docs]</a>    <span class="k">def</span> <span class="nf">to_networkx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">adj</span><span class="o">.</span><span class="n">to_networkx</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="GISPlotter"><a class="viewcode-back" href="../../../src/echelon.contrib.geo.html#echelon.contrib.geo.GISPlotter">[docs]</a><span class="k">class</span> <span class="nc">GISPlotter</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Helper class to plot geographical data.</span>
+<span class="sd">    Some information can be stored by the class, but the configurations can be overwritten in each plot:</span>
+<span class="sd">    - Default figure size</span>
+<span class="sd">    - GeoPandas DataFrame of (ID, Shape) table.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gdf</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">,</span> <span class="n">name_col</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name_col</span> <span class="o">=</span> <span class="n">name_col</span>
+
+<div class="viewcode-block" id="GISPlotter._set_coords"><a class="viewcode-back" href="../../../src/echelon.contrib.geo.html#echelon.contrib.geo.GISPlotter._set_coords">[docs]</a>    <span class="k">def</span> <span class="nf">_set_coords</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;coords&#39;</span> <span class="ow">in</span> <span class="n">c</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">c</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">representative_point</span><span class="p">()</span><span class="o">.</span><span class="n">coords</span><span class="p">[:])</span>
+        <span class="n">c</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">coords</span> <span class="ow">in</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">]]</span></div>
+
+<div class="viewcode-block" id="GISPlotter._plot_labeled_map"><a class="viewcode-back" href="../../../src/echelon.contrib.geo.html#echelon.contrib.geo.GISPlotter._plot_labeled_map">[docs]</a>    <span class="k">def</span> <span class="nf">_plot_labeled_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">gdf</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value_transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">callable</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value_transform</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">value_transform</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
+
+        <span class="n">c</span> <span class="o">=</span> <span class="n">gdf</span> <span class="k">if</span> <span class="n">gdf</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">gdf</span>
+
+        <span class="c1">## Coloring</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">[</span><span class="n">value_col</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">value_transform</span><span class="p">),</span>
+            <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span>
+            <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_maybe_plot_names</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ax</span></div>
+
+<div class="viewcode-block" id="GISPlotter._maybe_plot_names"><a class="viewcode-back" href="../../../src/echelon.contrib.geo.html#echelon.contrib.geo.GISPlotter._maybe_plot_names">[docs]</a>    <span class="k">def</span> <span class="nf">_maybe_plot_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name_plot_options</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name_col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">c</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">gdf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_coords</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+
+        <span class="c1">## Assign names</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name_col</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name_col</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name_col</span><span class="p">]</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">row</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="n">s</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                    <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                    <span class="n">bbox</span><span class="o">=</span><span class="p">{</span>
+                        <span class="s1">&#39;facecolor&#39;</span><span class="p">:</span> <span class="n">name_plot_options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;facecolor&#39;</span><span class="p">,</span> <span class="s1">&#39;white&#39;</span><span class="p">),</span>
+                        <span class="s1">&#39;alpha&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="s1">&#39;pad&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                        <span class="s1">&#39;edgecolor&#39;</span><span class="p">:</span><span class="s1">&#39;none&#39;</span>
+                    <span class="p">},</span>
+                    <span class="p">)</span></div>
+
+<div class="viewcode-block" id="GISPlotter.plot_values"><a class="viewcode-back" href="../../../src/echelon.contrib.geo.html#echelon.contrib.geo.GISPlotter.plot_values">[docs]</a>    <span class="k">def</span> <span class="nf">plot_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                    <span class="n">value_transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">callable</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">plot_options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span><span class="mi">40</span><span class="p">)),</span>
+                    <span class="n">fontsize</span><span class="o">=</span><span class="mi">28</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">to_rgba</span>
+        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+        <span class="k">if</span> <span class="n">value_transform</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">value_transform</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
+        <span class="k">if</span> <span class="n">fontsize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="n">fontsize</span><span class="p">})</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gdf</span><span class="p">[</span><span class="n">value_col</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">to_rgba</span><span class="p">(</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">value_transform</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_options</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_maybe_plot_names</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ax</span></div>
+
+<div class="viewcode-block" id="GISPlotter.plot_hotspot"><a class="viewcode-back" href="../../../src/echelon.contrib.geo.html#echelon.contrib.geo.GISPlotter.plot_hotspot">[docs]</a>    <span class="k">def</span> <span class="nf">plot_hotspot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hotspots</span><span class="p">:</span> <span class="n">Result_EchelonHotspot</span><span class="p">,</span> <span class="n">label_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span><span class="nb">dict</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">            options: dict containing the plot configurations.</span>
+
+<span class="sd">                Dict keys:</span>
+
+<span class="sd">                    * nth: How-many-th hot spot to plot.</span>
+<span class="sd">                    * id_col: the column containing the IDs that appear in the hot-spot detection results.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nth&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">id_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id_col&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">name_only_hot</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name_only_hot&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># raise NotImplementedError(&#39;Implement &quot;name_only_hot&quot; parameter.&#39;)</span>
+        <span class="k">if</span> <span class="n">id_col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">id_col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name_col</span>
+        <span class="n">_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gdf</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">is_hotspot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gdf</span><span class="p">[</span><span class="n">id_col</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">hotspots</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">nth</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="s1">&#39;spot&#39;</span><span class="p">]))</span>
+        <span class="n">transform</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="p">{</span><span class="kc">True</span><span class="p">:</span> <span class="n">to_rgba</span><span class="p">(</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">),</span> <span class="kc">False</span><span class="p">:</span> <span class="n">to_rgba</span><span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">)}[</span><span class="n">s</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot_labeled_map</span><span class="p">(</span><span class="s1">&#39;is_hotspot&#39;</span><span class="p">,</span> <span class="n">_df</span><span class="p">,</span> <span class="n">transform</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GISPlotter.plot_adjacency"><a class="viewcode-back" href="../../../src/echelon.contrib.geo.html#echelon.contrib.geo.GISPlotter.plot_adjacency">[docs]</a>    <span class="k">def</span> <span class="nf">plot_adjacency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">adj</span><span class="p">:</span><span class="n">GISAdjacency</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span><span class="nb">dict</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+
+        <span class="c1">#############</span>
+        <span class="c1"># For some reason, NetworkX plot functionality (nx.draw()) seems to fail with a newer matplotlib:</span>
+        <span class="c1"># https://stackoverflow.com/questions/63198347/attributeerror-module-matplotlib-cbook-has-no-attribute-iterable</span>
+        <span class="kn">import</span> <span class="nn">matplotlib</span>
+        <span class="c1"># assert matplotlib.__version__ ==&#39;2.2.3&#39;</span>
+
+        <span class="n">default_config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">node_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+            <span class="n">node_color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+            <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span>
+            <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;lightblue&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">default_config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">default_config</span>
+
+        <span class="n">graph</span> <span class="o">=</span> <span class="n">adj</span><span class="o">.</span><span class="n">to_networkx</span><span class="p">()</span>
+
+        <span class="c1"># Extract the centroids for connecting the regions, which is</span>
+        <span class="c1"># the average of the coordinates that define the polygon&#39;s boundary</span>
+        <span class="n">centroids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">gdf</span><span class="o">.</span><span class="n">centroid</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gdf</span><span class="o">.</span><span class="n">centroid</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+
+        <span class="c1"># To plot with networkx, we need to merge the nodes back to</span>
+        <span class="c1"># their positions in order to plot in networkx</span>
+        <span class="n">positions</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">,</span> <span class="n">centroids</span><span class="p">))</span>
+
+        <span class="c1"># plot with a nice basemap</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;linewidth&#39;</span><span class="p">],</span>
+                           <span class="n">edgecolor</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;edgecolor&#39;</span><span class="p">],</span>
+                           <span class="n">facecolor</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;facecolor&#39;</span><span class="p">],</span>
+                           <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span>
+                           <span class="p">)</span>
+        <span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">positions</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;node_size&#39;</span><span class="p">],</span> <span class="n">node_color</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;node_color&#39;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">ax</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Takeshi Teshima.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

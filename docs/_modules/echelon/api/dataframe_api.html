@@ -6,6 +6,7 @@
   <title>echelon.api.dataframe_api &mdash; echelon-py 1.0.3 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -74,7 +75,32 @@
            <div itemprop="articleBody">
              
   <h1>Source code for echelon.api.dataframe_api</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">echelon.api.base</span> <span class="kn">import</span> <span class="n">EchelonAnalysis</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Usage visualization</span>
+<span class="sd">=============</span>
+
+<span class="sd">.. digraph:: G1</span>
+
+<span class="sd">   Data [shape=oval, label=&quot;Data (pd.DataFrame)\n * Observed values \n * Adjacency information&quot;];</span>
+
+<span class="sd">   API [shape=box, color=blue, label=&quot;API&#39;s __call__() method&quot;];</span>
+<span class="sd">   Echelon [shape=oval, color=red, label=&quot;Echelon List Object&quot;];</span>
+<span class="sd">   Data -&gt; API -&gt; Echelon;</span>
+
+<span class="sd">   API_hotspots [shape=box, color=blue, label=&quot;API&#39;s hotspots() method&quot;];</span>
+<span class="sd">   ScoreData [shape=oval, label=&quot;Auxiliary data \n for scoring \n (pd.DataFrame)&quot;];</span>
+<span class="sd">   Hotspots [shape=oval, label=&quot;Hotspot candidates&quot;];</span>
+<span class="sd">   ScoreData -&gt; API_hotspots; Echelon -&gt; API_hotspots -&gt; Hotspots;</span>
+
+<span class="sd">   API_cluster [shape=box, color=blue, label=&quot;API&#39;s cluster() method&quot;];</span>
+<span class="sd">   Clusters [shape=oval, label=&quot;Echelon clusters&quot;];</span>
+<span class="sd">   Echelon -&gt; API_cluster -&gt; Clusters;</span>
+
+<span class="sd">   API_dendrogram [shape=box, color=blue, label=&quot;API&#39;s dendrogram() method&quot;];</span>
+<span class="sd">   Dendrogram [shape=oval, label=&quot;Dendrogram&quot;];</span>
+<span class="sd">   Echelon -&gt; API_dendrogram -&gt; Dendrogram;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">echelon.api.base</span> <span class="kn">import</span> <span class="n">EchelonAnalysis</span>
 <span class="kn">from</span> <span class="nn">echelon.oracle</span> <span class="kn">import</span> <span class="n">DataFrameEchelonOracle</span>
 <span class="kn">from</span> <span class="nn">echelon.scan_oracle</span> <span class="kn">import</span> <span class="n">DataFrameBinomialScanOracle</span><span class="p">,</span> <span class="n">DataFramePoissonScanOracle</span>
 
