@@ -1,3 +1,28 @@
+"""
+Usage visualization
+=============
+
+.. digraph:: G1
+
+   Data [shape=oval, label="Data (pd.DataFrame)\n * Observed values \n * Adjacency information"];
+
+   API [shape=box, color=blue, label="API's __call__() method"];
+   Echelon [shape=oval, color=red, label="Echelon List Object"];
+   Data -> API -> Echelon;
+
+   API_hotspots [shape=box, color=blue, label="API's hotspots() method"];
+   ScoreData [shape=oval, label="Auxiliary data \n for scoring \n (pd.DataFrame)"];
+   Hotspots [shape=oval, label="Hotspot candidates"];
+   ScoreData -> API_hotspots; Echelon -> API_hotspots -> Hotspots;
+
+   API_cluster [shape=box, color=blue, label="API's cluster() method"];
+   Clusters [shape=oval, label="Echelon clusters"];
+   Echelon -> API_cluster -> Clusters;
+
+   API_dendrogram [shape=box, color=blue, label="API's dendrogram() method"];
+   Dendrogram [shape=oval, label="Dendrogram"];
+   Echelon -> API_dendrogram -> Dendrogram;
+"""
 from echelon.api.base import EchelonAnalysis
 from echelon.oracle import DataFrameEchelonOracle
 from echelon.scan_oracle import DataFrameBinomialScanOracle, DataFramePoissonScanOracle
