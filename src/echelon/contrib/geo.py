@@ -195,7 +195,7 @@ class GISPlotter:
 
     def plot_values(self, value_col: str,
                     value_transform: Optional[callable]=None,
-                    plot_options=dict(figsize=(40,40)),
+                    plot_options=dict(figsize=(10,10)),
                     fontsize=28):
         from matplotlib.colors import to_rgba
         import matplotlib.pyplot as plt
@@ -261,7 +261,7 @@ class GISPlotter:
         ax = self.gdf.plot(linewidth=config['linewidth'],
                            edgecolor=config['edgecolor'],
                            facecolor=config['facecolor'],
-                           figsize=(40, 40),
+                           figsize=(10, 10),
                            )
         nx.draw(graph, positions, ax=ax, node_size=config['node_size'], node_color=config['node_color'])
 
