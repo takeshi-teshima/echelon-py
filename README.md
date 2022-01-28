@@ -4,6 +4,8 @@
 [![PyPI version](https://badge.fury.io/py/echelon-py.svg)](https://badge.fury.io/py/echelon-py)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/echelon-py)](https://takeshi-teshima.github.io/echelon-py/index.html)
 
+![Logo](./docs_src/logo.svg)
+
 ## Install
 `$ pip install echelon-py`
 
